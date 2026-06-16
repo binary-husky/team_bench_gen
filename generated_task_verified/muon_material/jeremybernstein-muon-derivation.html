@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width">
+   <meta name="author" content="Jeremy Bernstein" />
+   <title>Deriving Muon</title>
+
+   <!-- canonical URL -->
+   <link rel="canonical" href="https://jeremybernste.in/writing/deriving-muon">
+
+   <!-- favicon -->
+   <link rel="shortcut icon" href="/favicon.ico">
+
+   <!-- Google analytics -->
+   <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-37343072-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+   <!-- atom/RSS feed -->
+  <link type="application/atom+xml" rel="alternate" href="https://jeremybernste.in/feed.xml" title="jeremybernste.in" />
+   
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Google fonts -->
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+   <!-- Mathjax -->
+   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+</head>
+<body class="">
+
+<div class="side">
+<canvas id="canvas_left" width="0"></canvas>
+</div>
+
+<div class="middle">
+  <div class="nav">
+    <div class="nav1"> 
+      
+      <a href="/">jeremybernste.in</a>
+      
+    </div>
+    <div class="nav2">
+      <ul>
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+              <li><a href="/research/">research</a></li>
+            
+          
+        
+          
+            
+              <li><a href="/teaching/">teaching</a></li>
+            
+          
+        
+          
+            
+              <li><a href="/writing/">writing</a></li>
+            
+          
+        
+        <li><a href="/cv/">cv</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="post">
+<h1 id="deriving-muon">Deriving Muon</h1>
+
+<p class="meta">Boston, 7 Mar 2025</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/tracks.jpg" alt="" />
+    
+    
+        <p class="image-caption">Particle tracks in a bubble chamber. <em>Fermilab.</em></p>
+    
+</div>
+
+<p>We recently proposed <em>Muon</em>: a new neural net optimizer. Muon has garnered attention for its excellent practical performance: it was used to set <a href="https://github.com/KellerJordan/modded-nanogpt">NanoGPT speed records</a> leading to <a href="https://arxiv.org/abs/2502.16982">interest from the big labs</a>.</p>
+
+<p>What makes Muon particularly special to me is that we derived the core numerical methods from an exact theoretical principle. This is in contrast to popular optimizers like <a href="https://arxiv.org/abs/1412.6980">Adam</a>, which have more heuristic origins and  <a href="https://kellerjordan.github.io/posts/muon/#results">often converge slower than Muon</a>. In this post, I will walk through a derivation of Muon. I hope this will provide context that may help researchers extend the methods to new layer types and beyond.</p>
+
+<p>While this post focuses on the theory behind Muon, I recommend checking out <a href="https://kellerjordan.github.io/posts/muon/">Keller’s post</a> to learn more about the algorithm—including the substantial ingenuity that went into making the implementation run fast.</p>
+
+<div class="post-cite">
+📘 <em>Muon is joint work with Keller Jordan, Yuchen Jin, Vlado Boza, Jiacheng You, Franz Cesista and Laker Newhouse. Keller's write-up is online <a href="https://kellerjordan.github.io/posts/muon/">here</a>.</em>
+</div>
+
+<h2>What is Muon?</h2>
+
+<p>Muon is an optimizer specifically designed for \(\mathsf{Linear}\) neural network layers. By \(\mathsf{Linear}\), I mean layers that take an input vector \(x\) and multiply by a weight matrix \(W\) to return an output vector \(y = W x\). There is also an expectation that the vectors \(x\) and \(y\) are “dense” activation vectors, meaning the entries are close to unit size. This latter requirement separates the \(\mathsf{Linear}\) layer from, say, an \(\mathsf{Embedding}\) layer that takes one-hot inputs.</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/lego.png" alt="" />
+    
+    
+        <p class="image-caption">The <b>Linear</b> layer is an important building block in neural networks.</p>
+    
+</div>
+
+<p>While it may seem suprising—and it is certainly non-standard—to use different optimizers for different layer types, this is part of our <a href="https://modula.systems">broader mission</a> to “modularize” the theory of deep learning. The idea is to break up the architecture into building blocks, derive theory and algorithms for each separate piece, then work out how to glue the pieces together at the end.</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/transformer.png" alt="" />
+    
+    
+        <p class="image-caption">The Lego Transformer. Thanks to Idan Shenfeld for letting me play with this.</p>
+    
+</div>
+
+<p>To handle individual layers, our idea is to normalize the weight updates in a clever way so that, given the structure of the inputs, the weight updates automatically induce a desirable effect on the outputs. As a community, we have invested so much effort into thinking about how to normalize the activations: think <a href="https://arxiv.org/abs/1502.03167">batch norm</a>, <a href="https://arxiv.org/abs/1607.06450">layer norm</a>, <a href="https://arxiv.org/abs/1910.07467">RMS norm</a>, etc. Why not also consider how the weights and weight updates influence the activations?</p>
+
+<div class="post-cite">
+📚 <em>A major thesis of our work on the <a href="https://arxiv.org/abs/2405.14813">modular norm</a> is that different layer types require different optimization logic. Our followup work on <a href="https://arxiv.org/abs/2410.21265">modular duality</a> provides a framework for deriving optimizers for any layer type, and shows how to glue the pieces together to build one global optimizer. </em>
+</div>
+
+<h2>Muon in four steps</h2>
+
+<p>Okay, time to focus! Back to Muon! In this post, we are going to derive the following version of the Muon update rule:</p>
+
+\[W \gets W - \eta \times \sqrt{\frac{\texttt{fan-out}}{\texttt{fan-in}}} \times \mathrm{NewtonSchulz}(\nabla_W \mathcal{L}).\]
+
+<p>To unpack this expression:</p>
+<ul>
+  <li>the scalar parameter \(\eta\) sets the step size;</li>
+  <li>\(\texttt{fan-out}\) and \(\texttt{fan-in}\) are the dimensions of the weight matrix \(W\);</li>
+  <li>\(\nabla_W \mathcal{L}\) is the gradient of the loss \(\mathcal{L}\) with respect to the weights \(W\);</li>
+  <li>\(\mathrm{NewtonSchulz}\) is an orthogonalization routine—I’ll explain later!</li>
+</ul>
+
+<p>In practice, Muon uses a <a href="https://x.com/YouJiacheng/status/1895025349920202817">slightly different dimensional pre-factor</a>, but <a href="https://x.com/jxbz/status/1846188906733044029">I’d actually expect</a> the one here <a href="https://arxiv.org/abs/2310.17813">to scale better</a>. The other difference is that in the Python implementation we apply Newton-Schulz to the momentum (essentially a running average of gradients) instead of to the gradient itself.</p>
+
+<h2>Step 1: Metrizing the linear layer</h2>
+
+<p>First, we will <em>metrize</em> the linear layer: that is, we will equip the inputs, weights and outputs with relevant measures of size. This will help us control the sizes of these quantities and also their updates through training.</p>
+
+<p>In a neural network, a linear layer is intended to map from “dense” input vectors to “dense” output vectors. By “dense”, we mean that the average size of the entries is around one. We can quantify the average size of the entries using the <em>root-mean-square (RMS) norm</em>:</p>
+
+\[\|v\|_{\text{RMS}} := \sqrt{\frac{1}{d}\sum_{i=1}^d v_i^2} = \sqrt{\frac{1}{d}} \times \|v\|_2,\]
+
+<p>where \(d\) is the dimension of the vector \(v\). The second equality states that the RMS norm is a normalized version of the Euclidean norm. If all the entries of a vector are \(\pm 1\), then the RMS norm of the vector is one.</p>
+
+<p>Now, we ask the question: <em>how can a weight matrix affect the RMS norm of its outputs, given that we know the RMS norm of its inputs?</em> To answer this question, we need a tool known as the <em>operator norm</em> of a matrix.</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/standoff.png" alt="" />
+    
+    
+        <p class="image-caption">The operator norm tells us how much a matrix can stretch an input vector.</p>
+    
+</div>
+
+<p>The RMS-to-RMS operator norm is defined as the maximum amount by which a matrix can increase the average entry-size of its inputs:</p>
+
+\[\|W\|_{\text{RMS} \to \text{RMS}} := \max_{x \neq 0} \frac{\|Wx\|_{\text{RMS}}}{\|x\|_{\text{RMS}}} = \sqrt{\frac{\texttt{fan-in}}{\texttt{fan-out}}} \times \|W\|_*\]
+
+<p>The second equality says that the RMS-to-RMS operator norm is equivalent to a normalized version of the spectral norm \(\|\cdot\|_*\) of the matrix. The spectral norm is the largest singular value of the matrix.</p>
+
+<div class="post-cite">
+📕 <em>The idea of equipping linear layers with the RMS-to-RMS operator norm comes from Appendix E of my paper <a href="https://arxiv.org/abs/2310.17813">"A Spectral Condition for Feature Learning"</a> with Greg Yang and Jamie Simon.</em>
+</div>
+
+<h2 id="step-2-perturbing-the-linear-layer">Step 2: Perturbing the linear layer</h2>
+
+<p>We train a neural network by updating the weight matrices. These weight updates lead to changes in the layer outputs. In this step of the derivation, we will show that the operator norm of the weight update allows us to bound how much the outputs can change in response.</p>
+
+<p>Consider applying an update \(\Delta W\) to the weights of a linear layer. The resulting change in output \(\Delta y\) is given by:</p>
+
+\[\Delta y = (W + \Delta W)x - Wx = \Delta W x.\]
+
+<p>We can bound the size of the output perturbation \(\|\Delta y\|_{\text{RMS}}\) in terms of the size of the weight perturbation \(\|\Delta W\|_{\text{RMS} \to \text{RMS}}\) just by applying the definition of the RMS-to-RMS operator norm:</p>
+
+\[\|\Delta y\|_{\text{RMS}} = \|\Delta W x\|_{\text{RMS}} \leq \|\Delta W\|_{\text{RMS} \to \text{RMS}} \times \|x\|_{\text{RMS}}. \tag{$\star$}\]
+
+<p>A good way to think about this inequality is as the very simplest example of a more general idea: connecting the size of the weight update to the amount of change induced in the resulting function.</p>
+
+<div class="post-cite">
+📗 <em> I started working on this idea of connecting weight space change to function space change through inequalities in my paper <a href="https://arxiv.org/abs/2002.03432">"On the Distance Between two Neural Networks and the Stability of Learning"</a> with Arash Vahdat, Yisong Yue and Ming-Yu Liu. The most advanced version of this idea currently appears in our paper on the <a href="https://arxiv.org/abs/2405.14813">modular norm</a> with Tim Large, Yang Liu, Minyoung Huh, Hyojin Bahng and Phillip Isola.</em>
+</div>
+
+<h2>Step 3: Dualizing the gradient</h2>
+
+<p>For the third step in the derivation, we consider choosing a weight update to maximize the linear improvement in loss \(\mathcal{L}\) while maintaining a bound on the amount that the outputs can change in response. The rationale is that if the weight update makes the layer outputs change too much, this could de-stabilize the overall network. In symbols, we would like to solve:</p>
+
+\[\min_{\Delta W} \;\langle \nabla_W \mathcal{L}, \Delta W \rangle \quad \text{subject to} \quad \|\Delta y\|_{\text{RMS}} \leq \eta.\]
+
+<p>To construct a proxy for solving this problem, we can apply inequality \((\star)\) from the previous section to switch from controlling the size of the output change to directly controlling the size of the weight update itself. If the input has size \(\|x\|_{\text{RMS}} \leq 1\), we obtain the following problem as a proxy:</p>
+
+\[\min_{\Delta W} \;\langle \nabla_W \mathcal{L}, \Delta W \rangle \quad \text{subject to} \quad \|\Delta W\|_{\text{RMS} \to \text{RMS}} \leq \eta. \tag{$\dagger$}\]
+
+<p>In words: let’s minimize the linearized loss while controlling the size of the weight update. Seems reasonable! We refer to solving \((\dagger)\) as “dualizing the gradient” under the RMS-to-RMS operator norm. If the gradient has singular value decomposition (SVD) given by \(\nabla_W \mathcal{L} = U \Sigma V^\top\), then \((\dagger)\) is solved by:</p>
+
+\[\Delta W = - \eta \times \sqrt{\frac{\texttt{fan-out}}{\texttt{fan-in}}} \times UV^\top. \tag{$\S$}\]
+
+<p>In words: we keep the singular vectors of the gradient but throw away the magnitudes of the singular values. This corresponds to “orthogonalizing” the gradient. A sanity check that this is a sensible operation is to see that the update \((\S)\) encourages inequality \((\star)\) to hold tightly, meaning that the update tries to saturate the bound on the change in output. Later on, we will see that this property leads to learning rate transfer across width.</p>
+
+<p>One challenge remains before we can turn the update rule \((\S)\) into a workable algorithm. Orthogonalizing the gradient would naïvely require computing the SVD of the gradient, which seems too expensive to be practical at large-scale. But fear not, we shall develop a workaround!</p>
+
+<div class="post-cite">
+📙 <em>The idea of dualizing linear layers under the RMS-to-RMS operator norm comes from my paper <a href="https://arxiv.org/abs/2410.21265">"Modular Duality in Deep Learning"</a> with Laker Newhouse. An earlier draft is <a href="https://openreview.net/forum?id=JimfKP7qrU">available here</a>. Many ideas in this paper were developed with Tim Large before he ran off to Silicon Valley.</em>
+</div>
+
+<h2>Step 4: Dualizing fast via Newton-Schulz</h2>
+
+<p>The final step in the derivation is to work out a fast means of performing the gradient orthogonalization step:</p>
+
+\[\nabla_W \mathcal{L} = U \Sigma V^\top \mapsto UV^\top.\]
+
+<p>We proposed performing this step via a so-called “Newton-Schulz” iteration. The main idea underlying the technique is that odd matrix polynomials \(p(X)\) “commute” with the SVD. In other words, for an odd polynomial</p>
+
+\[p(X) := a \cdot X + b \cdot XX^\top X + c \cdot XX^\top X X^\top X + \cdots,\]
+
+<p>applying \(p\) to the matrix \(X\) is equivalent to applying \(p\) directly to the singular values of \(X\) and then putting the singular vectors back together:</p>
+
+\[p(X) = p(U \Sigma V^\top) = U p(\Sigma) V^\top.\]
+
+<p>To orthogonalize a matrix, we would like to set all the singular values to one. Since all the singular values are positive, we can think of this as applying the <em>sign function</em> to the singular values. While the sign function is an odd function, it is unfortunately not a polynomial. However, we can produce low-order odd polynomials that converge to the sign function when iterated. A simple example <a href="https://epubs.siam.org/doi/10.1137/0707031">(Kovarik, 1970)</a> is the cubic polynomial:</p>
+
+\[p_3(\Sigma) := \frac{3}{2} \cdot \Sigma - \frac{1}{2} \cdot \Sigma \Sigma^\top \Sigma.\]
+
+<p>To visualize this cubic, we plot the scalar function \(y = p_3(x)\) on the left. And on the right, we plot the cubic composed with itself 5 times to obtain \(y = p_3\circ p_3 \circ p_3 \circ p_3 \circ p_3(x)\). Notice that the iterated cubic starts to resemble the sign function in the neighbourhood of the origin:</p>
+
+<div style="display: flex; gap: 1.99%;">
+  <iframe src="https://www.desmos.com/calculator/qzvof94grn?embed" style="border: 2.5px solid black; width:48%;"></iframe>
+  <iframe src="https://www.desmos.com/calculator/2d0ekimums?embed" style="border: 2.5px solid black; width:48%;"></iframe>
+</div>
+
+<p>In fact, \(p_3 \circ p_3 \circ p_3 \circ \cdots \circ p_3 (\Sigma)\) will converge to \(\mathrm{sign}(\Sigma)\) so long as the initial singular values are normalized to be less than \(\sqrt{3}\). We call this a “Newton-Schulz iteration” following the terminology of <a href="https://convexoptimization.com/TOOLS/procrust94.pdf">Nick Higham</a>.</p>
+
+<p>All that remains is to combine update rule \((\S)\) with a Newton-Schulz iteration, <em>et voilà</em>—we have derived our version of Muon!</p>
+
+<div class="post-cite">
+📗 <em>I worked out the idea of dualizing the gradient via Newton-Schulz in close collaboration with Tim Large. I wrote down the idea in Appendix A of my paper <a href="https://arxiv.org/abs/2409.20325">Old optimizer, new norm: An anthology</a> with Laker Newhouse. We also came up with the idea of graphically tuning the Newton-Schulz coefficients to accelerate the convergence. Tuning the coefficients and sharing the results via <a href="https://www.desmos.com/">Desmos</a> became an important practical and social aspect of the <a href="https://github.com/KellerJordan/modded-nanogpt">NanoGPT speedrun</a>, with researchers from all over the world <a href="https://x.com/YouJiacheng/status/1893704552689303901">sharing their Newton-Schulz coefficients</a>.</em> For further reading, I wrote up a page on Newton-Schulz for the <a href="https://docs.modula.systems/algorithms/newton-schulz">Modula docs</a>.
+</div>
+
+<h2>Payoff #1: Fast training with automatic learning rate transfer</h2>
+
+<p>Phew, that was a lot of work! But we are finally ready to see the payoff. The first payoff is that dualizing the gradient under the RMS-to-RMS operator norm leads to both fast and scalable training. The following plot shows that dualizing the gradient under the RMS-to-RMS norm leads to learning rate transfer across width <em>and</em> a much better final loss than training with Adam.</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/transfer.png" alt="" />
+    
+    
+        <p class="image-caption">Training MLPs on CIFAR. Dualized training is both faster than conventional training and leads to automatic learning rate transfer across width. SP stands for standard parameterization and μP stands for maximal update parameterization. Thanks to Laker Newhouse for running this experiment.</p>
+    
+</div>
+
+<p>The reason that dualizing the gradient in the RMS-to-RMS operator norm leads to learning rate transfer across width is that the dualized updates encourage inequality \((\star)\) to hold tightly, meaning that the updates try to induce a controlled amount of RMS output change independent of width.</p>
+
+<p>There was already a well-known technique for achieving learning rate transfer across width: the so-called <a href="https://proceedings.mlr.press/v139/yang21c.html"><em>maximal update parameterization</em></a>, or μP for short. We have shown that the μP learning rate scaling is obtained automatically by dualizing the gradient in the “correct” norm. As such, I believe that μP and Muon are really two sides of the same coin.</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/meme.png" alt="" />
+    
+    
+</div>
+
+<div class="post-cite">
+📘 <em>We wrote down the general idea of using normalized updates to obtain learning rate transfer in my paper <a href="https://arxiv.org/abs/2002.03432">"On the Distance Between two Neural Networks and the Stability of Learning"</a> with Arash Vahdat, Yisong Yue and Ming-Yu Liu. The idea that dualizing linear layers under the RMS-to-RMS operator leads to both learning rate transfer and faster training is from my paper <a href="https://arxiv.org/abs/2410.21265">"Modular Duality in Deep Learning"</a> with Laker Newhouse.</em>
+</div>
+
+<h2>Payoff #2: Simpler numerical properties</h2>
+
+<p>A more subtle payoff is that Muon has somewhat simpler numerical properties than other optimizers. To visualize this, I ran an experiment inspired by <a href="https://arxiv.org/abs/2012.02550">Jesus et al. (2020)</a> where we watermark an initial weight matrix with the letter “a” and then track the erasure of the watermark as we train. This allows us to visually tell how much the weights move through training.</p>
+
+<p>In the following plot, we show the final visibility of the watermark after training with both dualized and non-dualized updates over a range of different learning rates. As can be seen, not only does dualized training converge faster, but it also leads to faster erasure of the watermark.</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/erasure.png" alt="" />
+    
+    
+        <p class="image-caption">Dualized training converges faster and erases the watermark faster. I wrote up a thorough explanation for this effect in the <a href="https://docs.modula.systems/examples/weight-erasure">Modula docs</a>.</p>
+    
+</div>
+
+<p>I believe this experiment underscores how properly metrized and dualized deep learning can have an impact on the kinds of number systems and precision levels we use to represent and train neural networks.</p>
+
+<p>This effect also has theoretical implications. Many researchers took the observation that the weight entries seem to hardly move in standard training as evidence that it was safe to study deep learning in a <a href="https://arxiv.org/abs/1902.06720">linearized regime around the initialization</a>. This is the so-called <a href="https://arxiv.org/abs/1806.07572">neural tangent kernel (NTK) regime</a>. But the weight erasure experiment shows that in dualized training the weights can move substantially from their initial values.</p>
+
+<div class="post-cite">
+📕 <em>The weight erasure experiment is currently only written up in full in the <a href="https://docs.modula.systems/examples/weight-erasure">Modula docs</a>. We mention the effect verbally in the discussion section of my paper on <a href="https://arxiv.org/abs/2410.21265">Modular Duality in Deep Learning</a> with Laker Newhouse.</em>
+</div>
+
+<h2>Related work</h2>
+
+<p>There have been a couple of papers from the past decade that also had the idea of orthogonalizing and dualizing the gradients in deep learning optimization. I highly recommend checking out the following two papers:</p>
+
+<ul>
+  <li><a href="https://papers.nips.cc/paper_files/paper/2015/hash/f50a6c02a3fc5a3a5d4d9391f05f3efc-Abstract.html">Stochastic spectral descent (2015)</a> by David Carlson, Edo Collins, Ya-Ping Hsieh, Lawrence Carin &amp; Volkan Cevher.</li>
+  <li><a href="https://arxiv.org/abs/1708.00523">Duality structure gradient descent (2017)</a> by Thomas Flynn.</li>
+</ul>
+
+<p>We had the idea for spectral norm dualization independently of these papers. That said, our main theoretical novelties in hindsight are to propose using the Newton-Schulz iteration to enable very fast orthogonalization on GPUs, and to propose using the RMS-to-RMS operator norm instead of the spectral norm, leading to learning rate transfer across width.</p>
+
+<p>It is also important to credit the proponents and developers of the Shampoo optimizer. The kinds of numerical routines used inside Shampoo are what <a href="https://x.com/jxbz/status/1821610272454537459">made me realize back in August 2024</a> that orthogonalization could be feasible on GPUs at scale. Check out the following papers:</p>
+
+<ul>
+  <li><a href="https://arxiv.org/abs/2002.09018">Scalable Second Order Optimization for Deep Learning (2020)</a> by Rohan Anil, Vineet Gupta, Tomer Koren, Kevin Regan &amp; Yoram Singer.</li>
+  <li><a href="https://arxiv.org/abs/2309.06497">A Distributed Data-Parallel PyTorch Implementation of the Distributed Shampoo Optimizer for Training Neural Networks At-Scale (2023)</a> by Hao-Jun Michael Shi et al.</li>
+</ul>
+
+<p>Finally, I must mention the AlgoPerf competition. It feels like it breathed fresh life into the field of deep learning optimization, and spurred me to <a href="https://x.com/jxbz/status/1819846348130418706">take a closer look at Shampoo</a>. Check out the two write-ups from the team:</p>
+
+<ul>
+  <li><a href="https://arxiv.org/abs/2306.07179">Benchmarking Neural Network Training Algorithms (2023)</a> by George Dahl et al.</li>
+  <li><a href="https://openreview.net/forum?id=CtM5xjRSfm">Accelerating neural network training: An analysis of the AlgoPerf competition (2025)</a> by Priya Kasimbeg et al.</li>
+</ul>
+
+<p>If you are interested to find more papers on this topic, I am collating a reading list on the <a href="https://docs.modula.systems/intro/reading-list">Modula docs</a>. Let me know if I should add anything!</p>
+
+<h2>Conclusion: The geometry of neural networks</h2>
+
+<p>To summarize, in this post:</p>
+
+<ul>
+  <li>we derived a version of Muon in four steps;</li>
+  <li>we showed the resulting method leads to scalable and fast training;</li>
+  <li>we showed the resulting method has novel numerical properties.</li>
+</ul>
+
+<p>I want to finish the post by discussing what I see as the bigger picture here.</p>
+
+<p>For a long time, neural networks felt to me like inscrutable beasts. A tangled web of complicated interacting effects: high-dimensional spaces, tensors, compositionality, stochasticity… You name it! The analytical tools we had at our disposal felt inadequate in the face of this complexity.</p>
+
+<p>I am now feeling more optimistic that we can in fact disentangle this complicated web and formalize a neural network as a set of precise mathematical concepts with understood interactions. I see this as the long-term goal of the <a href="https://modula.systems/">Modula project</a>. I have been lucky to work with some of the best scientists and mathematicians in the world to get to this point.</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/platonize.png" alt="" />
+    
+    
+        <p class="image-caption">Can we distentangle neural networks into precise mathematical concepts?</p>
+    
+</div>
+
+<p>One of these important mathematical concepts is the idea of <em>geometry</em>. There is an old and deep connection between optimization and geometry, with different notions of distance leading to different optimization theories:</p>
+
+<!-- _includes/image.html -->
+<div class="image-wrapper">
+    
+        <img class="" src="/images/posts/2025-03-07/geometry.png" alt="" />
+    
+    
+        <p class="image-caption">Different notions of distance lead to different optimization theories.</p>
+    
+</div>
+
+<p>In Muon, we are exploiting the geometry of a matrix that acts as a linear operator between RMS-normed vector spaces. 
+In particular, we build on a geometric connection between distance in weight space and distance in function space. We have already put significant work into extending this idea to general network architectures: starting with my work on <a href="https://arxiv.org/abs/2002.03432">deep relative trust</a> and leading up to our most recent work on the <a href="https://arxiv.org/abs/2405.14813">modular norm</a> and <a href="">modular duality</a>. I am excited to see where this work goes from here!</p>
+
+<h2>Citing this blog post</h2>
+
+<p>To cite this blog post, you can use the following BibTeX entry:</p>
+
+<div class="citation-container">
+  <button class="copy-button" onclick="copyCitation(this)" title="Copy to clipboard">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+  </button>
+  <div class="copy-notification">Copied!</div>
+<pre class="citation-text">@misc{bernstein2025deriving,
+  author = {Jeremy Bernstein},
+  title = {Deriving Muon},
+  url = {https://jeremybernste.in/writing/deriving-muon},
+  year = {2025}
+}
+</pre>
+</div>
+
+<p>The official citation for the Muon optimizer is:</p>
+
+<div class="citation-container">
+  <button class="copy-button" onclick="copyCitation(this)" title="Copy to clipboard">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+  </button>
+  <div class="copy-notification">Copied!</div>
+<pre class="citation-text">@misc{jordan2024muon,
+  author = {Keller Jordan and Yuchen Jin and Vlado Boza and Jiacheng You and Franz Cesista and Laker Newhouse and Jeremy Bernstein},
+  title = {Muon: An optimizer for hidden layers in neural networks},
+  url = {https://kellerjordan.github.io/posts/muon/},
+  year = {2024}
+}</pre>
+</div>
+
+<p>Python code for Muon is available <a href="https://github.com/KellerJordan/muon">here</a>.</p>
+
+<script>
+function copyCitation(button) {
+  const container = button.closest('.citation-container');
+  const text = container.querySelector('.citation-text').textContent;
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      const notification = container.querySelector('.copy-notification');
+      notification.classList.add('visible');
+      setTimeout(() => {
+        notification.classList.remove('visible');
+      }, 2000);
+    })
+    .catch(err => {
+      console.error('Failed to copy: ', err);
+    });
+}
+</script>
+
+<h2>Acknowledgements</h2>
+
+<p>I am grateful to Phillip Isola, Laker Newhouse, Isha Puri and Akarsh Kumar for helpful discussions and feedback on this blog post. I am extremely grateful to Phillip Isola for granting me the freedom to pursue this research. Thanks to Jyo Pari for doing the lego transformer photo shoot with me.</p>
+
+</div>
+
+<script src="https://giscus.app/client.js"
+        data-repo="jxbz/blog-comments"
+        data-repo-id="R_kgDORWVItA"
+        data-category="Announcements"
+        data-category-id="DIC_kwDORWVItM4C3ALU"
+        data-mapping="pathname"
+        data-strict="1"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light_high_contrast"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</div>
+<div class="side"></div>
+
+</body>
+</html>
+
+<!-- Acknowledgements: hosted by Github, built in Jekyll, favicon by Emily Bennett (CC BY 4.0) -->
