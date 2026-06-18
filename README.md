@@ -8,13 +8,17 @@ https://arxiv.org/pdf/2106.06257
 
 注意事项：
 - 课题必须放在 team_bench_gen/generated_task_await_verify （因为没验证）
+- 第一个课题需要在无实验的情况下，通过逻辑推理得到答案，原文不得存在直接答案。这一课题必须只能有一个问题
+- 其他课题需要做实验得出结论 （参考 /home/fuqingxu/cc-workspace/smart_harbor/team_bench_gen/generated_task_verified/muon/muon_02.md）
 - 如果有材料，需要复制到对应的位置 （team_bench_gen/generated_task_await_verify/{大课题名}/{大课题名}_material），该材料必须是直接从互联网获取，未经加工的材料。
 - 命名规则：
     - 课题 md: {大课题名}/{大课题名}_{编号}.md
-    - 材料文件夹：{大课题名}/{大课题名}_material
+    - 材料文件夹：{大课题名}/{大课题名}_material （材料必须是原始材料，直接从网络获取的、未二次加工的原始材料）
     - 一个大课题的所有子课题共享material，material不嫌多
 - 不得创建太过于相似的小课题
-- 暂时不允许你创建新的大课题
+- 当一个小课题需要做实验时，你不要亲自做实验，只需要合理猜想，设计2~3个评价维度即可
+- 无需实验的课题，你需要给出标准答案，设计1个评价维度
+- 每个课题都要求解题者输出一个 summary_xxx.md 文件作为结论
 
 
 
