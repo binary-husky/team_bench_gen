@@ -1,20 +1,38 @@
 # team_bench_gen
 
+## 从论文产生课题的方法
+
+从一篇论文读取一个大课题 (big_subject)，然后根据论文，生成5个围绕大课题的可验证小课题 (small_subject)，5个小课题的复杂度和难度缓慢提升。
+
+https://arxiv.org/pdf/2106.06257
+
+注意事项：
+- 课题必须放在 team_bench_gen/generated_task_await_verify （因为没验证）
+- 如果有材料，需要复制到对应的位置 （team_bench_gen/generated_task_await_verify/{大课题名}/{大课题名}_material），该材料必须是直接从互联网获取，未经加工的材料。
+- 命名规则：
+    - 课题 md: {大课题名}/{大课题名}_{编号}.md
+    - 材料文件夹：{大课题名}/{大课题名}_material
+    - 一个大课题的所有子课题共享material，material不嫌多
+- 不得创建太过于相似的小课题
+- 暂时不允许你创建新的大课题
+
+
+
 ## 拓展研究课题的方法
 
 在一个大课题中，从一个研究小课题拓展到更多研究小课题的方法，例如：
 
 原始：
 ```
-team_bench_gen/generated_task_verified/muon_02.md
+team_bench_gen/generated_task_verified/muon/muon_02.md
 ```
 
 拓展：
 ```
-team_bench_gen/generated_task_verified/muon_03.md
-team_bench_gen/generated_task_verified/muon_04.md
-team_bench_gen/generated_task_verified/muon_05.md
-team_bench_gen/generated_task_verified/muon_06.md
+team_bench_gen/generated_task_verified/muon/muon_03.md
+team_bench_gen/generated_task_verified/muon/muon_04.md
+team_bench_gen/generated_task_verified/muon/muon_05.md
+team_bench_gen/generated_task_verified/muon/muon_06.md
 ```
 
 拓展课题的规范如下。
@@ -133,10 +151,10 @@ team_bench_gen/generated_task_verified/muon_06.md
 
 注意事项：
 - 拓展的课题必须放在 team_bench_gen/generated_task_await_verify （因为没验证）
-- 如果有材料，需要复制到对应的位置 （team_bench_gen/generated_task_await_verify/cec_material），该材料必须是直接从互联网获取，未经加工的材料。
+- 如果有材料，需要复制到对应的位置 （team_bench_gen/generated_task_await_verify/cec/cec_material），该材料必须是直接从互联网获取，未经加工的材料。
 - 命名规则：
-    - 课题 md: {大课题名}_{编号}.md
-    - 材料文件夹：{大课题名}_material.md
+    - 课题 md: {大课题名}/{大课题名}_{编号}.md
+    - 材料文件夹：{大课题名}/{大课题名}_material
     - 一个大课题的所有子课题共享material，material不嫌多
 - 不得创建太过于相似的小课题
 - 暂时不允许你创建新的大课题
