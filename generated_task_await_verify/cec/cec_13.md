@@ -40,7 +40,7 @@
 
 ---
 
-[Judge (IQ requirement: medium-IQ)]
+[Judge]
 
 阅读 `./summary_cec_13_h_n_interaction.md`，检查结论是否覆盖以下 3 个评价维度：
 

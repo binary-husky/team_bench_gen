@@ -36,7 +36,7 @@ DTLZ1 的 g 函数（式 6.19）随 k 增大指数级增加局部前沿数（11^
 
 ---
 
-[Judge (IQ requirement: high-IQ)]
+[Judge]
 
 阅读 `./summary_dtlz_05_redundancy_and_scaling.md`，检查结论是否覆盖以下 3 个评价维度：
 

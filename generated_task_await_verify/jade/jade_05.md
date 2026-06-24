@@ -34,7 +34,7 @@
 
 ---
 
-[Judge (IQ requirement: medium-IQ)]
+[Judge]
 
 阅读 `./summary_dynamics_sensitivity.md`，检查结论是否覆盖以下 3 个评价维度：
 

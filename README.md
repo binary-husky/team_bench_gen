@@ -41,7 +41,7 @@ team_bench_gen/
 
 ---
 
-[Judge (IQ requirement: low-IQ | high-IQ)]
+[Judge]
 
 Look at `./summary_<topic>.md`, check whether conclusion cover the following points (最多不超过 3 点，每点都必须清晰、可验证)
 
@@ -153,7 +153,7 @@ Look at `./summary_<topic>.md`, check whether conclusion cover the following poi
 生成或拓展任务单后，检查以下事项：
 
 1. 每个课题都有 `[Agents]`。
-2. 每个课题都有 `[Judge (IQ requirement: ...)]`。
+2. 每个课题都有 `[Judge]`。
 3. `[Agents]` 中只显式要求"读给定材料，做实验，写结论"。
 4. 没有显式要求 Agent 查找、补充、登记或下载材料。
 5. 没有显式提及材料文件名、已有说明文件、既有总结或其他研究记录结论。

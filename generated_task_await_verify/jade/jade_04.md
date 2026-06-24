@@ -36,7 +36,7 @@ CR 侧保持论文默认（Normal + arithmetic mean），其他参数（`c=0.1`,
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 阅读 `./summary_distribution_design.md`，检查结论是否覆盖以下 3 个评价维度：
 

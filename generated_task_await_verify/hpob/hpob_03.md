@@ -32,7 +32,7 @@ d. 验证论文 §7.1 的两个关键观察：(i) BOHAMIANN 与 Deep GP 在 aggr
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_non_transfer.md`, check whether conclusion cover the following points:
 

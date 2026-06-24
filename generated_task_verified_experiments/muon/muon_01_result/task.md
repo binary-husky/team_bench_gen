@@ -8,7 +8,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary.md`, check whether conclusion cover the following points
 

@@ -17,7 +17,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_f29_failure.md`, check whether conclusion cover the following points:
 

@@ -20,7 +20,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_pop_reduction.md`, check whether conclusion cover the following points:
 

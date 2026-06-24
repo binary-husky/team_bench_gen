@@ -18,7 +18,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_dim_scaling.md`, check whether conclusion cover the following points:
 

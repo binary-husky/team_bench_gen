@@ -19,7 +19,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_cross_benchmark.md`, check whether conclusion cover the following points:
 

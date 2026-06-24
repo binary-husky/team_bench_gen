@@ -23,7 +23,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 阅读 `./summary_cec_10_basic_repro.md`，检查结论是否覆盖以下 3 个评价维度：
 

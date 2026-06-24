@@ -30,7 +30,7 @@
 
 ---
 
-[Judge (IQ requirement: high-IQ)]
+[Judge]
 
 Look at `./summary_continuous_vs_discrete.md`, check whether conclusion cover the following points:
 

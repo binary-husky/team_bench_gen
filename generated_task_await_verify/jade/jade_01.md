@@ -27,7 +27,7 @@
 
 ---
 
-[Judge (IQ requirement: medium-IQ)]
+[Judge]
 
 阅读 `./summary_f_cr_handling.md`，检查答案是否覆盖以下 1 个核心评价维度（**唯一一题，必须全对**）：
 

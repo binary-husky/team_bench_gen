@@ -21,7 +21,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_active_cma.md`, check whether conclusion cover the following points:
 

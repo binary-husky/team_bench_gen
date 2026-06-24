@@ -25,7 +25,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 阅读 `./summary_component_ablation.md`，检查结论是否覆盖以下 3 个评价维度：
 

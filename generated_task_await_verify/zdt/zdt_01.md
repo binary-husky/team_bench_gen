@@ -17,7 +17,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_zdt_01.md`, check whether conclusion covers the following point (only 1 point, must be fully addressed)
 

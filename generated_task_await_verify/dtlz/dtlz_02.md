@@ -29,7 +29,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 阅读 `./summary_dtlz_02_basic_repro.md`，检查结论是否覆盖以下 3 个评价维度：
 

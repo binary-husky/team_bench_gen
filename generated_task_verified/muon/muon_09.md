@@ -26,7 +26,7 @@ Muon 使用 Jordan (3.4445, -4.7750, 2.0315) 作为 Newton-Schulz 系数基准�
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_width_transfer.md`, check whether conclusion cover the following points:
 

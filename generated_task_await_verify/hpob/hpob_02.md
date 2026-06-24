@@ -27,7 +27,7 @@ c. 18-HP 的 xgboost (6767) vs 2-HP 的 glmnet (6766)：哪种 search space 上 
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_rs_vs_gp.md`, check whether conclusion cover the following points:
 

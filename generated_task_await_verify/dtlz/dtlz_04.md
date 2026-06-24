@@ -35,7 +35,7 @@
 
 ---
 
-[Judge (IQ requirement: medium-IQ)]
+[Judge]
 
 阅读 `./summary_dtlz_04_many_objective.md`，检查结论是否覆盖以下 3 个评价维度：
 

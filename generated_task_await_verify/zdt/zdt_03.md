@@ -21,7 +21,7 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_zdt_03.md`, check whether conclusion covers the following points (最多 3 点)
 

@@ -36,7 +36,7 @@ e. 给出 search space 5971 与 5906 上 RGPE vs 其他方法的 per-space regre
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 Look at `./summary_transfer.md`, check whether conclusion cover the following points:
 

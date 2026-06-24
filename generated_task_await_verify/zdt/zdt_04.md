@@ -23,7 +23,7 @@
 
 ---
 
-[Judge (IQ requirement: medium-IQ)]
+[Judge]
 
 Look at `./summary_zdt_04.md`, check whether conclusion covers the following points (最多 3 点)
 

@@ -7,6 +7,6 @@
 
 ---
 
-[Judge (IQ requirement: low-IQ)]
+[Judge]
 
 CEC2022 基准测试套件的 20 维（D=20）设定下复现实验，结果是否小于0.02

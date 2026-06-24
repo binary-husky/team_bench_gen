@@ -32,7 +32,7 @@
 
 ---
 
-[Judge (IQ requirement: medium-IQ)]
+[Judge]
 
 阅读 `./summary_cec_12_memory_size.md`，检查结论是否覆盖以下 3 个评价维度：
 
