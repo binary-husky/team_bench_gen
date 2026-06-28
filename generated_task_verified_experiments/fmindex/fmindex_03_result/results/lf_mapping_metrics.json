@@ -1,0 +1,10 @@
+{
+  "seed": 20240626,
+  "text_length": 262144,
+  "n_with_sentinel": 262145,
+  "fully_equal": true,
+  "first_mismatch": -1,
+  "sentinel_row_in_BWT": 113905,
+  "C_sentinel": 0,
+  "reconstruction_time_s": 0.132
+}

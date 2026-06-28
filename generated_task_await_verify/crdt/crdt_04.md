@@ -32,3 +32,15 @@ Look at `./summary_crdt_04_state_vs_op.md`, check whether conclusion covers the 
 1. 给出了每个 M 下 **state-based 与 op-based 的总传输字节数**及**每条消息平均字节数**，以表格呈现。
 2. **op-based 每条消息 O(1)（常数小）**、**state-based 每条消息 O(N) 且随计数增长**——明确量化两者的每条消息字节差异（state-based 每条消息字节随 M 增大而增大，op-based 不变）。
 3. 随 M 增大，**state-based 的总字节增长快于 op-based**（或反之，取决于编码/同步频率的设计，需与实测一致并解释）；并给出权衡结论：高频小更新宜用 op-based（省带宽），低频大状态/断点续传宜用 state-based（实现简单、可容忍消息丢失后用最新全量恢复）。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_crdt_04_state_vs_op.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给逐 M 总字节 + 逐消息字节表（golden：op 总 23k…1.15M、state 22.3k…1.47M、op 消息恒 23 B；可接受：同量级）。（细化原 [Judge] 第 1 点）
+2. 须给 op 消息 O(1) 恒 23 B、state 消息 O(N) 随计数增（golden：op 23 B、state 22.28→29.45；可接受：op 恒定、state 随计数单调增）。（细化原 [Judge] 第 2 点）
+3. 须给 state 总增长快于 op（golden：state/op 0.969→1.280；可接受：比随 M 单调增且 >1 at M=50k）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

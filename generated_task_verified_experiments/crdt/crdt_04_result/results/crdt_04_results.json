@@ -1,0 +1,98 @@
+[
+  {
+    "M": 1000,
+    "op_per_msg": 23.0,
+    "op_total": 23000.0,
+    "state_per_msg_avg": 22.279,
+    "state_per_msg_spread": [
+      22.245,
+      22.314
+    ],
+    "state_per_msg_minmax": [
+      15,
+      25
+    ],
+    "state_total": 22279.0,
+    "ratio_state_over_op": 0.9686521739130435,
+    "final_V": [
+      200,
+      200,
+      200,
+      200,
+      200
+    ],
+    "wire_mult": 4
+  },
+  {
+    "M": 5000,
+    "op_per_msg": 23.0,
+    "op_total": 115000.0,
+    "state_per_msg_avg": 24.45793333333333,
+    "state_per_msg_spread": [
+      24.454,
+      24.4606
+    ],
+    "state_per_msg_minmax": [
+      15,
+      30
+    ],
+    "state_total": 122289.66666666667,
+    "ratio_state_over_op": 1.0633884057971015,
+    "final_V": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "wire_mult": 4
+  },
+  {
+    "M": 10000,
+    "op_per_msg": 23.0,
+    "op_total": 230000.0,
+    "state_per_msg_avg": 27.2273,
+    "state_per_msg_spread": [
+      27.223,
+      27.232
+    ],
+    "state_per_msg_minmax": [
+      15,
+      30
+    ],
+    "state_total": 272273.0,
+    "ratio_state_over_op": 1.183795652173913,
+    "final_V": [
+      2000,
+      2000,
+      2000,
+      2000,
+      2000
+    ],
+    "wire_mult": 4
+  },
+  {
+    "M": 50000,
+    "op_per_msg": 23.0,
+    "op_total": 1150000.0,
+    "state_per_msg_avg": 29.445473333333336,
+    "state_per_msg_spread": [
+      29.44482,
+      29.44584
+    ],
+    "state_per_msg_minmax": [
+      15,
+      35
+    ],
+    "state_total": 1472273.6666666667,
+    "ratio_state_over_op": 1.2802379710144929,
+    "final_V": [
+      10000,
+      10000,
+      10000,
+      10000,
+      10000
+    ],
+    "wire_mult": 4
+  }
+]

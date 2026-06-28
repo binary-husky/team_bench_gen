@@ -29,3 +29,15 @@ Look at `./summary_cm_01_one_sided_error.md`, check whether the answer covers th
     - **(a) 单行视角**：`C[j][h_j(i)]` = `i` 自身的全部更新之和 `a[i]` **加上** 所有与 `i` 在第 `j` 行哈希碰撞（`h_j(l)=h_j(i)`）的其他 item `l` 的非负贡献；因为每个贡献 `≥ 0`，故 `C[j][h_j(i)] ≥ a[i]`（对每一行都成立）。
     - **(b) 取 min 保号**：`d` 个计数器每个都 `≥ a[i]`，故 `min_j C[j][h_j(i)] ≥ a[i]`，即 `â[i] ≥ a[i]`——**永不低估**。
     - **(c) 单调性 + 单边误差结论**：在只增（`c ≥ 0`）流上每次更新只**加**计数器、`min` 只会增大，故 `â[i]` 单调不减、不可能下降；噪声只累加不抹除，因此点查询是"只高估、不低估"的单边误差估计。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_cm_01_one_sided_error.md` —— 基于真实推导结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给单行视角：`C[j,h_j(i)]=a_i+noise_j(i)`，`noise_j(i)≥0`（更新 `c_t≥0`），i 恒映射到自身格 ⇒ `C[j,h_j(i)]≥a_i`，与哈希质量无关。（细化原 [Judge] 第 1a 点）
+2. 须由所有 d 计数器 ≥a_i 推 `â_i=min_j C[j,h_j(i)]≥a_i`，`â_i−a_i=min_j noise_j(i)≥0`，永不低估。（细化原 [Judge] 第 1b 点）
+3. 须给单调性：非负更新下计数器单调非降、min 亦单调，`â_{t,i}` 永不降；并指出通用 turnstile 失效（CM 改用中位数，Theorem 2）——一侧性源于"只加非负质量"。（细化原 [Judge] 第 1c 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

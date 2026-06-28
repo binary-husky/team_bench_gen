@@ -1,0 +1,91 @@
+{
+  "G-Counter": {
+    "n_messages": 6,
+    "n_perm_schemes": 100,
+    "n_dup_schemes": 100,
+    "n_all_schemes": 200,
+    "distinct_perm": 1,
+    "distinct_dup": 1,
+    "distinct_all": 1,
+    "sample_final_values": [
+      32
+    ]
+  },
+  "PN-Counter": {
+    "n_messages": 6,
+    "n_perm_schemes": 100,
+    "n_dup_schemes": 100,
+    "n_all_schemes": 200,
+    "distinct_perm": 1,
+    "distinct_dup": 1,
+    "distinct_all": 1,
+    "sample_final_values": [
+      27
+    ]
+  },
+  "LWW-Register": {
+    "n_messages": 8,
+    "n_perm_schemes": 100,
+    "n_dup_schemes": 100,
+    "n_all_schemes": 200,
+    "distinct_perm": 1,
+    "distinct_dup": 1,
+    "distinct_all": 1,
+    "sample_final_values": [
+      "v7"
+    ]
+  },
+  "OR-Set": {
+    "n_messages": 6,
+    "n_perm_schemes": 100,
+    "n_dup_schemes": 100,
+    "n_all_schemes": 200,
+    "distinct_perm": 1,
+    "distinct_dup": 1,
+    "distinct_all": 1,
+    "sample_final_values": [
+      "frozenset({'d', 'c', 'a', 'b'})"
+    ]
+  },
+  "Naive \u0394-counter (non-CRDT)": {
+    "n_messages": 8,
+    "n_perm_schemes": 100,
+    "n_dup_schemes": 100,
+    "n_all_schemes": 200,
+    "distinct_perm": 1,
+    "distinct_dup": 40,
+    "distinct_all": 41,
+    "sample_final_values": [
+      26,
+      42,
+      43,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53
+    ]
+  },
+  "Naive overwrite (non-CRDT)": {
+    "n_messages": 8,
+    "n_perm_schemes": 100,
+    "n_dup_schemes": 100,
+    "n_all_schemes": 200,
+    "distinct_perm": 7,
+    "distinct_dup": 7,
+    "distinct_all": 7,
+    "sample_final_values": [
+      2,
+      3,
+      15,
+      26,
+      35,
+      43,
+      46
+    ]
+  }
+}

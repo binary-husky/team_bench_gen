@@ -1,0 +1,58 @@
+{
+  "Path P_100": {
+    "n_nodes": 100,
+    "n_edges": 99,
+    "max_bc": 2450.0,
+    "max_bc_nodes": "middle node(s) [49, 50] of 100",
+    "gini": 0.25757575757575757,
+    "mean_bc": 1617.0,
+    "min_bc": 0.0,
+    "frac_zero": 0.02
+  },
+  "Cycle C_100": {
+    "n_nodes": 100,
+    "n_edges": 100,
+    "max_bc": 1200.5,
+    "max_bc_nodes": "all nodes tie (symmetric ring)",
+    "gini": 0.0,
+    "mean_bc": 1200.5,
+    "min_bc": 1200.5,
+    "frac_zero": 0.0
+  },
+  "Star S_100": {
+    "n_nodes": 100,
+    "n_edges": 99,
+    "max_bc": 4851.0,
+    "max_bc_nodes": "central hub node 0 (degree 99)",
+    "gini": 0.99,
+    "mean_bc": 48.51,
+    "min_bc": 0.0,
+    "frac_zero": 0.99
+  },
+  "Grid 10x10": {
+    "n_nodes": 100,
+    "n_edges": 180,
+    "max_bc": 616.2071554262732,
+    "max_bc_nodes": "central region: (4, 5) (dist-to-centre 0.5)",
+    "gini": 0.36759568601589354,
+    "mean_bc": 280.5,
+    "min_bc": 4.435739423974717,
+    "frac_zero": 0.0
+  },
+  "Partition (4x25)": {
+    "n_nodes": 100,
+    "n_edges": 669,
+    "max_bc": 298.2980922132938,
+    "max_bc_nodes": "node 41 (comm 1, 2 inter-comm. edges)",
+    "gini": 0.5199770733760429,
+    "mean_bc": 75.70999999999998,
+    "min_bc": 4.58063318316064,
+    "frac_zero": 0.0,
+    "n_bridge": 53,
+    "n_internal": 47,
+    "mean_bc_bridge": 128.9994115970949,
+    "mean_bc_internal": 15.617684794765335,
+    "corr_interdeg_bc": 0.9175304113286619,
+    "max_node_inter_edges": 2
+  }
+}

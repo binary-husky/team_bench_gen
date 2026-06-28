@@ -1,0 +1,3 @@
+{'b': 2, 'M': 16384, 'total_slots': 32768, 'n_success': 28748, 'occupied': 28748, 'load_factor': 0.8773193359375, 'avg_kicks': 1.9738764435786837}
+{'b': 4, 'M': 16384, 'total_slots': 65536, 'n_success': 63344, 'occupied': 63344, 'load_factor': 0.966552734375, 'avg_kicks': 1.715868906289467}
+{'b': 8, 'M': 16384, 'total_slots': 131072, 'n_success': 129971, 'occupied': 129971, 'load_factor': 0.9916000366210938, 'avg_kicks': 1.1899346777358026}

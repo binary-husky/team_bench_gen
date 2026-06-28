@@ -13,3 +13,14 @@ Look at `./summary_graph_coloring.md`, check whether conclusion cover the follow
 1. 当 k ≥ χ(G) 时实例为 SAT 且较易（冲突少、快）。
 2. 当 k < χ(G) 时为 UNSAT，且难度在 k 接近 χ 时达到峰值（边界处最难）。
 3. 冲突数随图规模 n 增大而增大。
+
+
+[Judge V2]
+
+查阅 `./summary_graph_coloring.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；G(n,0.5) 图着色、自变量 k、n∈{10,15,20}）：
+
+1. 须给 k≥χ 时 SAT 且易（golden：k=χ 冲突≈0 快速返回；可接受：k≥χ 冲突低）。（细化原 [Judge] 第 1 点）
+2. 须给 k<χ UNSAT、k 接近 χ 时峰值（golden：最难 k=χ−1、n 10→20 冲突 18→169；可接受：边界处最难）。（细化原 [Judge] 第 2 点）
+3. 须给冲突随 n 增（golden：n 10→15→20 冲突 18→29→169（约 ×9）；可接受：随 n 超线性增）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

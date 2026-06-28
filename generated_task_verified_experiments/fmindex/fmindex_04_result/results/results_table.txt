@@ -1,0 +1,5 @@
+name	n	sigma	H0_text	H2_text	H3_text	bwt_runs	runs_per_symbol	H0_bwt	bw_rlx_bits	ratio_rlx_vs_native	ratio_rlx_vs_byte	rlx_bits_per_symbol
+repetitive DNA (1 motif)	65536	4	1.929	1.024	0.2736	28	0.0004272	1.929	688	0.005249	0.001312	0.0105
+semi-repetitive DNA (16 motifs)	65536	4	1.987	1.72	1.367	13520	0.2063	1.987	59172	0.4514	0.1129	0.9029
+random DNA (incompressible)	65536	4	2	1.999	1.998	49101	0.7492	2	206251	1.574	0.3934	3.147
+English text (Alice)	65536	69	4.393	2.569	1.781	32254	0.4922	4.394	189504	0.4734	0.3615	2.892

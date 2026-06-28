@@ -13,3 +13,14 @@ Look at `./summary_accuracy.md`, check whether conclusion cover the following po
 1. μ 较小（如 0.1）时 NMI/ARI 很高（接近 1，社区结构清晰，几乎完全恢复真实社区）。
 2. 当 μ 超过约 0.5 后 NMI/ARI 急剧下降（社区结构模糊，检测质量骤降）。
 3. 模块度 Q 也随 μ 增大而下降，但下降比 NMI 平缓。
+
+
+[Judge V2]
+
+查阅 `./summary_accuracy.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；LFR 固定/seed=0、自变量 μ）：
+
+1. 须给 μ 小时 NMI/ARI 高近 1（golden：μ=0.1 NMI≈0.98/ARI≈0.93、检出 35 vs 真实 34；可接受：μ=0.1 NMI≥0.9）。（细化原 [Judge] 第 1 点）
+2. 须给 μ>0.5 后 NMI/ARI 急降（golden：μ=0.3 NMI≈0.42、μ=0.7 NMI≈0.19/ARI≈0.02；可接受：μ=0.7 NMI≤0.3）。（细化原 [Judge] 第 2 点）
+3. 须给 Q 下降但比 NMI 平缓（golden：Q 0.90→0.51、μ=0.7 仍 Q≈0.51（伪社区）；可接受：Q 降幅 < NMI 降幅）。（细化原 [Judge] 第 3 点——补 Q 高≠吻合的局限）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

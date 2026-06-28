@@ -1,0 +1,910 @@
+An Improved Data Stream Summary:
+The Count-Min Sketch and its Applications
+Graham Cormode a,∗,? , S. Muthukrishnan b,1
+a Center for Discrete Mathematics and Computer Science (DIMACS), Rutgers University,
+
+Piscataway NJ.
+b Division of Computer and Information Systems, Rutgers University and AT&T Research.
+
+Abstract
+We introduce a new sublinear space data structure—the Count-Min Sketch— for summarizing data streams. Our sketch allows fundamental queries in data stream summarization
+such as point, range, and inner product queries to be approximately answered very quickly;
+in addition, it can be applied to solve several important problems in data streams such as
+finding quantiles, frequent items, etc. The time and space bounds we show for using the CM
+sketch to solve these problems significantly improve those previously known — typically
+from 1/ε2 to 1/ε in factor.
+
+1 Introduction
+
+We consider a vector a, which is presented in an implicit, incremental fashion. This vector has dimension n, and its current state at time t is a(t) = [a1 (t), . . . ai (t), . . . , an (t)]. Initially, a is the
+zero vector, ai (0) = 0 for all i. Updates to individual entries of the vector are presented as a stream
+of pairs. The tth update is (it , ct ), meaning that ait (t) = ait (t − 1) + ct , and ai0 (t) = ai0 (t − 1) for
+all i0 6= it . At any time t, a query calls for computing certain functions of interest on a(t).
+This setup is the data stream scenario that has emerged recently. Algorithms for computing functions within the data stream context need to satisfy the following desiderata. First, the space used
+by the algorithm should be small, at most poly-logarithmic in n, the space required to represent a
+? Supported by NSF ITR 0220280 and NSF EIA 02-05116.
+∗ Corresponding Author
+Email addresses: graham@dimacs.rutgers.edu (Graham Cormode),
+muthu@cs.rutgers.edu (S. Muthukrishnan).
+1 Supported by NSF CCR 0087022, NSF ITR 0220280 and NSF EIA 02-05116.
+
+Preprint submitted to Elsevier Science
+
+16 December 2003
+
+explicitly. Since the space is sublinear in data and input size, the data structures used by the algorithms to represent the input data stream is merely a summary—aka a sketch or synopsis [17])—of
+it; because of this compression, almost no function that one needs to compute on a can be done precisely, so some approximation is provably needed. Second, processing an update should be fast and
+simple; likewise, answering queries of a given type should be fast and have usable accuracy guarantees. Typically, accuracy guarantees will be made in terms of a pair of user specified parameters,
+ε and δ, meaning that the error in answering a query is within a factor of ε with probability δ. The
+space and update time will consequently depend on ε and δ; our goal will be limit this dependence
+as much as is possible.
+Many applications that deal with massive data, such as Internet traffic analysis and monitoring contents of massive databases, motivate this one-pass data stream setup. There has been a frenzy of activity recently in the Algorithm, Database and Networking communities on such data stream problems, with multiple surveys, tutorials, workshops and research papers. See [12,3,28] for detailed
+description of the motivations driving this area.
+In recent years, several different sketches have been proposed in the data stream context that allow a number of simple aggregation functions to be approximated. Quantities for which efficient
+sketches have been designed include the L1 and L2 norms of vectors [2,14,23], the number of
+distinct items in a sequence (ie number of non-zero entries in a(t)) [15,18,6], join and self-join
+sizes of relations (representable as inner-products of vectors a(t), b(t)) [2,1], item and range sum
+queries [20,5]. These sketches are of interest not simply because they can be used to directly approximate quantities of interest, but also because they have been used considerably as “black box”
+devices in order to compute more sophisticated aggregates and complex quantities: quantiles [21],
+wavelets [20], histograms [29,19], database aggregates and multi-way join sizes [10], etc. Sketches
+thus far designed are typically linear functions of their input, and can be represented as projections
+of an underlying vector representing the data with certain randomly chosen projection matrices.
+This means that it is easy to compute certain functions on data that is distributed over sites, by casting them as computations on their sketches. So, they are suited for distributed applications too.
+While sketches have proved powerful, they have the following drawbacks.
+• Although sketches use small space, the space used typically has a Ω(1/ε 2 ) multiplicative factor.
+This is discouraging because ε = 0.1 or 0.01 is quite reasonable and already, this factor proves
+expensive in space, and consequently, often, in per-update processing and function computation
+times as well.
+• Many sketch constructions require time linear in the size of the sketch to process each update to
+the underlying data [2,21]. Sketches are typically a few kilobytes up to a megabyte or so, and
+processing this much data for every update severely limits the update speed.
+• Sketches are typically constructed using hash functions with strong independence guarantees,
+such as p-wise independence [2], which can be complicated to evaluate, particularly for a hardware implementation. One of the fundamental questions is to what extent such sophisticated independence properties are needed.
+• Many sketches described in the literature are good for one single, pre-specified aggregate computation. Given that in data stream applications one typically monitors multiple aggregates on the
+2
+
+same stream, this calls for using many different types of sketches, which is a prohibitive overhead.
+• Known analyses of sketches hide large multiplicative constants inside big-Oh notation.
+Given that the area of data streams is being motivated by extremely high performance monitoring
+applications—eg., see [12] for response time requirements for data stream algorithms that monitor
+IP packet streams—these drawbacks ultimately limit the use of many known data stream algorithms
+within suitable applications.
+We will address all these issues by proposing a new sketch construction, which we call the CountMin, or CM, sketch. This sketch has the advantages that: (1) space used is proportional to 1/ε; (2)
+the update time is significantly sublinear in the size of the sketch; (3) it requires only pairwise independent hash functions that are simple to construct; (4) this sketch can be used for several different
+queries and multiple applications; and (5) all the constants are made explicit and are small. Thus, for
+the applications we discuss, our constructions strictly improve the space bounds of previous results
+from 1/ε2 to 1/ε and the time bounds from 1/ε2 to 1, which is significant.
+Recently, a Ω(1/ε2 ) space lower bound was shown for a number of data stream problems: approxiP
+mating frequency moments Fk (t) = k (ai (t))k , estimating the number of distinct items, and computing the Hamming distance between two strings [30]. 2 It is an interesting contrast that for a
+number of similar seeming problems (finding Heavy Hitters and Quantiles in the most general data
+stream model) we are able to give an O( 1ε ) upper bound. Conceptually, CM Sketch also represents
+progress since it shows that pairwise independent hash functions suffice for many of the fundamental data stream applications. From a technical point of view, CM Sketch and its analyses are quite
+simple. We believe that this approach moves some of the fundamental data stream algorithms from
+the theoretical realm to the practical.
+Our results have some technical nuances:
+• The accuracy estimates for individual queries depend on the L 1 norm of a(t) in contrast to the
+previous works that depend on the L2 norm. This is a consequence of working with simple counts.
+The resulting estimates are often not as tight on individual queries since L 2 norm is never greater
+than the L1 norm. But nevertheless, our estimates for individual queries suffice to give improved
+bounds for the applications here where it is desired to state results in terms of L 1 .
+• Most prior sketch constructions relied on embedding into small dimensions to estimate norms.
+For example, [2] relies on embedding inspired by the Johnson-Lindenstrauss lemma [24] for estimating L2 norms. But accurate estimation of the L2 norm of a stream requires Ω( ε12 ) space [30].
+Currently, all data stream algorithms that rely on such methods that estimate L p norms use Ω(1/ε2 )
+space. One of the observations that underlie our work is while embedding into small space is
+needed for small space algorithms, it is not necessary that the methods accurately estimate L 2 or
+in fact any Lp norm, for most queries and applications in data streams. Our CM Sketch does not
+help estimate L2 norm of the input, however, it accurately estimates the queries that are needed,
+2
+
+This bound has virtually been met for Distinct Items by results in [4], where clever use of hashing improves
+n
+previous bounds of O( log
+log 1δ ) to Õ(( ε12 + log n) log 1δ ).
+ε2
+
+3
+
+which suffices for our data stream applications.
+• Most data stream algorithm analyses thus far have followed the outline from [2] where one uses
+Chebyshev and Chernoff bounds in succession to boost probability of success as well as the accuracy. This process contributes to the complexity bounds. Our analysis is simpler, relying only
+on the Markov inequality. Perhaps surprisingly, in this way we get tighter, cleaner bounds.
+The remainder of this paper is as follows: in Section 2 we discuss the queries of our interest. We
+describe our Count-Min sketch construction and how it answers queries of interest in Sections 3
+and 4 respectively, and apply it to a number of problems to improve the best known complexity in
+Section 5. In each case, we state our bounds and directly compare it with the best known previous
+results.
+All previously known sketches have many similarities. Our CM Sketch lies in the same framework,
+and finds inspiration from these previous sketches. Section 6 compares our results to past work, and
+shows how all relevant sketches can be compared in terms of a small number of parameters. This
+should prove useful to readers in contrasting the vast number of results that have emerged recently
+in this area. Conclusions are in Section 7.
+
+2 Preliminaries
+
+We consider a vector a, which is presented in an implicit, incremental fashion. This vector has dimension n, and its current state at time t is a(t) = [a1 (t), . . . ai (t), . . . an (t)]. For convenience, we
+shall usually drop t and refer only to the current state of the vector. Initially, a is the zero vector, 0,
+so ai (0) is 0 for all i. Updates to individual entries of the vector are presented as a stream of pairs.
+The tth update is (it , ct ), meaning that
+ait (t) = ait (t − 1) + ct
+ai0 (t) = ai0 (t − 1)
+
+i0 6= it
+
+In some cases, ct s will be strictly positive, meaning that entries only increase; in other cases, c t s are
+allowed to be negative also. The former is known as the cash register case and the latter the turnstile
+case [28]. There are two important variations of the turnstile case to consider: whether a i s may
+become negative, or whether the application generating the updates guarantees that this will never
+be the case. We refer to the first of these as the general case, and the second as the non-negative case.
+Many applications that use sketches to compute queries of interest—such as monitoring database
+contents, analyzing IP traffic seen in a network link—guarantee that counts will never be negative.
+However, the general case occurs in important scenarios too, for example in distributed settings
+where one considers the subtraction of one vector from another, say.
+At any time t, a query calls for computing certain functions of interest on a(t). We focus on approximating answers to three types of query based on vectors a and b.
+• A point query, denoted Q(i), is to return an approximation of a i .
+4
+
+P
+
+• A range query Q(l, r) is to return an approximation of ri=l ai .
+P
+• An inner product query, denoted Q(a, b) is to approximate a b = ni=1 ai bi .
+
+These queries are related: a range query is a sum of point queries; both point and range queries are
+specific inner product queries. However, in terms of approximations to these queries, results will
+vary. These are the queries that are fundamental to many applications in data stream algorithms,
+and have been extensively studied. In addition, they are of interest in non-data stream context. For
+example, in databases, the point and range queries are of interest in summarizing the data distribution approximately; and inner-product queries allow approximation of join size of relations. Fuller
+discussion of these aspects can be found in [16,28].
+We will also study use of these queries to compute more complex functions on data streams. As
+P
+examples, we will focus on the two following problems. Recall that ||a|| 1 = ni=1 |ai (t)|; more
+P
+generally, ||a||p = ( ni=1 |ai (t)|p )1/p .
+
+• (φ-Quantiles) The φ-quantiles of the cardinality ||a||1 multiset of (integer) values each in the
+range 1 . . . n consist of those items with rank kφ||a||1 for k = 0 . . . 1/φ after sorting the values.
+Approximation comes by accepting any integer that is between the item with rank (kφ − ε)||a|| 1
+and the one with rank (kφ + ε)||a||1 for some specified ε < φ.
+• (Heavy Hitters) The φ-heavy hitters of a multiset of ||a||1 (integer) values each in the range
+1 . . . n, consist of those items whose multiplicity exceeds the fraction φ of the total cardinality,
+i.e., ai ≥ φ||a||1 . There can be between 0 and φ1 heavy hitters in any given sequence of items.
+Approximation comes by accepting any i such that ai ≥ (φ − )||a||1 for some specified ε < φ.
+
+We will assume the RAM model, where each machine word can store integers up to max{||a|| 1 , n}.
+Standard word operations take constant time and so we count space in terms of number of words and
+we count time in terms of the number of word operations. So, if one estimates our space and time
+bounds in terms of number of bits instead, a multiplicative factor log max{||a|| 1 , n} is needed. Our
+goal is to solve the queries and the problems above using a sketch data structure, that is using space
+and time significantly sublinear—polylogarithmic—in input size n and ||a|| 1 . All our algorithms
+will be approximate and probabilistic; they need two parameters, ε and δ, meaning that the error in
+answering a query is within a factor of ε with probability δ. Both these parameters will affect the
+space and time needed by our solutions. Each of these queries and problems has a rich history of
+work in the data stream area. We refer the readers to surveys [28,3], tutorials [16], as well as the
+general literature.
+
+3 Count-Min Sketches
+
+We now introduce our data structure, the Count-Min, or CM, sketch. It is named after the two basic
+operations used to answer point queries, counting first and computing the minimum next. We use e
+to denote the base of the natural logarithm function, ln.
+5
+
++ct
+h1
+
+it
+
++ct
+
+hd
+
++ct
++ct
+
+Fig. 1. Each item i is mapped to one cell in each row of the array of counts: when an update of c t to item it
+arrives, ct is added to each of these cells
+
+Data Structure. A Count-Min (CM) sketch with parameters (ε, δ) is represented by a two-dimensional
+array counts with width w and depth d: count[1, 1] . . . count[d, w]. Given parameters (ε, δ), set
+w = d eε e and d = dln 1δ e. Each entry of the array is initially zero. Additionally, d hash functions
+h1 . . . hd : {1 . . . n} → {1 . . . w}
+are chosen uniformly at random from a pairwise-independent family.
+
+Update Procedure. When an update (it , ct ) arrives, meaning that item ait is updated by a quantity
+of ct , then ct is added to one count in each row; the counter is determined by h j . Formally, set ∀1 ≤
+j≤d
+count[j, hj (it )] ← count[j, hj (it )] + ct
+This procedure is illustrated in Figure 1.
+The space used by Count-Min sketches is the array of wd counts, which takes wd words, and d hash
+functions, each of which can be stored using 2 words when using the pairwise functions described
+in [27].
+
+4 Approximate Query Answering Using CM Sketches
+
+For each of the three queries introduced in Section 2: Point, Range, and Inner Product queries, we
+show how they can be answered using Count-Min sketches.
+
+4.1 Point Query
+
+We first show the analysis for point queries for the non-negative case.
+
+Estimation Procedure.
+
+The answer to Q(i) is given by âi = minj count[j, hj (i)].
+
+6
+
+Theorem 1 The estimate âi has the following guarantees: ai ≤ âi ; and, with probability at least
+1 − δ,
+âi ≤ ai + ε||a||1 .
+PROOF. We introduce indicator variables Ii,j,k , which are 1 if (i 6= k) ∧ (hj (i) = hj (k)), and 0
+otherwise. By pairwise independence of the hash functions, then
+ε
+E(Ii,j,k ) = Pr[hj (i) = hj (k)] ≤ 1/ range(hj ) = .
+e
+P
+
+Define the variable Xi,j (random over the choices of hi ) to be Xi,j = nk=1 Ii,j,k ak . Since all ai
+are non-negative in this case, Xi,j is a non-negative variable. By construction, count[j, hj (i)] =
+ai + Xi,j . So, clearly, min count[j, hj (i)] ≥ ai . For the other direction, observe that
+E(Xi,j ) = E
+
+n
+X
+
+k=1
+
+Ii,j,k ak
+
+!
+
+≤
+
+n
+X
+
+ε
+ak E(Ii,j,k ) ≤ ||a||1
+e
+k=1
+
+by pairwise independence of hj , and linearity of expectation. By the Markov inequality,
+Pr[âi > ai + ε||a||1 ] = Pr[∀j . count[j, hj (i)] > ai + ε||a||1 ]
+= Pr[∀j . ai + Xi,j > ai + ε||a||1 ]
+= Pr[∀j . Xi,j > eE(Xi,j )] < e−d ≤ δ
+The time to produce the estimate is O(ln 1δ ) since finding the minimum count can be done in linear
+time; the same time bound holds for updates. The constant e is used here to minimize the space
+used: more generally, we can set w = /b and d = log b 1δ for any b > 1 to get the same accuracy
+guarantee. Choosing b = e minimizes the space used, since this solves d(wd)
+= 0, giving a cost
+db
+of (2 + eε ) ln 1δ words. For implementations, it may be preferable to use other (integer) values of
+b for simpler computations or faster updates. Note that for values of a i that are large relative to
+||a||1 , the bound in terms of ε||a||1 can be translated into a relative error in terms of ai . This has
+implications for certain applications which rely on retrieving large values, such as large wavelet or
+Fourier co-efficients.
+The best known previous result using sketches was in [5]: there sketches were used to approximate
+point queries. Results were stated in terms of the frequencies of individual items. For arbitrary distributions, the space used is O( ε12 log 1δ ), and the dependency on ε is ε12 in every case considered.
+A significant difference between CM sketches and previous work comes in the analysis:
+• All prior analyses of sketch structures compute the variance of their estimators in order to apply the Chebyshev inequality, which brings the dependency on ε 2 . Directly applying the Markov
+inequality yields a more direct analysis which depends only on ε. Practitioners may have discovered that less than O( 12 ) space is needed in practice: here, we give proof of why this is so and
+the tighter bound.
+7
+
+• Because only positive quantities are added to the counters then it is possible to take the minimum
+instead of the median for the estimate. This allows a simple calculation of the failure probability,
+without recourse to Chernoff bounds. This significantly improves the constants involved: in [5]
+for example, the constant factors within the big-Oh notation is at least 256; here, the constant
+factor is less than 3.
+• The error bound here is one-sided, as opposed to all previous constructions which gave two-sided
+errors. This brings benefits for many applications which use sketches.
+In Section 6 we show how all existing sketch constructions can be viewed as variations of a common
+procedure. This emphasizes the importance of our attempt to find the simplest sketch construction
+which has the best guarantees and smallest constants. A similar result holds when entries of the
+implicit vector a may be negative, which is the general case.
+
+Estimation Procedure.
+
+This time Q(i) is answered with âi = medianj count[j, hj (i)].
+
+Theorem 2 With probability 1 − δ 1/4 ,
+ai − 3ε||a||1 ≤ âi ≤ ai + 3ε||a||1 .
+
+PROOF. Observe that E(|count[j, hj (i)] − ai |) ≤ εe ||a||1 , and so the probability that any count is
+off by more than 3ε||a||1 is less than 18 . Applying Chernoff bounds tells us that the probability of
+the median of ln 1δ copies of this procedure being wrong is less than δ 1/4 .
+
+The time to produce the estimate is O(ln 1δ ) and the space used is (2 + εe ) ln 1δ words. The best prior
+result for this problem was the method of [5]. Again, the dependence on ε here is improved from
+1/ε2 to 1/ε. By avoiding analyzing the variance of the estimator, again the analysis is simplified,
+and the constants are significantly smaller than in previous works.
+
+4.2 Inner Product Query
+P
+
+Estimation Procedure. Set (ad b)j = w
+k=1 counta [j, k]∗countb [j, k]. Our estimation of Q(a, b)
+d
+for non-negative vectors a and b is a b = minj (ad b)j .
+Theorem 3 a
+
+PROOF.
+
+b ≤ ad b and, with probability 1 − δ, ad b ≤ a
+(ad b)j =
+
+n
+X
+
+a i bi +
+
+i=1
+
+X
+
+p6=q,hj (p)=hj (q)
+
+8
+
+a p bq
+
+b + ε||a||1 ||b||1 .
+
+Clearly, a
+
+b ≤ ad bj for non-negative vectors. By pairwise independence of h,
+
+E(ad bj − a
+
+b) =
+
+X
+
+Pr[hj (p) = hj (q)]ap bq ≤
+
+p6=q
+
+p6=q
+
+So, by the Markov inequality, Pr[ad b − a
+
+X εap bq
+
+e
+
+≤
+
+ε||a||1 ||b||1
+e
+
+b > ε||a||1 ||b||1 ] ≤ δ, as required.
+
+The space and time to produce the estimate is O( 1ε log 1δ ). Updates are performed in time O(log 1δ ).
+Note that in the special case where bi = 1, and b is zero at all other locations, then this procedure
+is identical to the above procedure for point estimation, and gives the same error guarantee (since
+||b||1 = 1). A similar result holds in the general case, where vectors may have negative entries.
+Taking the median of (ad b)j would give a guaranteed good quality approximation; however, we
+do not know of any application which makes use of inner products of such vectors, so we do not
+give the full details here. We next consider the application of inner-product computation to Join size
+estimation, where the vectors generated have non-negative entries.
+Join size estimation is important in database query planners in order to determine the best order
+in which to evaluate queries. The join size of two database relations on a particular attribute is the
+number of items in the cartesian product of the two relations which agree the value of that attribute.
+We assume without loss of generality that attribute values in the relation are integers in the range
+1 . . . n. We represent the relations being joined as vectors a and b so that the values a i represents
+the number of tuples which have value i in the first relation, and bi similarly for the second relation.
+Then clearly a b is the join size of the two relations. Using sketches allows estimates to be made in
+the presence of items being inserted to and deleted from relations. The following corollary follows
+from the above theorem.
+Corollary 1 The Join size of two relations on a particular attribute can be approximated up to
+ε||a||1 ||b||1 with probability 1 − δ, by keeping space O( 1ε log 1δ ).
+Previous results have used the “tug-of-war” sketches [1]. However, here some care is needed in the
+comparison of the two methods: the prior work gives guarantees in terms of the L 2 norm of the underlying vectors, with additive error of ε||a||2 ||b||2 ; here, the result is in terms of the L1 norm. In
+some cases, the L2 norm can be quadratically smaller than the L1 norm. However, when the distribution of items is non-uniform, for example when certain items contribute a large amount to the
+join size, then the two norms are closer, and the guarantees of the CM sketch method is closer to the
+existing method. As before, the space cost of previous methods was Ω( ε12 ), so there is a significant
+space saving to be had with CM sketches.
+4.3 Range Query
+Define χ(l, r) to be the vector of dimension n such that χ(l, r)i = 1 ⇐⇒ l ≤ i ≤ r, and 0
+otherwise. Then Q(l, r) can straightforwardly be re-posed as Q(a, χ(l, r)). However, this method
+9
+
+has two drawbacks: first, the error guarantee is in terms of ||a||1 ||χ(l, r)||1 and therefore large range
+sums have an error guarantee which increases linearly with the length of the range; and second, the
+time cost to directly compute the sketch for χ(l, r) depends linearly in the length of the range, r − l.
+In fact, it is clear that computing range sums in this way using our sketches is not much different to
+simply computing point queries for each item in the range, and summing the estimates. One way to
+avoid the time complexity is to use range-sum random variables from [20] to quickly determine a
+sketch of χ(l, r), but that is expensive and still does not overcome the first drawback. Instead, we
+adopt the use of dyadic ranges from [21]: a dyadic range is a range of the form [x2 y +1 . . . (x+1)2y ]
+for parameters x and y.
+
+Estimation Procedure. Keep log2 n CM sketches, in order to answer range queries Q(l, r) approximately. Any range query can be reduced to at most 2 log 2 n dyadic range queries, which in
+turn can each be reduced to a single point query. Each point in the range [1 . . . n] is a member of
+log2 n dyadic ranges, one for each y in the range 0 . . . log 2 (n) − 1. A sketch is kept for each set of
+dyadic ranges of length 2y , and update each of these for every update that arrives. Then, given a
+range query Q(l, r), compute the at most 2 log2 n dyadic ranges which canonically cover the range,
+and pose that many point queries to the sketches, returning the sum of the queries as the estimate.
+Example 1 For n = 256, the range [48, 107] is canonically covered by the non-overlapping dyadic
+ranges [48 . . . 48], [49 . . . 64], [65 . . . 96], [97 . . . 104], [105 . . . 106], [107 . . . 107].
+P
+
+Let a[l, r] = ri=l ai be the answer to the query Q(l, r) and let â[l, r] be the estimate using the
+procedure above.
+Theorem 4 a[l, r] ≤ â[l, r] and with probability at least 1 − δ,
+â[l, r] ≤ a[l, r] + 2ε log n||a||1 .
+PROOF. Applying the inequality of Theorem 1, then a[l, r] ≤ â[l, r]. Consider each estimator used
+to form â[l, r]; the expectation of the additive error for any of these is 2 log n eε ||a||1 , by linearity of
+expectation of the errors of each point estimate. Applying the same Markov inequality argument as
+before, the probability that this additive error is more than 2ε log n||a|| 1 for any estimator is less
+than 1e ; hence, for all of them the probability is at most δ.
+The time to compute the estimate or to make an update is O(log(n) log 1δ ). The space used is O( log(n)
+log 1δ ).
+ε
+The above theorem states the bound for the standard CM sketch size. The guarantee will be more
+useful when stated without terms of log n in the approximation bound. This can be changed by increasing the size of the sketch, which is equivalent to rescaling ε. In particular, if we want to estiε0
+mate a range sum correct up to ε0 ||a||1 with probability 1 − δ then set ε = 2 log
+. The space used
+n
+2
+
+is O( logε0(n) log 1δ ). An obvious improvement of this technique in practice is to keep exact counts
+for the first few levels of the hierarchy, where there are only a small number of dyadic ranges. This
+10
+
+improves the space, time and accuracy of the algorithm in practice, although the asymptotic bounds
+are unaffected.
+For smaller ranges, ranges that are powers of 2, or more generally, any range whose size can be
+expressed in binary using a small number of 1s, then improved bounds are possible; we have given
+the worst case bounds above.
+One way to compute approximate range sums is via approximate quantiles: use an algorithm such
+as [25,22] to find the  quantiles of the stream, and then count how many quantiles fall within the
+range of interest to give an O(ε) approximation of the range query. Such an approach has several
+disadvantages: (1) Existing approximate quantile methods work in the cash register model, rather
+than the more general turnstile model that our solutions work in. (2) The time cost to update the
+data structure can be high, sometimes linear in the size size of the structure. (3) Existing algorithms
+assume single items arriving one by one, so they do not handle fractional values or large values
+being added, which can be easily handled by sketch-based approaches. (4) The worst case space
+1
+), which can grow indefinitely. The sketch based solution works in
+bound depends on O( 1ε log ||a||
+ε
+fixed space that is independent of ||a||1 .
+The best previous bounds for this problem in the turnstile model are given in [21], where range
+queries are answered by keeping O(log n) sketches, each of size O( ε10 2 log(n) log logδ n ) to give ap2
+proximations with additive error ε||a||1 with probability 1−δ 0 . Thus the space used there is O( logε0 2 n log logδ n )
+and the time for updates is linear in the space used. The CM sketch improves the space and time
+bounds; it improves the constant factors as well as the asymptotic behavior. The time to process an
+update is significantly improved, since only a few entries in the sketch are modified, rather than a
+linear number.
+
+5 Applications of Count-Min Sketches
+
+By using CM sketches, we show how to improve best known time and space bounds for the two
+problems from Section 2.
+
+5.1 Quantiles in the Turnstile Model
+
+In [21] the authors showed that finding the approximate φ-quantiles of the data subject to insertions
+and deletions can be reduced to the problem of computing range sums. Put simply, the algorithm
+is to do binary searches for ranges 1 . . . r whose range sum a[1, r] is kφ||a|| 1 for 1 ≤ k ≤ φ1 − 1.
+The method of [21] uses Random Subset Sums to compute range sums. By replacing this structure
+with Count-Min sketches, the improved results follow immediately. By keeping log n sketches, one
+for each dyadic range and setting the accuracy parameter for each to be ε/ log n and the probability
+guarantee to δφ/ log(n), the overall probability guarantee for all 1/φ quantiles is achieved.
+11
+
+Theorem 5 ε-approximate φ-quantiles can be found with probability at least 1 − δ by keeping a
+n
+data structure with space O( 1ε log2 (n) log( log
+)). The time for each insert or delete operation is
+φδ
+n
+log n
+)).
+O(log(n) log( φδ )), and the time to find each quantile on demand is O(log(n) log( log
+φδ
+Choosing CM sketches over Random Subset Sums improves both the query time and the update
+n
+time from O( ε12 log2 (n) log log
+), by a factor of more than 34
+log n. The space requirements are also
+εδ
+ε2
+.
+improved by a factor of at least 34
+ε
+It is illustrative to contrast our bounds with those for the problem in the weaker Cash Register
+Model where items are only inserted (recall that in our stronger Turnstile model, items are deleted as
+well). The previously best known space bounds for finding approximate quantiles is O(1ε (log2 1ε +
+log2 log 1δ )) space for a randomized sampling solution [25] and O( 1ε log(ε||a||1 )) space for a deterministic solution [22]. These bounds are not completely comparable, but our result is the first on the
+more powerful Turnstile model to be comparable to the Cash Register model bounds in the leading
+1/ε term.
+
+5.2 Heavy Hitters
+
+We consider this problem in both the cash register model (meaning that all updates are positive)
+and the more challenging turnstile model (where updates are both positive and negative, with the
+restriction that count of any item is never less than zero, i.e., a i (t) ≥ 0.).
+
+Cash Register Case. It is possible to maintain the current value of ||a|| 1 throughout, since ||a(t)||1 =
+i=1 ci . On receiving item (it , ct ), update the sketch as before and pose point query Q(i t ): if estimate âit is above the threshold of φ||a(t)||1 , it is added to a heap. The heap is kept small by checking
+that the current estimated count for the item with lowest count is above threshold; if not, it is deleted
+from the heap as in [5]. At the end of the input, the heap is scanned, and all items in the heap whose
+estimated count is still above φ||a||1 are output.
+Pt
+
+Theorem 6 The heavy hitters can be found from an inserts only sequence of length ||a|| 1 , by using
+1
+1
+), and time O(log ||a||
+) per item. Every item which occurs
+CM sketches with space O( 1ε log ||a||
+δ
+δ
+with count more than φ||a||1 time is output, and with probability 1 − δ, no item whose count is less
+than (φ − ε)||a||1 is output.
+
+PROOF. This procedure relies on the fact that the threshold value increases monotonically: therefore, if an item did not pass the threshold in the past, it cannot do so in the future without its count
+increasing. By checking the estimated value every time an items value increases, no heavy hitters
+will be omitted. By the one-sided error guarantee of sketches, every heavy hitter is included in the
+output, but there is some possibility of including non-heavy hitters in the output. To do this, the
+parameter δ is scaled to ensure that over all ||a||1 queries posed to the sketch, the probability of
+mistakenly outputting an infrequent item is bounded by 1 − δ, using the union bound.
+12
+
+We can compare our results to the best known previous work. The algorithm in [5] solves this prob1
+lem using Count sketches in worst case space O( ε12 log ||a||
+), which we strictly improve here. A ranδ
+1
+domized algorithm given in [26] has expected space cost O( 1ε log φδ
+), slightly better than our worst
+case space usage. Meanwhile, a deterministic algorithm in the same paper solves the problem in
+1
+worst case space O( 1ε log ||a||
+). However, for both algorithms in [26] the time cost of processing
+ε
+each insertion can be high (Ω( 1ε )): periodically, there are operations with cost linear in the space
+used. For high speed applications, our worst case time bound may be preferable.
+
+Turnstile Case. We adopt the solution given in [8], which describes a divide and conquer procedure to find the heavy hitters. This keeps sketches for computing range sums: log n different
+sketches, one for each different dyadic range. When an update (i t , ct ) arrives, then each of these
+is updated as before. In order to find all the heavy hitters, a parallel binary search is performed, descending one level of the hierarchy at each step. Nodes in the hierarchy (corresponding to dyadic
+ranges) whose estimated weight exceeds the threshold of (φ + ε)||a|| 1 are split into two ranges, and
+investigated recursively. All single items found in this way whose approximated count exceeds the
+threshold are output.
+We instead must limit the number of items output whose true frequency is less than the fraction φ.
+δφ
+. This is because,
+This is achieved by setting the probability of failure for each sketch to be 2 log
+n
+at each level there are at most 1/φ items with frequency more than φ. At most twice this number
+of queries are made at each level, for all of the log n levels. By scaling δ like this and applying the
+union bound ensures that, over all the queries, the total probability that any one (or more) of them
+overestimated by more than a fraction ε is bounded by δ, and so the probability that every query
+succeeds is 1 − δ. It follows that
+
+
+
+
+
+
+
+
+n
+Theorem 7 The algorithm uses space O( 1ε log(n) log 2 log(n)
+), and time O(log(n) log 2 log
+)
+δφ
+δφ
+per update. Every item with frequency at least (φ + ε)||a||1 is output, and with probability 1 − δ no
+item whose frequency is less than φ||a||1 is output.
+
+The previous best known bound appears in [8], where a non-adaptive group testing approach was
+described. Here, the space bounds agree asymptotically but have been improved in constant factors; a further improvement is in the nature of the guarantee: previous methods gave probabilistic
+guarantees about outputting the heavy hitters. Here, there is absolute certainty that this procedure
+will find and output every heavy hitter, because the CM sketches never underestimate counts, and
+strong guarantees are given that no non-heavy hitters will be output. This is often desirable.
+In some situations in practice, it is vital that updates are as fast as possible, and here update time can
+be played off against search time: ranges based on powers of two can be replaced with an arbitrary
+branching factor k, which reduces the number of levels to log k n, at the expense of costlier queries
+and weaker guarantees on outputting non-heavy hitters.
+
+5.2.0.1 Hierarchical Heavy Hitters A generalization of this problem is finding Hierarchical
+Heavy Hitters [7], which assumes that the items are leaves in a hierarchy of depth h. Here the goal
+13
+
+is to find all nodes in the hierarchy which are heavy hitters, after discounting the contribution of any
+descendent heavy hitter nodes. Using our CM sketch, the cost of the solution given in [7] for the
+turnstile model can be improved from O( εh2 log 1δ ) space and time per update to O( hε log 1δ ) space
+and O(h log 1δ ) time per update.
+
+6 Comparison of Sketch Techniques
+
+We give a common framework to summarize known sketch constructions, and compare the time and
+space requirements for each of the fundamental queries—point, range and inner products—using
+them.
+Here is a brief summary of known sketch constructions. The first sketch construction was that of
+Alon, Matias and Szegedy [2], whose tug-of-war sketches are computed using 4-wise random hash
+functions gj mapping items to {+1, −1}. The jth entry of the sketch, which is a vector of length
+P
+O( ε12 log 1δ ), is defined to be ai ∗gj (i), which is easy to maintain under updates. This structure was
+applied to finding inner products in [1,20] where, in our notation, it was shown that it is possible to
+compute inner products with additive error ±ε||a||2 ||b||2 . In [20], the authors use these sketches to
+compute large wavelet coefficients. In particular, they show how the structure allows point queries
+to be computed up to additive error of ±ε||a||2 . They also compute range sums Q(l, r): here rangesummable random variables are used to compute the sums efficiently, but this incurs a factor of
+O(log n) additional time and space to compute these. Also note that here the error guarantees are
+much worse for large ranges: ε(r − l + 1)||a||1 .
+For point queries only, then pairwise independence suffices for tug-of-war sketches, as observed
+by [5]. These authors additionally used a second hash set of hash functions, h j , to spread out the
+effect of high frequency items in their Count Sketch. For point queries, this gives the same space
+bounds, but an improved time bound to O(log 1δ ) for updating the sketch 3 . Random subset sums
+were introduced in [21] in order to compute point queries and range sums. Here, 2-universal hash
+P
+functions 4 hj map items to {0, 1}, and the jth entry of the sketch is maintained as ni=1 ai ∗ hj (i).
+The asymptotic space and time bounds for different techniques in terms of their dependence on
+epsilon are summarized in Figure 2.
+All of the above sketching techniques, and the one which we propose in this paper, can all be described in a common way. Firstly, they can all be viewed as linear projections of the vector a with
+appropriately chosen random vectors, but more than this, the computation of these linear projections
+is very similar between all methods. Define a sketch to be a two dimensional array of dimension w
+by d. Let h1 . . . hd be pairwise independent hash functions mapping from {1 . . . n} to {1 . . . w},
+We observe that the same idea, of replacing the averaging of O( ε12 ) copies of an estimator with a 2universal hash function distributing to O( ε12 ) buckets can also reduce the update time for “tug-of-war”
+sketches and similar constructions to O(log 1δ ).
+4 In [21] the authors use a 3-wise independent hash function onto {0, 1}, chosen because it is easy to compute, but pairwise suffices.
+3
+
+14
+
+Method
+
+Query
+
+Space
+
+Update
+
+Query
+
+Randomness
+
+Time
+
+Time
+
+Needed
+
+1/ε2
+
+1/ε2
+
+1/ε2
+
+4-wise
+
+Tug-of-war [1]
+
+Inner-product
+
+Tug-of-war [20]
+
+Point
+
+log(n)/ε2
+
+log(n)/ε2
+
+log(n)/ε2
+
+4-wise
+
+Range
+
+log(n)/ε2
+
+log(n)/ε2
+
+log(n)/ε2
+
+4-wise
+
+Random subset-sums [21]
+
+Range
+
+log2 (n)/ε2
+
+log2 (n)/ε2
+
+log2 (n)/ε2
+
+Pairwise
+
+Count sketches [5]
+
+Point
+
+1/ε2
+
+1
+
+1
+
+Pairwise
+
+Count-Min sketches
+
+Point
+
+1/ε
+
+1
+
+1
+
+Pairwise
+
+(this paper)
+
+Inner-product
+
+1/ε
+
+1
+
+1/ε
+
+Pairwise
+
+log(n)/ε
+
+log(n)
+
+log(n)/ε
+
+Pairwise
+
+Range
+
+Fig. 2. Comparison of different space and time requirements of sketching methods: the dependency on ε and
+n is shown, a factor of O(log 1δ ) applies to each entry and is omitted.
+
+and let g1 . . . gd be another hash function whose range and randomness varies from construction to
+construction. The (j, k)th entry of the sketch is defined to be
+X
+
+ai ∗ gk (i)
+
+i:hk (i)=j
+
+The contents of the sketch for each of the above techniques is specified by the parameters w, d, and
+g; methods of answering queries using the sketch vary from technique to technique. The update
+time for each sketch is O(d) computations of g and h, and the space requirement is dominated by
+the O(wd) counters, provided that the hash functions can be stored efficiently.
+• Tug of war sketches have w = 1, d = O( ε12 log( 1δ )), g(i) is {+1, −1} with 4-wise independence.
+• Count sketches have w = O( ε12 ), d = O(log( 1δ )), g(i) is {+1, −1} with 2-wise independence.
+• Random Subset sums have w = 2, d = 24
+log( 1δ ), g(i) is 1.
+ε2
+e
+1
+• Count-Min sketches have w = ε , d = ln( δ ), g(i) = 1.
+We briefly mention some other well-known sketch constructions, and explain why they are not appropriate for the queries we study here. [14] gave a sketch construction for computing the L 1 difference between vectors. It extends the tug-of-war construction, the technical contribution being a
+demonstration of how to compute range sums of 4-wise random variables efficiently. Indyk [23] pioneered the use of stable distributions in sketch computations, again in order to compute L p norms
+of vectors presented as a sequence of updates. However, all these norm computations do not directly
+answer the three query types we consider here. Lastly, we note that our Count-Min sketches appear
+similar in outline to both the uniscan algorithm due to Fang et al [13] and the parallel multistage
+filters of Estan and Varghese [11]. Our construction differs for the following reasons: (1) these structures are not sketches: they do not approximate any value, but instead return only a binary answer
+about whether an item has exceeded a certain numeric threshold; (2) the algorithms used require up15
+
+dates to be only positive; and (3) the analysis does not consider any limited independence needed
+for the hash functions, in contrast to CM sketches, which require only pairwise independence. The
+methods in [13,11] as such seems to use fully independent hash functions which is prohibitive in
+principle.
+
+7 Conclusions
+
+We have introduced the Count-Min sketch, and shown how to estimate fundamental queries such as
+point, range or inner product queries as well as solve more sophisticated problems such as quantiles
+and heavy hitters. The space and/or time bounds of our solutions improve previously best known
+bounds for these problems. Typically the improvement is from 1/ε 2 factor to 1/ε which is significant in real applications. Our CM sketch is quite simple, and is likely to find many applications,
+including in hardware solutions for these problems.
+We have recently applied these ideas to the problem of change detection on data streams [9], and we
+also believe that it can be applied to improve the time and space bounds for constructing approximate wavelet and histogram representations of data streams [19]. Also, the CM Sketch can also be
+naturally extended to solve problems on streams that describe multidimensional arrays rather than
+the unidimensional array problems we have discussed so far.
+Our CM sketch is not effective when one wants to compute the norms of data stream inputs. These
+have applications to computing correlations between data streams and tracking the number of distinct elements in streams, both of which are of great interest. It is an open problem to design extremely simple, practical sketches such as our CM Sketch for estimating such correlations and more
+complex data stream applications.
+
+References
+
+[1] N. Alon, P. Gibbons, Y. Matias, and M. Szegedy. Tracking join and self-join sizes in limited storage. In
+Proceedings of the Eighteenth ACM Symposium on Principles of Database Systems (PODS ’99), pages
+10–20, 1999.
+[2] N. Alon, Y. Matias, and M. Szegedy. The space complexity of approximating the frequency moments. In
+Proceedings of the Twenty-Eighth Annual ACM Symposium on the Theory of Computing, pages 20–29,
+1996. Journal version in Journal of Computer and System Sciences, 58:137–147, 1999.
+[3] B. Babcock, S. Babu, M. Datar, R. Motwani, and J. Widom. Models and issues in data stream systems.
+In Proceedings of Symposium on Principles of Database Systems (PODS), pages 1–16, 2002.
+[4] Z. Bar-Yossef, T.S. Jayram, R. Kumar, D. Sivakumar, and L. Trevisian. Counting distinct elements in
+a data stream. In Proceedings of RANDOM 2002, pages 1–10, 2002.
+
+16
+
+[5] M. Charikar, K. Chen, and M. Farach-Colton. Finding frequent items in data streams. In Procedings
+of the International Colloquium on Automata, Languages and Programming (ICALP), pages 693–703,
+2002.
+[6] G. Cormode, M. Datar, P. Indyk, and S. Muthukrishnan. Comparing data streams using Hamming
+norms. In Proceedings of 28th International Conference on Very Large Data Bases, pages 335–345,
+2002. Journal version in IEEE Transactions on Knowledge and Data Engineering 15(3):529–541, 2003.
+[7] G. Cormode, F. Korn, S. Muthukrishnan, and D. Srivastava. Finding hierarchical heavy hitters in data
+streams. In International Conference on Very Large Databases, pages 464–475, 2003.
+[8] G. Cormode and S. Muthukrishnan. What’s hot and what’s not: Tracking most frequent items
+dynamically. In Proceedings of ACM Principles of Database Systems, pages 296–306, 2003.
+[9] G. Cormode and S. Muthukrishnan. What’s new: Finding significant differences in network data
+streams. In Proceedings of IEEE Infocom, 2004.
+[10] A. Dobra, M. Garofalakis, J. E. Gehrke, and R. Rastogi. Processing complex aggregate queries over
+data streams. In Proceedings of the 2002 ACM Sigmod International Conference on Management of
+Data, pages 61–72, 2002.
+[11] C. Estan and G. Varghese. New directions in traffic measurement and accounting. In Proceedings of
+ACM SIGCOMM, volume 32, 4 of Computer Communication Review, pages 323–338, 2002.
+[12] C.
+Estan
+and
+G.
+Varghese.
+Data
+streaming
+in
+computer networks. In Proceedings of Workshop on Management and Processing of Data Streams,
+http://www.research.att.com/conf/mpds2003/schedule/estanV.ps, 2003.
+[13] M. Fang, N. Shivakumar, H. Garcia-Molina, R. Motwani, and J. D. Ullman. Computing iceberg queries
+efficiently. In Proceedings of the Twenty-fourth International Conference on Very Large Databases,
+pages 299–310, 1998.
+[14] J. Feigenbaum, S. Kannan, M. Strauss, and M. Viswanathan. An approximate L 1 -difference algorithm
+for massive data streams. In Proceedings of the 40th Annual Symposium on Foundations of Computer
+Science, pages 501–511, 1999.
+[15] P. Flajolet and G. N. Martin. Probabilistic counting. In 24th Annual Symposium on Foundations of
+Computer Science, pages 76–82, 1983. Journal version in Journal of Computer and System Sciences,
+31:182–209, 1985.
+[16] M. Garofalakis, J. Gehrke, and R. Rastogi. Querying and mining data streams: You only get one look.
+In Proceedings of the ACM SIGMOD International Conference on Management of Data, 2002.
+[17] P. Gibbons and Y. Matias. Synopsis structures for massive data sets. DIMACS Series in Discrete
+Mathematics and Theoretical Computer Science, A, 1999.
+[18] P. Gibbons and S. Tirthapura. Estimating simple functions on the union of data streams. In Proceedings
+of the 13th ACM Symposium on Parallel Algorithms and Architectures, pages 281–290, 2001.
+[19] A. Gilbert, S. Guha, P. Indyk, Y. Kotidis, S. Muthukrishnan, and M. Strauss. Fast, small-space algorithms
+for approximate histogram maintenance. In Proceedings of the 34th ACM Symposium on Theory of
+Computing, pages 389–398, 2002.
+
+17
+
+[20] A. Gilbert, Y. Kotidis, S. Muthukrishnan, and M. Strauss. Surfing wavelets on streams: One-pass
+summaries for approximate aggregate queries. In Proceedings of 27th International Conference on Very
+Large Data Bases, pages 79–88, 2001. Journal version in IEEE Transactions on Knowledge and Data
+Engineering, 15(3):541–554, 2003.
+[21] A. C. Gilbert, Y. Kotidis, S. Muthukrishnan, and M. Strauss. How to summarize the universe: Dynamic
+maintenance of quantiles. In Proceedings of 28th International Conference on Very Large Data Bases,
+pages 454–465, 2002.
+[22] M. Greenwald and S. Khanna. Space-efficient online computation of quantile summaries. SIGMOD
+Record (ACM Special Interest Group on Management of Data), 30(2):58–66, 2001.
+[23] P. Indyk. Stable distributions, pseudorandom generators, embeddings and data stream computation. In
+Proceedings of the 40th Symposium on Foundations of Computer Science, pages 189–197, 2000.
+[24] W.B. Johnson and J. Lindenstrauss. Extensions of Lipshitz mapping into Hilbert space. Contemporary
+Mathematics, 26:189–206, 1984.
+[25] G. S. Manku, S. Rajagopalan, and B. G. Lindsay. Approximate medians and other quantiles in one
+pass and with limited memory. In Proceedings of the ACM SIGMOD International Conference on
+Management of Data, pages 426–435, 1998.
+[26] G.S. Manku and R. Motwani. Approximate frequency counts over data streams. In Proceedings of 28th
+International Conference on Very Large Data Bases, pages 346–357, 2002.
+[27] R. Motwani and P. Raghavan. Randomized Algorithms. Cambridge University Press, 1995.
+[28] S. Muthukrishnan. Data streams: Algorithms and applications. In ACM-SIAM Symposium on Discrete
+Algorithms, http://athos.rutgers.edu/∼muthu/stream-1-1.ps, 2003.
+[29] N. Thaper, P. Indyk, S. Guha, and N. Koudas. Dynamic multidimensional histograms. In Proceedings
+of the ACM SIGMOD International Conference on Management of Data, pages 359–366, 2002.
+[30] D. Woodruff. Optimal space lower bounds for all frequency moments. In ACM-SIAM Symposium on
+Discrete Algorithms, 2004.
+
+18
+
+

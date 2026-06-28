@@ -77,7 +77,6 @@ Look at `./summary_<topic>.md`, check whether conclusion cover the following poi
 
 - 固定实验设置（epoch 数、优化器、学习率等）写在 `[Agents]`，不要写成 Judge 判定条件。
 - Judge 条件只检查研究结果和结论，**最多 3 点**，每点都必须清晰、可验证。
-- 如果判定需要读图、理解统计显著性、比较复杂机制解释，可以提高 IQ requirement，但必须有必要性；默认 `low-IQ`。
 
 ### 输出文件写法
 

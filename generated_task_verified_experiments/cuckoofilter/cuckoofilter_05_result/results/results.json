@@ -1,0 +1,185 @@
+{
+  "config": {
+    "N": 200000,
+    "B_bits": 2105280,
+    "bits_per_item": 10.5264,
+    "seeds": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        9,
+        10
+      ]
+    ],
+    "cuckoo": {
+      "b": 4,
+      "f": 10,
+      "M": 52632,
+      "target_alpha": 0.95
+    },
+    "bloom": {
+      "m": 2105280,
+      "k": 7
+    }
+  },
+  "summary": {
+    "cuckoo_load_factor": 0.9499876500987993,
+    "cuckoo_fpr_mean": 0.0073939999999999995,
+    "cuckoo_fpr_sd": 4.3405068828421405e-05,
+    "bloom_fpr_mean": 0.006379,
+    "bloom_fpr_sd": 0.0001294372434811558,
+    "fpr_ratio_cuckoo_over_bloom": 1.1591158488791347,
+    "cuckoo_insert_ops": 413066.542882975,
+    "bloom_insert_ops": 584225.7583372756,
+    "cuckoo_lookup_neg_ops": 548046.401228099,
+    "bloom_lookup_neg_ops": 857440.4984935723,
+    "cuckoo_lookup_pos_ops": 756133.3437385625,
+    "bloom_lookup_pos_ops": 624717.3206651183,
+    "cuckoo_supports_delete": true,
+    "bloom_supports_delete": false,
+    "false_negatives_cuckoo_total": 0,
+    "false_negatives_bloom_total": 0,
+    "insert_failures_cuckoo_total": 0
+  },
+  "trials": [
+    {
+      "cuckoo": {
+        "load_factor": 0.9499876500987993,
+        "inserted": 200000,
+        "insert_failures": 0,
+        "fpr": 0.007385,
+        "false_negatives": 0,
+        "insert_ops": 395763.3713001598,
+        "lookup_neg_ops": 565197.3977297118,
+        "lookup_pos_ops": 750796.5962394613,
+        "supports_delete": true,
+        "delete_demo": {
+          "returned": true,
+          "lookup_after": false
+        }
+      },
+      "bloom": {
+        "fpr": 0.00623,
+        "false_negatives": 0,
+        "insert_ops": 537776.5116804297,
+        "lookup_neg_ops": 886555.2351327481,
+        "lookup_pos_ops": 636376.1827445852,
+        "supports_delete": false
+      }
+    },
+    {
+      "cuckoo": {
+        "load_factor": 0.9499876500987993,
+        "inserted": 200000,
+        "insert_failures": 0,
+        "fpr": 0.00739,
+        "false_negatives": 0,
+        "insert_ops": 421497.5111090879,
+        "lookup_neg_ops": 499084.11199221737,
+        "lookup_pos_ops": 757304.6482509406,
+        "supports_delete": true,
+        "delete_demo": {
+          "returned": true,
+          "lookup_after": false
+        }
+      },
+      "bloom": {
+        "fpr": 0.006485,
+        "false_negatives": 0,
+        "insert_ops": 591819.3749187479,
+        "lookup_neg_ops": 810399.6249238197,
+        "lookup_pos_ops": 610500.1464178305,
+        "supports_delete": false
+      }
+    },
+    {
+      "cuckoo": {
+        "load_factor": 0.9499876500987993,
+        "inserted": 200000,
+        "insert_failures": 0,
+        "fpr": 0.007375,
+        "false_negatives": 0,
+        "insert_ops": 409936.421011266,
+        "lookup_neg_ops": 546119.9349641289,
+        "lookup_pos_ops": 761659.8962511081,
+        "supports_delete": true,
+        "delete_demo": {
+          "returned": true,
+          "lookup_after": false
+        }
+      },
+      "bloom": {
+        "fpr": 0.006385,
+        "false_negatives": 0,
+        "insert_ops": 601200.5898174739,
+        "lookup_neg_ops": 840932.3909566315,
+        "lookup_pos_ops": 626865.121619634,
+        "supports_delete": false
+      }
+    },
+    {
+      "cuckoo": {
+        "load_factor": 0.9499876500987993,
+        "inserted": 200000,
+        "insert_failures": 0,
+        "fpr": 0.007475,
+        "false_negatives": 0,
+        "insert_ops": 405520.19886417274,
+        "lookup_neg_ops": 550929.126679454,
+        "lookup_pos_ops": 749529.8779197646,
+        "supports_delete": true,
+        "delete_demo": {
+          "returned": true,
+          "lookup_after": false
+        }
+      },
+      "bloom": {
+        "fpr": 0.00624,
+        "false_negatives": 0,
+        "insert_ops": 585477.9117690419,
+        "lookup_neg_ops": 874030.4337033264,
+        "lookup_pos_ops": 630656.0009137901,
+        "supports_delete": false
+      }
+    },
+    {
+      "cuckoo": {
+        "load_factor": 0.9499876500987993,
+        "inserted": 200000,
+        "insert_failures": 0,
+        "fpr": 0.007345,
+        "false_negatives": 0,
+        "insert_ops": 432615.2121301886,
+        "lookup_neg_ops": 578901.4347749831,
+        "lookup_pos_ops": 761375.700031538,
+        "supports_delete": true,
+        "delete_demo": {
+          "returned": true,
+          "lookup_after": false
+        }
+      },
+      "bloom": {
+        "fpr": 0.006555,
+        "false_negatives": 0,
+        "insert_ops": 604854.4035006845,
+        "lookup_neg_ops": 875284.8077513364,
+        "lookup_pos_ops": 619189.1516297519,
+        "supports_delete": false
+      }
+    }
+  ]
+}

@@ -26,3 +26,15 @@ Look at `./summary_crdt_01_gcounter_decrement.md`, check whether the answer cove
     - **(a) 两条收敛前提**：状态更新**单调**（沿偏序只增不减）；`merge = join` 满足交换+结合+幂等。二者合 ⟹ "相同已交付更新集合 → 所有副本状态相同"（SEC）且**无需共识**。
     - **(b) decrement 与单调冲突 + max 无法传播下降**：`c→c−1` 是沿 `≤` 的下降，违反单调；且 `merge=max` 幂等，已 merge 进的 `c` 永远 `max(...,c)=c`，`max(c,c−1)=c`——下降被 max 吞掉、无法跨副本传播。
     - **(c) PN-Counter 的绕开**：用两个 G-Counter `P`、`N`，各自单调 + max-merge 仍是合法 CRDT，值 `= P − N`，以"两个单调增量之差"实现可减，而每个 G-Counter 本身不违反单调。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_crdt_01_gcounter_decrement.md` —— 基于真实推导结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给两收敛前提：更新单调（只向 LUB 上移）；`merge=⊔` 交换+结合+幂等；据此得 SEC（`state(C)=⊔_{f∈C}f(init)` 只依赖集合 C 不依赖序/计数），无需共识——交换吸收顺序、幂等吸收重复。（细化原 [Judge] 第 1a 点）
+2. 须给递减冲突：`c→c−1` 严格下降违反单调；更深一层 `merge=max` 各参数单调非降（`x⊔y≥x,y`），已见值 `c` 永久钉住分量（`max(c,c−1)=c`）——下降在 join-半格中结构上不可表达，非仅难实现。（细化原 [Judge] 第 1b 点）
+3. 须给 PN-Counter：递减变为 `N[myID]+=1`（真上移）于第二个 G-Counter；`P`、`N` 各为合法单调半格、积 `(P,N)` 逐分量 max 为 CRDT；值 `=ΣP−ΣN`，减法仅存于查询时为两单调计数器代数差——单调性与 join-收敛永不被打破。（细化原 [Judge] 第 1c 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

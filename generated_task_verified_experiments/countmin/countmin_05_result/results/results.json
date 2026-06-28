@@ -1,0 +1,28 @@
+{
+  "setup": {
+    "w": 2048,
+    "d": 8,
+    "n_items": 100000,
+    "n_updates": 1000000,
+    "zipf_s": 1.0,
+    "n_seeds": 20,
+    "L1": 1000000,
+    "F2": 9133143670.0,
+    "Hn": 12.090146129863433,
+    "f2_expected_perrow_over": 483821707.1923828
+  },
+  "point_query_rel_overestimate_allitems_mean": 78.11865501895178,
+  "point_query_rel_overestimate_allitems_std": 9.593356165889313,
+  "point_query_rel_overestimate_top1pct": 1.1261031925338127,
+  "point_query_rel_overestimate_top10pct": 10.381044001025744,
+  "point_query_abs_overestimate_mean": 169.84613649999997,
+  "f2_rel_error_min_mean": 0.03529326927800316,
+  "f2_rel_error_min_std": 0.0003328758637634008,
+  "f2_rel_error_perrow_before_min": 0.05321203907684724,
+  "ratio_f2_over_pq": 0.00045179053926928107,
+  "ratio_pq_over_f2": 2213.4150963350944,
+  "point_query_rel_overestimate_top100": 0.11826017756990818,
+  "point_query_rel_overestimate_top10": 0.01272522603848888,
+  "point_query_rel_overestimate_top1": 0.0024205037228180524,
+  "f2_rel_error_theory_perrow": 0.05297427968658932
+}

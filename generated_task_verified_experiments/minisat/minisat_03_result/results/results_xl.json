@@ -1,0 +1,86 @@
+[
+  {
+    "tag": "n130_m546_s0",
+    "n": 130,
+    "m": 546,
+    "seed": 0,
+    "dpll": {
+      "sat": true,
+      "decisions": 135079,
+      "timed_out": false,
+      "time": 24.184625148773193
+    },
+    "minisat": {
+      "sat": true,
+      "conflicts": 346,
+      "decisions": 431,
+      "propagations": 10598,
+      "restarts": 3,
+      "timed_out": false,
+      "time": 0.0013055801391601562
+    }
+  },
+  {
+    "tag": "n130_m546_s1",
+    "n": 130,
+    "m": 546,
+    "seed": 1,
+    "dpll": {
+      "sat": null,
+      "decisions": 137474,
+      "timed_out": true,
+      "time": 30.00013756752014
+    },
+    "minisat": {
+      "sat": false,
+      "conflicts": 2239,
+      "decisions": 2723,
+      "propagations": 65182,
+      "restarts": 14,
+      "timed_out": false,
+      "time": 0.014575958251953125
+    }
+  },
+  {
+    "tag": "n160_m672_s0",
+    "n": 160,
+    "m": 672,
+    "seed": 0,
+    "dpll": {
+      "sat": null,
+      "decisions": 96053,
+      "timed_out": true,
+      "time": 29.999998331069946
+    },
+    "minisat": {
+      "sat": true,
+      "conflicts": 2452,
+      "decisions": 2979,
+      "propagations": 80412,
+      "restarts": 15,
+      "timed_out": false,
+      "time": 0.010042190551757812
+    }
+  },
+  {
+    "tag": "n160_m672_s1",
+    "n": 160,
+    "m": 672,
+    "seed": 1,
+    "dpll": {
+      "sat": null,
+      "decisions": 132426,
+      "timed_out": true,
+      "time": 30.000051975250244
+    },
+    "minisat": {
+      "sat": true,
+      "conflicts": 887,
+      "decisions": 1147,
+      "propagations": 28966,
+      "restarts": 7,
+      "timed_out": false,
+      "time": 0.0034651756286621094
+    }
+  }
+]

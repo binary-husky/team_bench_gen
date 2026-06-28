@@ -1,0 +1,2712 @@
+Eﬃcient Computation of Frequent and Top-k Elements in Data Streams ∗
+Ahmed Metwally † Divyakant Agrawal Amr El Abbadi
+Department of Computer Science
+University of California, Santa Barbara
+{metwally, agrawal, amr}@cs.ucsb.edu
+Abstract
+We propose an approximate integrated approach for solv-
+ing both problems of ﬁnding the most populark elements,
+and ﬁnding frequent elements in a data stream coming
+from a large domain. Our solution is space eﬃcient and
+reports both frequent and top-k elements with tight guar-
+antees on errors. For general data distributions, our top-
+k algorithm returns k elements that have roughly the
+highest frequencies; and it uses limited space for calcu-
+lating frequent elements. For realistic Zipﬁan data, the
+space requirement of the proposed algorithm for solving
+the exact frequent elements problem decreases dramati-
+cally with the parameter of the distribution; and for top-k
+queries, the analysis ensures that only the top-k elements,
+in the correct order, are rep orted. The experiments, us-
+ing real and synthetic data sets, show space reductions
+with no loss in accuracy. Having proved the eﬀectiveness
+of the proposed approach through both analysis and ex-
+periments, we extend it to be able to answer continuous
+queries about frequent and top-k elements. Although the
+problems of incremental reporting of frequent and top- k
+elements are useful in many applications, to the best of
+our knowledge, no solution has been proposed.
+1 Introduction
+More than a decade ago, both the industry and the re-
+search communities realized the beneﬁt of statistically
+analyzing vast amounts of historical data in discovering
+useful information. Data mining emerged as a very ac-
+tive research ﬁeld that oﬀered scalable data analysis tech-
+niques for large volumes of historical data. Data mining,
+a well established key research area, has its foundations
+and applications in many domains, including databases,
+algorithms, networking, theory, and statistics.
+However, new challenges have emerged as the data ac-
+quisition technology evolved aggressively. For some ap-
+plications, data is being generated at a rate high enough
+to make its long-term storage cost outweighs its beneﬁts.
+Hence, such streams of data are stored temporarily, and
+should be mined fast before they are lost forever. The
+data mining community adapted by devising novel ap-
+∗This work was supported in part by NSF under grants EIA
+00-80134, NSF 02-09112, and CNF 04-23336.
+†Part of this work was done while the ﬁrst author was at Val-
+ueClick, Inc.
+proximate stream handling algorithms that incrementally
+analyze arriving data in one pass, answer approximate
+queries, and store summaries for future usage [4].
+There is a growing need to develop new techniques to
+cope with high-speed streams, and answer online queries.
+Currently, data stream management systems are used
+for monitoring click streams [31], stock tickers [11, 46],
+sensor readings [7], telephone call records [15], network
+packet traces [17], auction bidding patterns [2], traﬃc
+management [3], network-aware clustering [12], and secu-
+rity against DoS [12]. [27] reviewed the literature.
+Complying with this restricted environment, and mo-
+tivated by the above applications, researchers started
+working on novel algorithms for analyzing data streams.
+Problems studied in this context include approximate fre-
+quency moments [1], diﬀerences [20], distinct values esti-
+mation [22, 33, 45], bit counting [16], duplicate detec-
+tion [42], approximate quantiles [28, 38, 40], histograms
+[30, 29], wavelet based aggregate queries [25, 41], corre-
+lated aggregate queries [23], elements classiﬁcation [32],
+frequent elements [8, 13, 14, 17, 18, 19, 26, 35, 36, 39, 43],
+and top-k queries [5, 10, 17, 24, 43]. Earlier results on
+data streams were presented in [9, 21].
+This work is primarily motivated by the setting of Inter-
+net advertising. As the Internet continues to grow, the In-
+ternet advertising industry ﬂourishes as a means of reach-
+ing focused market segments. The main coordinators in
+this setting are the Internet advertising commissioners,
+who are positioned as the brokers between Internet pub-
+lishers and Internet advertisers. In a standard setting, an
+advertiser provides the advertising commissioner with its
+advertisements, and they agree on a commission for each
+action, e.g., an impression (advertisement rendering) to
+a surfer, clicking an advertisement, bidding in an auc-
+tion, or making a sale. The publishers, being motivated
+by the commission paid by the advertisers, contract with
+the commissioner to display advertisements on their Web
+sites. Every time a surfer vi sits a publisher’s Web page,
+after loading the page on the surfer’s Browser, the pub-
+lisher’s Web page has script that refers the Browser to the
+commissioner’s server that loads the advertisements, and
+logs the advertisement impression. Whenever a surfer
+clicks an advertisement on a publisher’s Web page, the
+surfer is referred again to the servers of the commis-
+sioner, who logs the click for accounting purposes, and
+clicks-through the surfer to the Web site of the advertiser,
+who loads its own Web page on the surfer’s Browser. A
+commissioner earns a commissionon the advertisers’ pay-
+1
+ments to the publishers. Therefore, a commissioners are
+generally motivated to show advertisements on publish-
+ers’ Web pages that would maximize publishers’ earnings.
+To achieve this goal, the commissioners have to analyze
+the traﬃc, and make use of prevalent trends. One way to
+optimize the rendering of advertisements is to show the
+right advertisements for the right type of surfers.
+Since publishers prefer to be paid according to the ad-
+vertising load on their servers, there are two main types
+of paying publishers, Pay-Per-Impression, and Pay-Per-
+Click. The revenue generated by Pay-Per-Impression ad-
+vertisements is proportional to the number of times the
+advertisements are rendered. On the other hand, ren-
+dering Pay-Per-Click advertisements does not generate
+any revenue. They generate revenue according to the
+number of times surfers click them. On average, one
+click on a Pay-Per-Click advertisement generates as much
+revenue as rendering 500 Pay-Per-Impression advertise-
+ments. Hence, to maximize the revenue of impressions
+and clicks, the commissioners should render a Pay-Per-
+Click advertisement when it is expected to be clicked.
+Otherwise, it should use the chance to display a Pay-Per-
+Impression advertisement that will generate small but
+guaranteed revenue.
+To know when advertisements are more likely to be
+clicked, the commissioner has to know whether the surfer,
+to which the advertisement is displayed, is a frequent
+“clicker” or not. To identifysurfers, commissioners assign
+unique IDs in cookies set in the surfers’ Browsers. Before
+rendering an advertisement for a surfer, the summariza-
+tion of the clicks stream should be queried to see if the
+surfer is a frequent “clicker” or not. If the surfer’s is not
+found to be among thefrequent “clickers”, then (s)he will
+probably not click any displayed advertisement. Thus, it
+can be more proﬁtable to show Pay-Per-Impression ad-
+vertisements. On the other hand, if the surfer is found
+to be one of the frequent proﬁles, then, there is a good
+chance that (s)he will click some of the advertisements
+shown. In this case, Pay-Per-Click advertisements should
+be displayed. Keeping in mind the limited number of
+advertisements that could b e displayed on a Web page,
+choosing what advertisements to display entails retrieving
+the top advertisements in terms of clicking.
+This is one scenario that motivates solving two fa-
+mous problems simultaneously. The commissioner should
+be able to query the click s tream for frequent users
+and top-k advertisements before every impression. Ex-
+act queries about frequent and top- k elements are not
+scalable enough to handle this problem. An average-
+sized commissioner has around 120M unique monthly
+surfers, 50 , 000 publisher sites, and 30 , 000 advertisers’
+campaigns, each of which has numerous advertisements.
+Storing only the unique IDs assigned to the surfers re-
+quires 2 to 8 Gigabytes of main memory, since the IDs
+used are between 128 and 512 bits.
+The size of the motivating problem poses challenges
+for answering exact queries about frequent and top-k el-
+ements in streams. Approxim ately solving the queries
+would require less space than solving the queries exactly,
+and hence, would be more feasible. However, the traf-
+ﬁc rate entails performing an update and a query every
+50 microseconds, since an average-sized commissioner re-
+ceives around 70M records every hour. The already exist-
+ing approximate solutions for frequent and top-k elements
+could be relatively slow foronline decision making. To al-
+low for online decisions on what advertisements to be dis-
+played, we propose that the commissioner should keep a
+cache of the frequent users and the top-k advertisements.
+The set of frequent users and the top- k advertisements
+can change after every impression, depending on how the
+user reacts to the advertisements displayed. Therefore,
+the cache has to be updated eﬃciently after every user re-
+sponse to an impression. We propose updating the cache
+only whenever necessary. That is, the cache should serve
+as a materialization of the queries’ answer sets, which is
+updated continuously.
+The problems of approximately ﬁnding frequent
+1 and
+top-k elements are closely related, yet, to the best of
+our knowledge, no integrated solution has been proposed.
+In this paper, we propose an integrated online stream-
+ing algorithm for solving both problems of ﬁnding the
+top-k elements, and ﬁnding frequent elements in a data
+stream. Our Space-Saving algorithm reports both fre-
+quent and top-k elements with tight guarantees on errors.
+For general data distributions,Space-Saving answers top-
+k queries by returningk elements with roughly the highest
+frequencies in the stream; and it uses limited space for cal-
+culating frequent elements. For realistic Zipﬁan data, our
+space requirement for the exact frequent elements prob-
+lem decreases dramatically with the parameter of the dis-
+tribution; and for top-k queries, we ensure that only the
+top-k elements, in the correct order, are reported. We
+are not aware of any other algorithms that solves the ex-
+act problems of ﬁnding frequent and top- k elements un-
+der any constraints. In addition, we slightly modify our
+baseline algorithm to answer continuous queries about
+frequent and top- k elements. Although answering such
+queries continuously is useful in many applications, we
+are not aware of any other existing solution.
+The rest of the paper is organized as follows. Section 2
+highlights the related work. In Section 3, we introduce
+the Space-Saving algorithm, and its associated data struc-
+ture, followed by a discussion of query processing in Sec-
+tion 4. We report the results of our experimental evalua-
+tion in Section 5. We describe how the proposed scheme
+can be extended to handle continuous queries about fre-
+quent and top-k elements in Section 6, and ﬁnally, con-
+clude in Section 7.
+2 Background and Related Work
+Formally, given an alphabet,A,a frequent element, Ei,i s
+an element whose frequency, or number of hits, Fi,i na
+stream S whose current size isN, exceeds a user speciﬁed
+support ⌈φN ⌉,w h e r e0≤ φ ≤ 1; whereas the top-k ele-
+ments are the k elements with highest frequencies. The
+exact solutions of these problems require complete knowl-
+edge about the frequencies of all the elements [10, 17], and
+are hence, impractical for applications with large alpha-
+bets. Thus, several relaxations of the original problems
+were proposed.
+1The term “Heavy Hitters” was also used in [12].
+2.1 Variations of the Problems
+The FindCandidateTop(S, k, l) problem was proposed
+in [10] to ask for l elements among which the top-k ele-
+ments are concealed, with no guarantees on the rank of
+the remaining (l − k) elements. The FindApproxTop( S,
+k, ϵ) [10] is a more practical approximation for the top-k
+problem. The user asks for a list of k elements such that
+every element, Ei, in the list has Fi > (1 − ϵ)Fk,w h e r e
+ϵis a user-deﬁned error, and F1 ≥ F2 ≥ ··· ≥ F|A|,s u c h
+that Ek is the element with thekth rank. That is, all the
+reported k elements have frequency very close to the kth
+element. The Hot Items2 problem is a special case of the
+frequent elements problem, proposed in [44], that asks
+for k elements, each of which has frequency more than
+N
+k+1 . This extends the early work done in [9, 21] for iden-
+tifying a majority element. The most popular variation
+of the frequent elements problem, ﬁnding the ϵ-Deﬁcient
+Frequent Elements [39], asks for all the elements with fre-
+quencies more than ⌈φN ⌉, such that no element reported
+can have a frequency of less than ⌈(φ − ϵ)N ⌉.
+Several algorithms [10, 14, 17, 18, 35, 36, 39] have been
+proposed to handle the top-k, the frequent elements prob-
+lems, and their variations. In addition, a preliminary ver-
+sion of this work has been published in [43]. These tech-
+niques can be classiﬁed into counter-based,a n d sketch-
+based techniques.
+2.2 Counter-based Techniques
+Counter-based techniques keep an individual counter for
+each element in the monitored set, a subset of A.T h e
+counter of a monitored element,Ei, is updated every time
+Ei is observed in the stream. If the observed ID is not
+monitored, i.e., there is no counter kept for this element, it
+is either disregarded, or some algorithm-dependent action
+is taken.
+The Sticky Sampling algorithm [39] slicesS into rounds
+of non-decreasing length. The probability an element is
+added to the list of counters, i.e. being monitored, de-
+creases as the round length increases. At rounds’ bound-
+aries, for every monitored element, a coin is tossed un-
+til a success occurs. The counter is decremented for
+every unsuccessful toss, and is deleted if it reaches 0,
+thus, the probability of adding undeleted elements is con-
+stant throughout S. The simpler, and more famousLossy
+Counting algorithm [39] breaks S up into equal rounds of
+length
+1
+ϵ. Throughout every round, non-monitored items
+are added to the list. At the end of each round, r,e v e r y
+element, Ei, whose estimated frequency is less than r is
+deleted. When a new item is added in roundr,i ti sg i v e n
+the beneﬁt of doubt, its initial count is set tor−1, and the
+maximum possible over-estimation, r − 1, is recorded for
+the new item. Both algorithms are simple and intuitive,
+though they zero too many counters at rounds’ bound-
+aries. In addition, answering a frequent elements query
+entails scanning all counters, and reporting all elements
+whose estimated frequency is greater than ⌈(φ − ϵ)N ⌉.
+[17] proposed the Frequent algorithm to solve the Hot
+Items problem. Frequent, a re-discovery of the algorithm
+2The term “Hot Items” was coined later in [14].
+proposed in [44], outputs a list of k elements with no
+guarantee on which elements, if any, have frequency more
+than
+N
+k+1 . The same algorithm was proposed indepen-
+dently in [36]. Frequent extends the early work done
+in [9, 21] for ﬁnding a majority item, using only one
+counter. The algorithm in [9, 21] monitors the ﬁrst item
+in the stream. For each observation, the counter is in-
+cremented if the observed item is the monitored one, and
+is decremented otherwise. I f the counter reaches 0, it is
+assigned the next observed element, and the algorithm
+is then repeated. When the algorithm terminates, the
+monitored element is the candidate majority element. A
+second pass is requiredto verify the results. Frequent [17]
+keeps k counters to monitor k elements. If a monitored
+element is observed, its counter is incremented, else all
+counters are decremented. In case any counter reaches 0,
+it is assigned the next observed element. [17] also pro-
+posed a lightweight data stru cture that can decrement
+all counters in O(1) operations. The sampling algorithm
+Probabilistic-InPlace [17] solves FindCandidateTop(S, k,
+m
+2 )b yu s i n gm counters. The stream is divided into
+rounds of increasing length. At the beginning of each
+round, it assigns all empty counters to the ﬁrst distinct
+m
+2 elements. At the end of each round, it deletes the
+least m
+2 counters. The algorithm returns the largest m
+2
+counters, in the hope that th ey contain the correct top-
+k. Although the algorithm is simple, deleting half the
+counters at rounds’ boundaries is Ω(distinct values of the
+deleted counters), and thus, trades precision and constant
+per-item processing for counters’ accuracy.
+In general, counter-based techniques have fast per-item
+processing, and provable error bounds.
+2.3 Sketch-based Techniques
+Sketch-based techniques do not monitor a subset of ele-
+ments, but rather provide, with less stringent guarantees,
+frequency estimation for all elements by using bit-maps
+of counters. Usually, each element is hashed into the
+space of counters using a family of hash functions, and
+the hashed-to counters are updated for every hit of this
+element. The “representative” counters are then queried
+for the element frequency with expected loss of accuracy
+due to hashing collisions.
+The probabilistic CountSketch algorithm, proposed in
+[10], solves the FindApproxTop( S, k, ϵ) problem. The
+space requirements of CountSketch decreases as the data
+skew increases. The algorit hm keeps a sketch structure
+to approximate, with probability 1 − δ, the count of any
+element up to an additive quantity of γ,w h e r eγ is a
+function of F
+k+1 ...F |A|. The family of hashing functions
+employed hashes every ID to its representative counters,
+such that, some counters are incremented, and the others
+are decremented, for every occurrence of this element in
+the stream. The approximate frequency of the element
+is estimated by ﬁnding the median from its representa-
+tive counters. A heap of top- k elements is kept, and if
+the estimated frequency of the observed element exceeds
+the smallest estimated counter in the heap, the smallest
+element is replaced by the observed element.
+The GroupTest algorithm, proposed in [14], answers
+queries about Hot Items, with a constant probability of
+failure, δ. A novel algorithm, FindMajority, was ﬁrst de-
+vised to detect the majority element, by keeping a system
+of a global counter and ⌈log(|A|)⌉ counters. Elements’
+IDs are assumed to be 1 ... |A|.A h i t t o e l e m e n tE is
+handled by updating the global counter, and all counters
+whose index corresponds to a 1 in the binary representa-
+tion of E. At any time, counters whose value are more
+than half the global counter correspond to the 1s in the
+binary representation of the candidate majority element,
+if it exists. A deterministic generalization for the Hot
+k elements keeps ⌈log
+(
+|A|
+k
+)
+⌉ counters, with elements’ IDs
+mapped to superimposed codes. A simpler generalized so-
+lution, GroupTest, is proposed that keeps only O(k
+δ lnk)
+of such systems, and uses a family of universal hash func-
+tions to select the elements in eachFindMajority system.
+When queried, the algorithm discards systems with more
+than one, or with no Hot Items. Also proposed is an el-
+egant scheme for suppressing false positives by checking
+that all the systems a Hot Item belongs to are hot. Thus,
+GroupTest is, in general, accurate. However, its space
+complexity is large, and it oﬀers no information about
+elements’ frequencies or order.
+The Multistage ﬁlters approach, proposed in [18], which
+was also independently proposed in [35], is similar to
+GroupTest. Using the idea of Bloom’s Filters [6], theMul-
+tistage ﬁlters algorithm hashes every element to a number
+of counters, that are updated every time the element is
+observed in the stream. The e lement is considered to be
+frequent if the smallest of its representative counters sat-
+isﬁes the user required support. The algorithm in [18]
+judges an element to be frequent or not while updating
+its counters. If a counter is estimated to be frequent, it
+is added to a specialized set o f counters for monitoring
+frequent elements, the Flow Memory. To decrease the
+false positives, [18] proposes some techniques to reduce
+the over-estimation errors in counters. Once an element
+is added to the Flow Memory, its counters are not moni-
+tored anymore by the Multistage ﬁlters. In addition, [18]
+proposed incrementing only the counter(s) of the mini-
+mum value.
+The hCount algorithm [35], does not employ the error
+reduction techniques employed in [18]. However, it keeps
+a number of imaginary elements, which have no hits. At
+the end of the algorithm, all the elements in the alphabet
+are checked for being frequent, and the over-estimation
+error for each of the elements is estimated to be the av-
+erage number of hits for the imaginary elements.
+Sketch-based techniques monitor all elements. They
+are less aﬀected by the ordering of elements in the stream.
+On the other hand, they are more expensive than the
+counter-based techniques. A hit, or a query entails calcu-
+lations across several counters. They do not oﬀer guar-
+antees about frequency esti mation errors, and thus, can
+answer only a limited number of query types.
+3 Summarizing the Data Stream
+The algorithms described in Section 2 handle individual
+problems. The main diﬃculty in devising an integrated
+solution is that queries of one type cannot serve as a pre-
+processing step for the other type of queries, given no in-
+formation about the data distribution. For instance, for
+general data distribution, the frequent elements receiving
+1% or more of the total hits might constitute the top-100
+elements, some of them or none. In order to use frequent
+elements queries to pre-process the stream for a top- k
+query, several frequent elements queries have to be issued
+to reach a lower bound on the frequency of the k
+th ele-
+ment; and in order to use top-k queries to pre-process the
+stream for a frequent elements query, several top-k queries
+have to be issued to reach an upper bound on the number
+of frequent elements. To oﬀer an integrated solution, we
+have generalized both problems toaccurately estimate the
+frequencies of signiﬁcant3 elements, and store these fre-
+quencies in an always-sorted structure. We, then, devise
+a generalized algorithm for the generalized problem.
+The integrated problem of ﬁnding signiﬁcant element
+is intriguing. In addition to applications like advertis-
+ing networks, where both the frequent elements and the
+top-k problems need to be solved, the integrated problem
+serves the purpose of exploratory data management. The
+user does not always have a panoramic understanding of
+the application data to issue meaningful queries. Many
+times, the user issues queries about top- k elements, and
+then discovers that the returned elements have insignif-
+icant frequencies. Sometim es, a query for frequent ele-
+ments above a speciﬁc threshold returns very few or no
+elements. Having one algorithmthat solves the integrated
+problem of signiﬁcant elements using only one underlying
+data structure facilitates exploring the data samples and
+understanding prevalent properties.
+3.1 The Space-Saving Algorithm
+In this section, we propose our counter-based Space-
+Saving algorithm and its associated Stream-Summary
+data structure. The underlying idea is to maintain par-
+tial information of interest; i.e., onlym elements are mon-
+itored. The counters are updated in a way that accurately
+estimates the frequencies of the signiﬁcant elements, and
+a lightweight data structure is utilized to keep the ele-
+ments sorted by their estimated frequencies.
+In an ideal situation, any signiﬁcant element, E
+i,w i t h
+rank i, that has receivedFi hits, should be accommodated
+in the ith counter. However, due to errors in estimating
+the frequencies of the elements, the order of the elements
+in the data structure might not reﬂect their exact ranks.
+For this reason, we will denote the counter at thei
+th posi-
+tion in the data structure as counti. The counter counti
+estimates the frequency fi,o fs o m ee l e m e n tei.I f t h e
+ith position in the data structure has the right element,
+i.e., the element with the ith rank, Ei,t h e nei = Ei,a n d
+counti is an estimation of Fi.
+The algorithm is straightforward. If a monitored el-
+ement is observed, the corresponding counter is incre-
+mented. If the observed element, e, is not monitored,
+give it the beneﬁt of doubt, and replace em, the element
+that currently has the least estimated hits, min,w i t h
+e. The new element, e, could have actually occurred be-
+tween 1 and min + 1 times. We assign countm the value
+3The signiﬁcant elements are interesting elements that can be
+output in meaningful queries about top- k or frequent elements.
+Algorithm: Space-Saving(m counters, stream S)
+begin
+for each element, e,i n S{
+If e is monitored {
+let counti be the counter of e
+Increment-Counter(counti);
+}else{
+//The replacement step
+let e
+m be the element with least hits, min
+Replace em with e;
+Increment-Counter(countm);
+Assign εm the value min;
+}
+}// end for
+end;
+Figure 1: The Space-Saving Algorithm
+min + 1, since we designed the algorithm to err only on
+the positive side, i.e., to never miss a frequent element.
+For each monitored element ei, we keep track of its
+maximum over-estimation, εi, resulting from the ini-
+tialization of its counter when it was inserted into the
+list. That is, when starting to monitor ei,s e tεi to the
+counter value that was evicted. Keeping track of the over-
+estimation error for each elements is only useful for giving
+some guarantees about the output of the algorithm, as
+will become clear in Section 4. The algorithm is depicted
+in Figure 1.
+In general, the top elements among non-skewed data
+are of no great signiﬁcance. Hence, we concentrate on
+skewed data sets, where a minority of the elements, the
+more frequent ones, get the majority of the hits. The
+basic intuition is to make use of the skewed property of the
+data by assigning counters to distinct elements, and keep
+monitoring the fast-growing elements. Frequent elements
+will reside in the counters of bigger values, and will not be
+distorted by the ineﬀective hits of the infrequent elements,
+and thus, will never be replaced out of the monitored
+counters. Meanwhile, the nu merous infrequent elements
+will be striving to reside in the smaller counters, whose
+values grow slower than those of the larger counters.
+In addition, if the skew remains, but the popular ele-
+ments change over time, the algorithm adapts automat-
+ically. The elements that are growing more popular will
+gradually be pushed to the top of the list as they receive
+more hits. If one of the previously popular elements loses
+its popularity, it will receive less hits. Thus, its relative
+position will decline, as othe r counters get incremented,
+and it might eventually get dropped from the list.
+Even if the data is not skewed, the errors in the coun-
+ters are inversely proportional to the number of coun-
+ters, as shown later. Keeping only a moderate number
+of counters guarantees very small errors, since as proved
+later and illustrated through experiments, Space-Saving
+is among the most eﬃcient techniques in terms of space.
+The reason is that the more counters are kept, the less it
+is probable to replace elements, and thus, the smaller the
+over-estimation errors in counters’ values.
+To implement this algorithm, we need a data structure
+that cheaply increments counters without violating their
+order, and that ensures constant time retrieval. We pro-
+pose the Stream-Summary data structure for these pur-
+poses.
+Algorithm: Increment-Counter(counter counti)
+begin
+let Bucketi be the Bucket of counti
+let Bucket+
+i be Bucketi’s neighbor of larger value
+Detach counti from Bucketi’s child-list;
+counti ++;
+//Finding the right bucket for counti
+If (Bucket+
+i does exist AND counti = Bucket+
+i )
+Attach counti to Bucket+
+i ’s child-list;
+else{
+//A new bucket has to be created
+Create a new Bucket Bucket
+new ;
+Assign Bucketnew the value of counti;
+Attach counti to Bucketnew’s child-list;
+Insert Bucketnew after Bucketi;
+}
+//Cleaning up
+If Bucket
+i’s child-list is empty {
+Detach Bucketi from the Stream-Summary;
+Delete Bucketi;
+}
+end;
+Figure 2: The Increment-Counter Algorithm
+(a) Stream-
+Summary,
+S = X, Y
+(b) Stream-
+Summary,
+S = X, Y,Y
+(c) Stream-
+Summary,
+S =
+X,Y,Y,Z
+Figure 3: Example of updates to Stream-Summary with
+m =2
+In Stream-Summary, all elements with the same
+counter value are linked together in a linked list. They all
+point to a parent bucket. The value of the parent bucket
+is the same as the counters’ value of all of its elements.
+Every bucket points to exactly one element among its
+child list, and buckets are kept in a doubly linked list,
+sorted by their values. Initially, all counters are empty,
+and are attached to a single parent bucket with value 0.
+The elements can be stored in a hash table for constant
+amortized access cost, or in an associative memory for
+constant worst case access cost. Stream-Summary can be
+sequentially traversed as a sorted list, since the buckets’
+list is sorted.
+The algorithm for counting elements’ hits usingStream-
+Summary is straightforward. When an element’s counter
+is updated, its bucket’s neighbor with the larger value is
+checked. If it has a value equal to the new value of the
+element, then the element is detached from its current
+list, and is inserted in the child list of this neighbor. Oth-
+erwise, a new bucket with the correct value is created,
+and is attached to the bucket list in the right position;
+and this element is attached to this new bucket. The
+old bucket is deleted if it points to an empty child list.
+With some optimization, the worst case scenario costs
+10 pointer assignments, and one heap operation. The
+Increment-Counter algorithm is sketched in Figure 2.
+Example 1 Assuming m =2 ,a n dA = {X,Y,Z }.T h e
+stream S = X,Y will yield the Stream-Summary in Fig-
+ure 3(a), after the two counters accommodate the observed
+elements. When another Y arrives, a new bucket is cre-
+ated with value 2,a n d Y gets attached to it, as shown
+in Figure 3(b). When Z arrives, the element with the
+minimum counter, X, is replaced by Z. Z has εZ =1 ,
+since that was the count of X when evicted. The ﬁnal
+Stream-Summary is shown in Figure 3(c).
+Stream-Summary is motivated by the work done in [17].
+However, to look up a value of a counter using the data
+structure proposed in [17], it takes O(m), while Stream-
+Summary look-ups are in Θ(1), for online queries about
+speciﬁc elements. Online queries about speciﬁc elements
+is crucial for our motivating application, to check whether
+an element is frequent or not. Moreover, looking up the
+frequencies of speciﬁc elem ents in constant time makes
+Space-Saving more eﬃcient when answering continuous
+queries, as shown later in Section 6.
+3.2 Properties of the Space-Saving Algo-
+rithm
+To prove the space bounds in Section 4, we analyze some
+properties of Space-Saving, which will help establish its
+space bounds. The strength behind the simplicity of the
+algorithm is that it keeps information until the space is
+absolutely needed, and that it does not initialize counters
+in batches like other counter-based algorithms. These
+characteristics are key to proving the space saving prop-
+erties of the proposed algorithm.
+Lemma 1 The length, N, of the stream is equal to the
+sum of all the counters in the Stream-Summary data
+structure. That is, N = ∑
+i≤m(counti)
+Proof. Every hit in S increments only one counter
+among the m counters. This is true even when a replace-
+ment happens, i.e., the observed hit e was not previously
+monitored, and it replaces another counter em.T h i s i s
+because countm was incremented. Therefore, at any time,
+the sum of all counters is equal to the length of the stream
+observed so far. 2
+A pivotal factor in the analysis is the value of min.
+The value of min is highly dynamic since it is dependent
+on the permutation of elements in S. We give an illus-
+trative example. If m =2 ,a n d N =4 . S = X,Z,Y,Y
+yields min = 1, while S = X,Y,Y,Z yields min =2 .
+Although it would be very useful to quantify min,w ed o
+not want to involve the order in which hits were received
+in our analysis, because predicating the analysis on all
+possible stream permutations will be intractable. Thus,
+we establish an upper bound on min.
+Assume the number of distinct elements in S is more
+than m.T h u s , a l lm counters are occupied. Otherwise,
+all counts are exact, and the problem is trivial. Hence,
+from Lemma 1 we deduce the following.
+Lemma 2 Among all counters, the minimum counter
+value, min, is no greater than ⌊
+N
+m ⌋.
+P r o o f .L e m m a1c a nb er e w r i t t e na s :
+min =
+N − ∑
+i≤m(counti − min)
+m (1)
+All the terms in the summation of Equation 1 are non-
+negative, i.e., all counters are no smaller thanmin, hence
+min ≤⌊ N
+m ⌋. 2
+We are interested in min since it represents an upper
+bound on the over-estimation in any counter in Stream-
+Summary. This relation is established in Lemma 3.
+Lemma 3 For any element ei in the Stream-Summary,
+0 ≤ εi ≤ min, i.e., fi ≤ (fi + εi)= counti ≤ fi + min.
+Proof. From the algorithm, the over-estimation of ei,
+εi, is non-negative, because a ny observed element is al-
+ways given the beneﬁt of doubt. The over-estimation εi
+is always assigned the value of the minimum counter at
+the time ei started being observed. Since the value of
+the minimum counter monotonically increases over time
+until it reaches the current min, then for all monitored
+elements εi ≤ min. 2
+Moreover, any element Ei, with frequency Fi >m i n,
+is guaranteed to be monitored, as shown next.
+Theorem 1 An element Ei with Fi >m i n,m u s te x i s t
+in Stream-Summary.
+Proof. The proof is by contradiction. Assume Ei is
+not in the Stream-Summary. Then, it was evicted previ-
+ously. Since Fi >m i n,t h e nFi is more than the minimum
+counter value at any previous time, because the minimum
+counter value increases monotonically. Therefore, from
+Lemma 3, when E
+i was last evicted, its estimated fre-
+quency was greater than the minimum counter value at
+that time. This contradicts the Space-Saving algorithm
+that evicts the element with the least counter to accom-
+modate a new element. 2
+From Theorem 1 and Lemma 3, we can infer an inter-
+esting general rule about the over-estimation of elements’
+counters. For any element Ei,w i t hr a n ki ≤ m.T h ef r e -
+quency of Ei, Fi,i sn om o r et h a ncounti, the counter oc-
+cupying the ith position in the Stream-Summary.F o ri n -
+stance, count10, the counter at position 10 of theStream-
+Summary, is an upper bound on F10,e v e ni ft h et e n t h
+position of the Stream-Summary is not occupied by E10.
+Theorem 2 W h e t h e ro rn o tEi occupies the ith position
+in the Stream-Summary, counti, the counter at position
+i, is no smaller thanFi, the frequency of the element with
+rank i, Ei.
+Proof. There are four possibilities for the position of
+Ei.
+• The element Ei is not monitored. Thus, from Theo-
+rem 1, Fi ≤ min. Thus any counter in the Stream-
+Summary is no smaller than Fi.
+• The element Ei is at position j, such that j>i .
+From Lemma 3, the estimated frequency of Ei is
+no smaller than than Fi.S i n c ej is greater than
+i, then the estimated frequency of ei is no smaller
+than countj, the estimated frequency of Ei.T h u s ,
+counti ≥ Fi.
+• The element Ei is at position i. From Lemma 3,
+counti ≥ fi = Fi.
+• The element Ei is at position j, such that j<i .
+Thus, at least one element Ex with rank x<i is
+located in some position y, such that y ≥ i.S i n c e
+the estimated frequency of Ex is no smaller than its
+frequency, Fx, from Lemma 3, andx<i , then the es-
+timated frequency of Ex is no smaller than Fi.S i n c e
+y ≥ i, then thecounti ≥ county, which is equal to the
+estimated frequency of Ex. Therefore, counti ≥ Fi.
+Therefore, in all cases, counti ≥ Fi. 2
+Theorem 2 is signiﬁcant, since it enables estimating an
+upper bound on the rank of an element. The rank of an
+element e
+i has to be less thanj if the guaranteed hits ofei
+are less than the counter at positionj.T h a ti s ,countj <
+(counti − εi) ⇒ rank(ei) <j . Conversely, the rank of an
+element ei is greater than the number of elements having
+guaranteed hits more than counti.T h a t i s ,rank(ei) >
+Count(ej |(countj −εj) >c o u n ti). Thus, Theorem 2 helps
+establishing the order-preservation property among the
+top-k, as discussed later.
+In the next section, we use these properties to derive a
+bound on the space requirements for solving the frequent
+elements and the top-k problems.
+4 Processing Queries
+In this section, we discuss query processing using the
+Stream-Summary data structure. We also analyze the
+space requirements for both the general case, where no
+data distribution is assumed, and the more interesting
+Zipﬁan case.
+4.1 Frequent Elements
+In order to answer queries about the frequent elements,
+we sequentially traverseStream-Summary as a sorted list
+until an element with freque ncy less than the user sup-
+port is reached. Thus, frequent elements are reported in
+Θ(|frequent elements|). An element, e
+i,i s guaranteed
+to be a frequent element if its guaranteed number of
+hits, counti −εi, exceeds ⌈φN ⌉, the minimum support. If
+for each reported element ei, counti − εi > ⌈φN ⌉,t h e n
+the algorithm guarantees that all, and only the fre-
+quent elements are reported. This guarantee is con-
+veyed through the boolean parameter guaranteed.T h e
+number of counters, m, should be speciﬁed by the user
+according to the data properties, the required error rate
+and/or the available memory. The QueryFrequent algo-
+rithm is given in Figure 4.
+Next, we determine the value of m that guarantees a
+user speciﬁed error rate, ϵ.
+4.1.1 The General Case
+We will analyze the space requirements for the general
+case of any data distribution.
+Theorem 3 Assuming no speciﬁc data distribution,
+Space-Saving uses a number of counters of min(|A|, 1
+ϵ)
+to ﬁnd all frequent elements with error ϵ. Any element,
+ei, with frequency fi >φ N is guaranteed to be reported.
+Algorithm: QueryF requent(m counters, support φ)
+begin
+Bool guaranteed = true;
+Integer i=1 ;
+while (counti > ⌈φN ⌉ AND i ≤ m){
+output ei;
+If ((counti − εi) < ⌈φN ⌉)
+guaranteed = false;
+i++;
+}// end while
+return(g u a r a n t e e d)
+end;
+Figure 4: Reporting Frequent Elements
+Proof. From Theorem 1, any element ei whose fi >
+min is guaranteed to be in the Stream-Summary;a n d
+since the upper bound of εi is min, from Lemma 2, it
+follows that εi ≤ min ≤⌊ N
+m ⌋.I f w e s e t min = ϵN,
+then m ≥ 1
+ϵ guarantees an error rate of ϵ.S i n c eφ ≥ ϵ,
+from Theorem 1, any element with frequency greater than
+φN i sm o n i t o r e di nt h eStream-Summary, and hence is
+guaranteed to be reported. 2
+The bound of Theorem 3 is tight. For instance, this
+can happen if all the IDs in the stream are distinct. In
+addition, Theorem 3 shows that the space consumption
+of Space-Saving is within a constant factor of the lower
+bound on the space of any deterministic counter-based
+algorithm, as shown in Theorem 4.
+Theorem 4 Any deterministic counter-based algorithm
+uses a number of counters of at least min(|A|,
+1
+2ϵ) to ﬁnd
+all frequent elements with error ϵ.
+Proof. The proof is similar to that given in [8]. Given
+two streams S1 and S2,o fl e n g t hL(m + 1) + 1 for an
+arbitrary large multiple L. The two streams have the
+same ﬁrst L(m +1 )e l e m e n t s ,w h e r em + 1 elements oc-
+cur L times each. After Observing the L(m +1 )s t r e a m
+elements, any counter-based algorithm with m counters
+will be monitoring only m elements. The last element is
+the only diﬀerence between S1 and S2. S1 ends with an
+element e1 that was never observed before, and S2 ends
+with an element e2 that has occurred before but is not
+monitored by the algorithm. Any deterministic algorithm
+should handle the last element of S1 and S2 in the same
+manner, since it has no record of its previous hits. If the
+algorithm estimated the previous hits of the last element
+to be 1, then the algorithm will have an error rate of 1
+m+1
+in case of S2. On the other hand, if the algorithm esti-
+mated the previous hits of the last element to beL,t h e n
+the algorithm will have an error rate of 1
+m+1 in case of
+S1. The estimation that results in the least error in both
+cases is 1
+2(m+1) . Therefore, the least number of counters
+to guarantee an error rate of ϵis 1
+2ϵ. 2
+4.1.2 Zipf Distribution Analysis
+A Zipﬁan [47] data set, with parameter α,h a st h ef r e -
+quency, Fi,o fa ne l e m e n t ,Ei,w i t ht h eith rank, such that
+Fi = N
+iαζ(α) ,w h e r eζ(α)=
+|A|∑
+i=1
+1
+iα converges to a small
+constant inversely proportional to α, except for α ≤ 1.
+For instance, ζ(1) ≈ ln(1.78|A|). As |A| grows to inﬁnity,
+ζ(2) ≈ 1.645, and ζ(3) ≈ 1.202. We assume α ≥ 1, to
+ensure that the data is ske wed, and hence, is worth an-
+alyzing. As noted before, we do not expect the popular
+elements to be of great importance if the data is uniform
+or weakly skewed.
+To analyze the Zipﬁan case we need to introduce some
+new notation. Among all the possible permutations of
+S, the maximum possible min is denoted min
+max,a n d
+among all the elements with hits more thanminmax,t h e
+element with least hits is denoted Er,f o rs o m er a n kr.
+Thus, we can deduce from Theorem 1 that:
+Lemma 4 An element Ei, has Fi >m i nmax,a n dr e -
+gardless of the ordering of S, is guaranteed to be moni-
+tored, if and only if i ≤ r.
+Now, minmax,a n dEr c a nb eu s e dt oe s t a b l i s ha nu p p e r
+bound on the space requirements for processing Zipﬁan
+data.
+Theorem 5 Assuming noiseless Zipﬁan data with pa-
+rameter α, to calculate the frequent elements with error
+rate ϵ, Space-Saving uses only min(|A|,
+(1
+ϵ
+)1
+α , 1
+ϵ) coun-
+ters. This is regardless of the stream permutation.
+Proof. From Equation 1, and Lemma 3, minmax ≥
+N −∑
+i≤m fi
+m , from which it can be ascertained that
+minmax ≥
+N −∑
+i≤m Fi
+m . From Lemma 4, substitute
+Fr >m i nmax. Rewriting frequencies in their Zipﬁan
+form yields: 1
+rα > 1
+m ∗
+|A|∑
+i=m+1
+1
+iα . This can be approxi-
+mated to 1
+rα > 1
+mα ∗
+|A|/m∑
+i=2
+1
+iα , which can be simpliﬁed to
+m>r ∗
+(
+|A|/m∑
+i=2
+1
+iα
+) 1
+α
+.S i n c e
+(
+|A|/m∑
+i=2
+1
+iα
+) 1
+α
+does not have
+ac l o s e df o r m ,m is set to satisfy a stronger constraint,
+which is m>r (ζ(α) − 1)
+1
+α .
+Since Fr+1 = N
+rαζ(α) <m i nmax <ϵ N, then the smaller
+the error bound, ϵ, the smaller the value of minmax,t h e
+larger r should be, and the largerm should be. Therefore,
+r is chosen to satisfy r =
+(
+1
+ϵζ(α)
+) 1
+α
+. Combining this re-
+sult with the relation betweenm and r established above
+implies m>
+(
+ζ(α)−1
+ϵζ(α)
+) 1
+α
+will guarantee an error which is
+bound by ϵ.I f α> 1, the upper bound on ϵwill be en-
+forced by satisfying m =
+(1
+ϵ
+)1
+α . Otherwise, the bound of
+m ≥ 1
+ϵ will apply from the general case discussed previ-
+ously in Theorem 3. 2
+Having established the bounds ofSpace-Saving for both
+the general, and the Zipf distributions, we compare these
+bounds to other algorithms. In addition, we comment on
+some practical issues, that c an not be directly inferred
+from the theoretical bounds.
+4.1.3 Comparison with Similar W ork
+The bound of Theorem 3 is tighter than those guar-
+anteed by the algorithms in [18, 35, 39]. Sticky Sam-
+pling [39] has a space bound of
+2
+ϵ ln( 1
+φδ ), where δ is the
+failure probability. Lossy Counting [39] has a bound
+of 1
+ϵ ln(ϵN). Both the hCount algorithm [35], and
+the Multistage ﬁlters [18] require a number of counters
+bounded by e
+ϵ ∗ ln
+(
+−|A|
+ln δ
+)
+.F u r t h e r m o r e ,Space-Saving
+has a tighter bound than GroupTest [14], whose bound
+is O( 1
+φ ln( 1
+δφ )l n (|A|) ) ,w h i c hi sl e s ss c a l a b l et h a nSpace-
+Saving. For example, for N =1 010, |A| =1 07, φ =1 0−1,
+ϵ =1 0 −2,a n d δ =1 0 −1, and making no assumptions
+about the data distribution, Space-Saving needs only 100
+counters, whileSticky Sampling needs 922 counters,Lossy
+Counting needs 1843 counters,hCount and Multistage ﬁl-
+ters need 4155 counters, and GroupTest needs C ∗ 743
+counters, where C ≥ 1.
+Frequent[17] has a similar space bound toSpace-Saving
+in the general case. Using m counters, the elements’
+under-estimation error in Frequent is bounded by N −1
+m .
+This is close to the theoretical under-estimation error
+bound, as proved in [8]. However, there is no straight-
+forward feasible extension of the algorithm to track the
+under-estimation error for each counter, since the current
+form of the algorithm does not support estimating the
+missed hits for an element tha t is starting being moni-
+tored. In addition, every observation of a non-monitored
+element increases the errors for all the monitored ele-
+ments, since their counters get decremented. Therefore,
+elements of higher frequency are more error prone, and
+thus, it is still diﬃcult to guess the frequent elements,
+which is not the case for Space-Saving.E v e n m o r e , t h e
+structure proposed in [17] is built and queried in a way
+that does not allow the user to specify an error thresh-
+old, ϵ. Thus, the algorithm has only one parameter, the
+support φ, which increases the number of false positives
+dramatically, as will be clear from the experimental re-
+sults in Section 5.
+The number of counters used in GroupTest [14] de-
+pends on the failure probability, δ, as well as the sup-
+port, φ. Thus, it does not suﬀer from the single-threshold
+drawback of Frequent. However, it does not output fre-
+quencies at all, and does not reveal the relative order of
+the elements. In addition, its assumption that elememts’
+IDs are 1 ... |A| can only be enforced by building an in-
+dexed lookup table that maps every ID to a unique num-
+ber in the range 1 ... |A|. Thus, in practice, GroupTest
+needs O(|A|) space, which is infeasible in most cases. The
+hCount algorithm makes a similar assumption about the
+alphabet. In addition, it has to scan the entire alpha-
+bet domain for identifying the frequent elements. This
+is true even if a small portion of the IDs were observed
+in the stream. This is in contrast to Space-Saving,w h i c h
+only requires the m IDs to ﬁt in memory.
+For the Zipﬁan case, we are not aware of a similar anal-
+ysis. For the numerical example given above, if the data
+is Zipﬁan with α =2 , Space-Saving would need only 10
+counters, instead of 100, to guarantee the same error of
+10
+−2.
+Algorithm: QueryT op-k(m counters, Integer k)
+begin
+Bool order = true;
+Bool guaranteed = false;
+Integer min-guar-freq = ∞;
+for i =1 ...k {
+output ei;
+If ((counti − εi) < min-guar-freq)
+min-guar-freq = ( counti − εi);
+If ((counti − εi) <c o u n ti+1)
+order = false;
+}// end for
+If (countk+1 ≤ min-guar-freq){
+guaranteed = true;
+}else{
+output ek+1;
+for i = k +2 ...m {
+If ((counti−1 − εi−1) < min-guar-freq)
+min-guar-freq = ( counti−1 − εi−1);
+If (counti ≤ min-guar-freq){
+guaranteed = true;
+break;
+}
+output e
+i;
+}
+}
+return( guaranteed, order )
+end;
+Figure 5: Reporting Top-k
+4.2 Top- k Elements
+For the top-k elements, the algorithm can output the ﬁrst
+k elements. An element, ei,i s guaranteed to be among
+the top- k if its guaranteed number of hits, counti − εi,
+exceeds countk+1, the over-estimated number of hits for
+the element in position k + 1. Since, from Theorem 2,
+countk+1 is an upper bound on Fk+1, the hits of the ele-
+ment of rankk+1, Ek+1,t h e nei is in the top-k elements.
+We call the results to have guaranteed top- k if by
+simply inspecting the results, the algorithm can deter-
+mine that the reported top-k elements are correct. Space-
+Saving reports a guaranteed top-k if for all i,( counti −
+εi) ≥ countk+1,w h e r ei ≤ k. That is, all the reported k
+elements are guaranteed to be among the top-k elements.
+All guaranteed top-i subsets, for all i, can be reported
+in Θ(m), by iterating on all the counters 1...m −1. Dur-
+ing each iteration,i, the ﬁrsti elements are guaranteed to
+be the top-i elements if the minimum value of (countj −εj)
+found so far is no smaller than counti+1,w h e r ej ≤ i.
+The algorithm guarantees the top-m if in addition to this
+condition, εm = 0; which is only true if the number of
+distinct elements in the stream is at most m.
+Similarly, we call the top-k to have guaranteed order
+if for all i,w h e r ei ≤ k, counti − εi ≥ counti+1.T h a ti s ,
+in addition to having guaranteed top-k, the order of ele-
+ments among the top-k elements are guaranteed to hold,
+if the guaranteed hits for every element in the top- k are
+more than the over-estimated hits of the next element.
+Thus, the order is guaranteed if the algorithm guarantees
+the top-i, for all i ≤ k. The algorithm QueryTop-k is
+given in Figure 5.
+The algorithm consists of two loops. The ﬁrst loop
+outputs the top-k candidates. At each iteration the order
+of the elements reported so far is checked. If the order is
+violated, order is set to false. At the end of the loop, the
+top-k candidates are checked to be the guaranteed top-k,
+by checking that all of these candidates have guaranteed
+hits that exceed the overestimated counter of the k +
+1e l e m e n t ,count
+k+1. If this does not hold, the second
+loop is executed for as many iterations such that the total
+inspected elements k
+′ are guaranteed to be the top- k′,
+where k′ >k .
+The algorithm can also be implemented in a way that
+only outputs the ﬁrst k elements, or that outputs k′ ele-
+ments, such that k′ is the closest possible to k, regardless
+of whether k′ is greater than k, or vice versa. Through-
+out the rest of the paper, we assume that the algorithm
+outputs only the ﬁrst k elements, i.e., the second loop is
+not executed. Next, we look at the space requirements of
+the algorithm.
+4.2.1 The General Case
+For the guaranteed top-k case, it is widely accepted that
+the space requirements are Θ(|A|) [10, 17] for solving the
+exact problem, with no assumptions on the data distribu-
+tion. Since, for general data distribution, we are not able
+to solve the exact problem, we restrict the discussion to
+the relaxed version, FindApproxTop(S, k, ϵ) [10], which
+is to ﬁnd a list ofk elements, each of which has frequency
+more than (1 − ϵ)F
+k.
+We deal with skewed data later, in Section 4.2.2, where
+we provide the ﬁrst proven space bound for the guaran-
+teed solution of the exact top-k problem, for Zipﬁan data
+distribution.
+Theorem 6 Regardless of the data distribution, to solve
+the FindApproxTop(S, k, ϵ) problem, Space-Saving uses
+min(|A|, N
+ϵFk
+) counters. Any element with frequency more
+than (1 − ϵ)Fk is guaranteed to be monitored.
+Proof. This is another form of Theorem 3, but min =
+ϵFk, instead of ϵN. By the same token, we setm = 1
+ϵ ∗ N
+Fk
+so that εi ≤ ϵFk is guaranteed. 2
+4.2.2 Zipf Distribution Analysis
+To answer exact top-k queries for Zipf distribution, ϵcan
+be automatically set to less thanFk −Fk+1.T h u s ,Space-
+Saving guarantees correctness, and order.
+Theorem 7 Assuming the data is noiseless Zipﬁan with
+parameter α> 1, to calculate the exact top- k, Space-
+Saving uses min(|A|,O(
+(k
+α
+)1
+α k)) counters. When α =
+1, the space complexity is min(|A|,O(k2 ln(|A|))).T h i s
+is regardless of the stream permutation. Also, the order
+among the top-k elements is preserved.
+Proof. From Equation 1, Lemma 3, and Lemma 4,
+we can deduce that for the maximum possible value of
+min, min
+max, and the least frequent element that is guar-
+anteed to be monitored, Er,i ti st r u et h a tminmax ≤
+N −∑
+i≤r (Fi−minmax)
+m . With some simpliﬁcation, and sub-
+stituting Fr+1 ≤ minmax, from Lemma 4, it follows that,
+Fr+1 ≤
+N −∑
+i≤r Fi
+m−r . Rewriting frequencies in their Zipﬁan
+form yields: m − r ≤ (r +1 )α
+|A|∑
+i=r+1
+1
+iα . This relation can
+be approximated to m − r< (r +1 ) ∗
+|A|/(r+1)∑
+i=1
+1
+iα ,w h i c h
+simpliﬁes to 1
+r < ζ(α)+1
+m−ζ(α) .
+To guarantee that the ﬁrst k slots are occupied by the
+top-k, we have to make sure that the diﬀerence between
+Fk and Fk+1 is more than minmax, since from Lemma 3,
+0 ≤ εi ≤ minmax, for all monitored elements. That is,
+the condition minmax <F k − Fk+1 has to be enforced.
+Thus, minmax < N
+ζ(α) ∗ (k+1)α −kα
+(k+1)αkα . Enforcing a tighter
+condition, Fr is set to satisfyFr < N
+ζ(α) ∗ α
+(k+1)αk .E n f o r c -
+ing an even tighter condition by combining this with the
+relation betweenm,a n dr established above, it is essential
+to satisfy N
+ζ(α) ∗
+(
+ζ(α)+1
+m−ζ(α)
+)α
+< N
+ζ(α) ∗ α
+(k+1)αk .A f t e rs o m e
+manipulation, a lower bound is reached onm to guarantee
+top-k correctness:
+[
+(ζ(α)+1 )
+(k
+α
+)1
+α (k +1 )
+]
++ ζ(α) <m .
+If α =1 ,t h e nζ(α)= ζ(1) ≈ ln(1.78|A|), and the com-
+plexity reduces to min(|A|,O(k2 ln(|A|))). If α> 1, then
+ζ(α) converges to a small constant inversely proportional
+to α, and the complexity reduces to min(|A|,O(
+(k
+α
+)1
+α k)).
+We now prove the order-preserving property. If the
+data distribution is Zipﬁan, then, (Fi − Fi+1) > (Fi+1 −
+Fi+2). Since minmax < (Fk − Fk+1), then, ∀i≤k,
+minmax < (Fi − Fi+1). Since ∀i≤m, εi ≤ minmax,
+then, the over-estimation errors are not eﬀective enough
+to change the order among the top-k elements. 2
+In addition to solving the ϵ-Deﬁcient Frequent Ele-
+ments problem in Section 4.1.2, from Theorem 7, we can
+establish a bound on the space needed for the exact solu-
+tion of the frequent elements problem in case of Zipﬁan
+data. Given noise-free Zipﬁan data with parameterα ≥ 1,
+Space-Saving can report the elements that satisfy the user
+support ⌈φN ⌉, with very small errors in their frequencies.
+Corollary 1 Assuming Zipﬁan data with parameterα>
+1, to calculate the exact frequent elements, Space-Saving
+uses only min(|A|,O(
+(
+1
+φ
+)α+1
+α2
+)) counters. When α =1 ,
+the space complexity is min(|A|,O( 1
+φ2 ln(|A|) +l n (|A|))).
+This is regardless of the stream permutation.
+Proof. Assuming Zipf distribution, it is possible to map
+af r e q u e n te l e m e n t sq u e r yi n t oat o p -k elements query.
+Since the support is known, it is possible to know the rank
+of the least frequent element that satisﬁes the support.
+That is, if ⌈φN ⌉ =
+N
+iαζ(α) ,w h e r ei is the rank of the
+least frequent element that satisﬁes the support, theni =
+⌊ 1
+ζ(α)φ
+1
+α ⌋.
+From Theorem 7, the number of coun-
+ters needed to calculate the exact top-
+i elements is
+[
+(ζ(α)+1 )
+(i
+α
+)1
+α (i +1 )
+]
++
+ζ(α). Substituting i = ⌊ 1
+ζ(α)φ
+1
+α ⌋, yields[
+(ζ(α)+1 )
+(
+⌊ 1
+ζ(α)φ
+1
+α ⌋
+α
+) 1
+α
+(⌊ 1
+ζ(α)φ
+1
+α ⌋+1 )
+]
++ ζ(α).
+If α =1 ,t h e nζ(α)= ζ(1) ≈ ln(1.78|A|), and the space
+complexity reduces to min(|A|,O( 1
+φ2 ln(|A|) +l n (|A|))).
+If α> 1, then ζ(α) converges to a small constant in-
+versely proportional to α, and the space complexity re-
+duces to min(|A|,O(
+(
+1
+φ
+)α+1
+α2
+)). 2
+To the best of our knowledge, this is the ﬁrst work to
+look at the space bounds for answering exact queries, in
+the case of Zipﬁan data, with guaranteed results. Having
+established the bounds of Space-Saving for both the gen-
+eral, and the Zipf distributions, we compare these bounds
+to other algorithms.
+4.2.3 Comparison with Similar W ork
+These bounds are tighter than the bounds guaranteed by
+the best known algorithm, CountSketch [10], for a large
+range of practical values of the parameters |A|, ϵ,a n dk.
+CountSketch solves the relaxed version of the problem,
+FindApproxTop(S, k, ϵ), with failure probabilityδ,u s i n g
+space of O(log(
+N
+δ )(k+ 1
+(ϵFk )2
+|A|∑
+i=k+1
+Fi
+2)), with a large con-
+stant hidden in the big-O notation [10, 14]. The bound
+of Space-Saving for the relaxed problem is N
+ϵFk
+,w i t ha
+0-failure probability. For instance, assuming no speciﬁc
+data distribution, for N =1 0 10, |A| =1 0 7, k = 100,
+and ϵ= δ =1 0 −1, Space-Saving requires 10 6 counters,
+while CountSketch needs C ∗ 3.6 ∗ 1010 counters, where
+C ≫ 1, which is more than the entire stream. In addi-
+tion, Space-Saving guarantees that any element,ei,w h o s e
+fi > (1 − ϵ)Fk belongs to the Stream-Summary, and does
+not simply output a random k of such elements.
+In the case of a non-Zipf distribution, or a weakly
+skewed Zipf distribution with α< 1, for all i ≥ k,
+we will assume that Fi ≥ N
+ζ(1) ∗ 1
+i . This assumption is
+justiﬁed. Since we are assuming a non-skewed distribu-
+tion, the top few elements have a less signiﬁcant share
+in the stream than in the case of Zipf(1), and less fre-
+quent elements will have a higher share in S than they
+would have had if the distribution is Zipf(1). Using this
+assumption, we rewrite the bound of Space-Saving as
+O(
+k∗ln(N )
+ϵ ); while the bound in [10] can be rewritten as
+O(log(N
+δ ) ∗ (k + k2
+ϵ2
+(
+1
+k+1 − 1
+|A|
+)
+)) ≈ O( k
+ϵ2 log(N
+δ )). Even
+more, depending on the data distribution, Space-Saving
+can guarantee the reported top-k, or a subset of them, to
+be correct, with weak data skew; whileCountSketch does
+not oﬀer any guarantees.
+In the case of Zipf Distribution, the bound of [10] is
+O(k log(N
+δ )). For α> 1, the bound of Space-Saving is
+O(
+(k
+α
+)1
+α k). Only when α = 1, the space complexity is
+O(k2 ln(|A|)), and thus, Space-Saving requires less space
+for cases of skewed data, long streams/windows, and has a
+0-failure probability. In addition, Space-Saving preserves
+the order of the top-k elements.
+To show the diﬀerence in space requirements, consider
+the following example. ForN =1 010, |A| =1 07, k = 100,
+α =2 ,a n dδ =1 0−1 Space-Saving’s space requirements
+are only 708 counters, while CountSketch needs C ∗ 3655
+counters, where C ≫ 1.
+This is the ﬁrst algorithm that can give guarantees
+about its output. For top- k queries, Space-Saving speci-
+ﬁes the guaranteed elements among the top-k.E v e ni fi t
+cannot guarantee all the top-k elements, it can guarantee
+the top-k′ elements.
+5 Experimental Results
+To evaluate the capabilities of Space-Saving,w ec o n -
+ducted a comprehensive set of experiments, using both
+real and synthetic data. We tested the performance of
+Space-Saving for ﬁnding both the frequent and the top-k
+elements, under diﬀerent parameter settings. We com-
+pared the results against the best algorithms known so
+far for both problems. We were interested in the recall,
+the number of correct elements found as a percentage of
+the number of correct elements; and the precision,t h e
+number of correct elements found as a percentage of the
+entire output [14]. It is worth noting that an algorithm
+will have a recall, and a precision of 1 if it outputs all
+and exactly the correct set of elements. Superﬂuous out-
+put reduces precision, while failing to identify all correct
+elements reduces recall.
+We also measured the run time and space used by each
+algorithm, which are good indicators of its capability to
+handle high-speed streams, and to reside on servers with
+limited memories. Notice that we included the size of the
+hash tables used in the algorithms for fair comparisons.
+For the frequent elements problem, we comparedSpace-
+Saving to GroupTest [14], and Frequent [17]. For
+GroupTest,a n d Frequent,w eu s e dt h eCc o d ea v a i l a b l e
+on the web-site of the ﬁrst author of [14]. For the top- k
+problem, we implemented Probabilistic-InPlace [17], and
+CountSketch [10]. For CountSketch [10], we implemented
+the median algorithm by Hoare [34] with Median-of-three
+partition, which has a linear run time, in the average case
+[37]. Instead of maintaining a heap as suggested in [10],
+we kept a Stream-Summary of ﬁxed length k. This guar-
+antees constant time update for elements that are in the
+Stream-Summary, while a heap would entail O(log(k))
+operations. The diﬀerence in space usage between a heap
+and a Stream-Summary of size k is negligible, when com-
+pared to the space used by CountSketch.F o r t h e h i d -
+den constant of the space bounds given in [10], we ran
+CountSketch several times, and estimated that a factor of
+16 would enable CountSketch to give results comparable
+to Space-Saving in terms of precision and recall. For the
+probabilistic algorithms, GroupTest and CountSketch,w e
+set the probability of failure,δ,t o0 .01, which is a typical
+value for δ. All the algorithms were compiled using the
+same compiler, and were run on a Pentium IV 2 .66GHz
+PC, with 1.0GB RAM, and 80GB Hard disk.
+5.1 Synthetic Data
+We generated several synthetic Zipﬁan data sets with the
+Zipf parameter varying from 0 .5, which is very slightly
+uniform, to 3.0, which is highly skewed, with a ﬁxed in-
+crement of 1
+2 . The size of each data set, N,i s1 0 8 hits,
+and the alphabet was of size 5 ∗ 106. We conducted two
+sets of experiments. In the ﬁrst set, we varied the Zipf
+parameter, α, and measured how the algorithms’ perfor-
+mances change, for the same set of queries. In the second
+set of experiments, we used a data set with a realistic
+skew (α =1 .5), and compared the algorithms’ results as
+we varied the queries’ parameters.
+5.1.1 V arying the Data Skew
+In this set of experiments, we varied the Zipf parame-
+ter, α, and measured how the algorithms’ performances
+change, for the same set of queries. This set of experi-
+ments measure how the algorithms adapt to, and make
+use of the data skew.
+The Frequent Elements Problem The query issued
+for Space-Saving, GroupTest,a n dFrequent was to ﬁnd all
+elements, with frequency at least
+N
+102 .F o rSpace-Saving,
+we assigned enough counters to guarantee correct results
+from Corollary 1. When the Zipf parameter is 0 .5, we
+assign the same number of counters as in the case when
+the Zipf parameter is 1.0. The results comparing the re-
+call, precision, time and space used by the algorithms are
+summarized in Figure 6.
+Although Frequent ran up to six times faster than
+Space-Saving, and has a constant recall of 1, as reported
+in Figures 6(a), and 6(c), its results were not compet-
+itive in terms of precision. Since it is not possible to
+specify an ϵ parameter for the algorithm, its precision
+was very low in all the runs. When the Zipf parameter
+was 0.5, the algorithm reported 16 elements, and actu-
+ally there were no elements satisfying the support. For
+the rest of the experiments in Figure 6(b), the precision
+achieved by Frequent ranged from 0 .049 to 0 .158. The
+space used ranged from one tenth to four times the space
+of Space-Saving, as shown in Figure 6(d). It is interesting
+to note that as the data became more skewed, the space
+advantage of Space-Saving increased, while Frequent was
+not able to exploit the data skew to reduce its space re-
+quirements. Frequent did not always output exactly 100
+elements for each experiment. In this case, when it decre-
+ments the lowest counter, more than one element sharing
+that counter could potentially be deleted if it reaches 0.
+From Figure 6(a), the ratio in run time betweenSpace-
+Saving and GroupTest changed from 1 : 0 .73, when the
+Zipf parameter was 0 .5, to 1 : 1 .9 when the data was
+highly skewed. When the Zipf parameter was 0 .5, there
+were no frequent elements, and both algorithms identiﬁed
+none. We report this fact for both algorithms as having a
+precision and recall of 1 in Figure 6(b), and Figure 6(c),
+respectively. However, when the Zipf parameter was 1,
+the diﬀerence in precision between the two algorithms was
+14%, since GroupTest was not able to prune out all the
+false positives due to the weak data skew. For values of
+the Zipf parameter larger than 1.0, the precisions of both
+algorithms were constant at 1, as reported in Figure 6(b).
+The recalls of both algorithms were constant at 1 for all
+values of the Zipf parameter, as is clear from Figure 6(c).
+The advantage of Space-Saving is evident in Figure 6(d),
+which shows that Space-Saving achieved a reduction in
+the space used by a factor ranging from 8 when the Zipf
+parameter was 0 .5 up to 200 when the Zipf parameter
+(a) Run Time for FE 0.01 (Synthetic Data)
+0
+100
+200
+300
+400
+500
+600
+700
+800
+900
+1000
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Run Time (s)
+Space-Saving GroupTest Frequent
+(b) Precision for FE-0.01 (Synthetic Data)
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Precision
+Space-Saving GroupTest Frequent
+(c) Recall for FE-0.01  (Synthetic Data)
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Recall
+Space-Saving GroupTest Frequent
+(d) Space for FE-0.01  (Synthetic Data)
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+0.3
+0.35
+0.4
+0.45
+0.5
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Space Used (MB)
+Space-Saving GroupTest Frequent
+Figure 6: Performance Comparison for the Frequent Elements Problem Using Synthetic Zipﬁan Data - Varying Data
+Skew
+was 3.0. This shows that Space-Saving adapts well to the
+data skew.
+The T op-k Problem Space-Saving, CountSketch,a n d
+Probabilistic-InPlace were used to identify the top-50 ele-
+ments. Space-Saving monitored enough elements to guar-
+antee that the top-50 elementsare correct and reported in
+the right order as illustrated in Theorem 7. For α =0 .5,
+the same number of counters were monitored as in the
+case of α =1 .0. Both Space-Saving,a n d Probabilistic-
+InPlace were allowed the same number of counters. We
+were not able to make Probabilistic-InPlace produce re-
+sults comparable to the quality of the results of Space-
+Saving.I f Probabilistic-InPlace is given 2 k counters so
+that, it outputs only k elements, its recall is unsatisfac-
+tory. If it is allowed a large number of counters, its re-
+call increases, due to tighter estimation; but the precision
+drops dramatically, since a lotof superﬂuous elements are
+output. Thus, we allowed it to run using the same num-
+ber of counters as Space-Saving, and the time, precision,
+and recall were measured. The results are summarized in
+Figure 7.
+From Figure 7(b), the output of Probabilistic-InPlace
+was not comparable to the other two algorithms in terms
+of precision. On the contrary , from Figure 7(c), the re-
+call of Probabilistic-InPlace was constant at 1 through-
+out the entire range of α. On the whole, the run time
+and space usages of bothProbabilistic-InPlace and Space-
+Saving were comparable. Nevertheless, from Figure 7(a),
+we notice that the run time of Probabilistic-InPlace was
+longer than that of Space-Saving for α ≥ 1.5, due to the
+unnecessary deletions at the boundaries of rounds.
+Although we used a hidden factor of 16, as indicated
+earlier, CountSketch failed to attain a recall and preci-
+sion of 1, for all the experiments 4. CountSketch had
+precision and recall varying between 0 .98 and 1.0, as is
+clear from Figures 7(b), and 7(c). From Figure 7(d), the
+space reductions of Space-Saving become clear only for
+skewed data. The ratio in space used by Space-Saving
+and CountSketch ranged from 10 : 1 when the data is
+weakly skewed, to 1 : 10 when the data was highly skewed.
+This is because Space-Saving takes advantage of the skew
+of the data to minimize the number of counters it needs
+to keep, while the proved bound on the space used by
+CountSketch is ﬁxed for α>
+1
+2 [10]. The reductions of
+Space-Saving in time, when compared with CountSketch,
+are signiﬁcant. From Figure 7(a),Space-Saving run time,
+though almost constant, was 22 times smaller when the
+data was not skewed, and 33 times smaller when the data
+was skewed. The run time of CountSketch decreased as
+α increased, since the number of times CountSketch has
+to estimate the frequency of an element decreased, which
+is the bottleneck in CountSketch. However, the run time
+of Space-Saving dropped faster as the data became more
+skewed, since the gap between the signiﬁcant buckets’ val-
+ues increased, and it grew less likely that any two elements
+in the top- k share the same bucket. This reduced the
+number of operations to increment the top-k elements.
+We can easily see that running on a 2.66 GHz machine
+enables CountSketch to handle streams with a rate not
+4CountSketch,a n d Space-Saving have the precision equal to re-
+call, for any query , since exactly k elements are output.
+(a) Run Time for Top-50 (Synthetic Data)
+0
+5000
+10000
+15000
+20000
+25000
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Run Time (s)
+Space-Saving CountSketch Probabilistic InPlace
+(b) Precision for Top-50 (Synthetic Data)
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Precision
+Space-Saving CountSketch Probabilistic InPlace
+(c) Recall for Top-50 (Synthetic Data)
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Recall
+Space-Saving CountSketch Probabilistic InPlace
+(d) Space for Top-50 (Synthetic Data)
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+0.5 1 1.5 2 2.5 3
+Zipf Alpha
+Space Used (MB)
+Space-Saving CountSketch Probabilistic InPlace
+Figure 7: Performance Comparison for the Top-k Problem Using Synthetic Zipﬁan Data - Varying Data Skew
+higher than 5 hits per ms, since when the data was al-
+most uniform, CountSketch took 0.219 ms, on average, to
+process each observation in the stream.
+5.1.2 V arying the Query Parameters
+This set of experiments measure how the algorithms per-
+form under diﬀerent realistic query parameters, keeping
+the data skew parameter constant at a realistic value.
+The data set with the Zipf parameter 1 .5w a su s e df o r
+this purpose.
+The Frequent Elements Problem The query issued
+for Space-Saving, GroupTest,a n dFrequent was to ﬁnd all
+elements with frequency at least ⌈N
+φ ⌉. The support, φ,
+was varied from 0.001 to 0.01. The results are summa-
+rized in Figure 8.
+From Figure 8(c),Frequentwas able to attain a recall of
+1, for all the queries issued. From Figure 8(a),Frequent’s
+run time was up to 5 times faster than Space-Saving.I n
+addition, the space usage of Frequent dropped to 2
+5 that
+of Space-Saving, as is clear from Figure 8(d). However,
+Frequent has its precision ranging from 0.087 to 0.115, as
+indicated by Figure 8(b), which is a signiﬁcant drawback
+of this algorithm. This is due to its inability to prune out
+false positives.
+Both GroupTest and Space-Saving were able to attain
+a value of 1 for recall for all the values of support, as is
+clear from Figure 8(c). However, from Figure 8(b), the
+precision of GroupTest dropped to 0.952 when φ was
+1
+250 .
+Figure 8(d) shows that Space-Saving used space ranging
+from 8 to 18 times less than that of GroupTest,a n dr a n
+twice as fast, as shown in Figure 8(a).
+In conclusion, we can see that Space-Saving combined
+the lightweight advantage of Frequent, and the precision
+advantage of GroupTest.
+The T op-k Problem Space-Saving, CountSketch,a n d
+Probabilistic-InPlace were used to identify the top-k ele-
+ments in the stream, the parameterk was varied, and the
+results are shown in Figure 9.
+Probabilistic-InPlace had run time and space usage
+that were very close to Space-Saving, as illustrated in
+Figures 9(a) and 9(d). Probabilistic-InPlace was able to
+attain a recall of 1 throughout this set of experiments,
+as is clear from Figure 9(c). However, it had very low
+precision, as shown in Figure 9(b). Its highest precision
+was 0.133, and thus the algorithm seems impractical for
+real life applications.
+Space-Saving has a precision and recall of 1 for
+the entire range of k, as is clear from Figures 9(b),
+and 9(c). Meanwhile, CountSketch had recall/precision
+values ranging from 0 .987 for top-75 to 1 for top-10,
+top-25, and top-50, which is satisfactory for real-life ap-
+plications. However, Figures 9(a), and 9(d) show that
+Space-Saving’s run time was 28 to 31 times less than that
+of CountSketch, while Space-Saving’s space was up to 5
+times smaller.
+Again, Space-Saving combined the lightweight property
+of Probabilistic-InPlace, and had better precision than
+CountSketch.
+(a) Run Time for FE on Zipf(1.5) Data
+0
+100
+200
+300
+400
+500
+600
+700
+800
+1/1000 1/750 1/500 1/250 1/100
+Support
+Run Time (s)
+Space-Saving GroupTest Frequent
+(b) Precision for FE on Zipf(1.5) Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+1/1000 1/750 1/500 1/250 1/100
+Support
+Precision
+Space-Saving GroupTest Frequent
+(c) Recall for FE on Zipf(1.5) Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+1/1000 1/750 1/500 1/250 1/100
+Support
+Recall
+Space-Saving GroupTest Frequent
+(d) Space for FE on Zipf(1.5) Data
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+1/1000 1/750 1/500 1/250 1/100
+Support
+Space Used (MB)
+Space-Saving GroupTest Frequent
+Figure 8: Performance Comparison for the Frequent Elements Problem Using Synthetic Zipf(1.5) Data - Varying the
+Support
+5.2 Real Data
+For real data experiments, w e used a click stream from
+Anonymous.com. The stream size was 25,000,000 hits,
+and the alphabet size was 4,235,870. The data was fairly
+skewed, but it was diﬃcult to estimate the Zipf param-
+eter. The sum of the counts of the frequent elements
+was small compared to the length of the stream. For
+instance, the most frequent element, the top-10, the top-
+50, and the top-100 elements occurred 619,310, 1,726,609,
+2,596,833, and 3,130,639 times, respectively. Thus, it was
+very diﬃcult to estimate the α from which we can ap r i -
+ori calculate a bound on the number of counters to be
+used. Therefore, we made use of this set of experiments
+to provide a simulation for the behavior of Space-Saving
+when running in limited space. However, we did not ﬁx
+the space available for all experiments at the same size,
+but made it a function of the query parameters, and ex-
+amined howSpace-Saving behaves under restricted condi-
+tions. Surprisingly, in very restricted space, Space-Saving
+achieved substantial gains in run time and space with
+hardly any loss in precision and recall. On the whole, the
+results were very similar to those of the synthetic data
+experiments when the query parameters were varied. We
+will start by comparing the algorithms’ behavior when
+varying the query parameters, and will then comment on
+how Space-Saving guarantees its output.
+5.2.1 V arying the Query Parameters
+This set of experiments measure how the algorithms per-
+form under diﬀerent realistic query parameters.
+The Frequent Elements Problem For the frequent
+elements, the algorithms were used to ﬁnd elements with
+minimum frequency ⌈φN ⌉. The parameter φ was varied
+from 0.001 to 0 .01, and the number of elements moni-
+tored by space saving was ﬁxed at
+10
+φ . The results are
+summarized in Figure 10
+From Figure 10(a), the run time of Frequent was con-
+sistently faster thanSpace-Saving,a n dSpace-Saving used
+5t i m e sm o r es p a c et h a nFrequent, as is clear from Fig-
+ure 10(d). However, because of the excessive number of
+false positives reported by Frequent, its precision ranged
+from 0.011 to 0.035, as indicated by Figure 10(b).
+ForGroupTest, all the IDs of the alphabet were mapped
+to the range 1... 4,235,870 so as to be able to compare it
+with Space-Saving, though we did not account the map-
+ping lookup table as part of GroupTest’s space require-
+ments. Despite the restricted space condition we imposed
+on Space-Saving, the algorithm was able to attain a value
+of 1 for precision and recall for all support levels, as is
+clear from Figures 10(b), and 10(c). However, GroupTest
+had a precision ranging from 0 .486 to 1. On the other
+hand, from Figure 10(d), Space-Saving used space up to
+5 times less than GroupTest, and ran faster most of the
+time, as shown in Figure 10(a).
+The T op-k Problem Space-Saving, CountSketch,a n d
+Probabilistic-InPlace were used to identify the top-k ele-
+ments in the stream. The parameter k was varied, and
+the number of elements monitored by Space-Saving and
+Probabilistic-InPlace was ﬁxed at 100∗k. The results are
+shown in Figure 11.
+(a) Run Time for Top-k on Zipf(1.5) Data
+0
+2000
+4000
+6000
+8000
+10000
+12000
+14000
+10 25 50 75 100
+k
+Run Time (s)
+Space-Saving CountSketch Probabilistic InPlace
+(b) Precision for Top-k on Zipf(1.5) Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+10 25 50 75 100
+k
+Precision
+Space-Saving CountSketch Probabilistic InPlace
+(c) Recall for Top-k on Zipf(1.5) Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+10 25 50 75 100
+k
+Recall
+Space-Saving CountSketch Probabilistic InPlace
+(d) Space for Top-k on Zipf(1.5) Data
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+0.3
+0.35
+0.4
+0.45
+0.5
+10 25 50 75 100
+k
+Space Used (MB)
+Space-Saving CountSketch Probabilistic InPlace
+Figure 9: Performance Comparison for the Top-k Problem Using Synthetic Zipf(1.5) Data - Varying thek Parameter
+Although Probabilistic-InPlace had good recall, as
+shown in Figures 11(b), its precision, as clear from Fig-
+ure 11(c), was not comparable to the two other algo-
+rithms, since its highest precision was 0 .020. The run
+time of Probabilistic-InPlace was 4 to 5 times less tha
+that of Space-Saving, and their space usages were very
+comparable.
+Interestingly, Figures 11(b), and 11(c) show thatSpace-
+Saving,a n dCountSketch had very close recall and pre-
+cision. The average precision and recall of Space-Saving
+and CountSketch were 0.96 and 0.97, respectively. How-
+ever, Figure 11(a) shows thatSpace-Saving’s run time was
+25 times less than that of CountSketch. Space-Saving’s
+space requirements were 1.1t o1 .6 times larger, as shown
+in Figure 11(d).
+5.2.2 Measuring the Guarantee of Space-Saving
+We now introduce a new measure, guarantee. The guar-
+antee metric is very close to precision, but is only measur-
+able for algorithms that can oﬀer guarantees about their
+output. Guarantee is the n umber of guaranteed correct
+elements as a percentage of the entire output. That is,
+the percentage of the output whose correctness is guaran-
+teed. For instance, if an algorithm outputs 50 elements,
+from which it guarantees 42 to be correct, then the guar-
+antee of this algorithm is 84%, even though some of the
+remaining 8 elements might still be correct. Thus, the
+guarantee of a speciﬁc answer set is no greater than the
+precision, which is based on the number of correct, and
+not necessarily guaranteed, elements in the output.
+In the context of the frequent elements problem, the
+guarantee of Space-Saving is the number of elements
+whose guaranteed hits exceed s the user support, as a
+percentage of the entire output. Formally, this is equal
+to
+Count(ei |(counti−εi )>⌈φN ⌉)
+Count(ei|counti>⌈φN ⌉)) . In the context of the top-
+k problem, the guarantee of Space-Saving is the num-
+ber of elements that are guaranteed to be in the top-
+k. i.e., those whose guaranteed hits exceed countk+1,
+as a percentage of the top- k. F o r m a l l y ,t h i si se q u a lt o
+Count(ei |(counti−εi)>countk+1)
+k .
+It is worth noting that throughout the set of experi-
+ments on synthetic data, the guarantee of Space-Saving
+w a sa l w a y sc o n s t a n ta t1 . T h a ti s ,Space-Saving always
+guaranteed all its output to be correct.
+Since it was not possible to estimate the α parameter
+of the real data set, we ran Space-Saving in a restricted
+space, and thus some of the experimental runs did not
+have a precision of 1. For this reason, we report both
+the guarantee and the precision of Space-Saving for both
+the frequent elements and the top-k problems in Tables 1,
+and 2.
+The Frequent Elements Problem For the frequent
+elements problem, both the g uarantee and the precision
+of Space-Saving were constant at 1.0, as is clear from Ta-
+ble 1. That is, Space-Saving outputs only the correct el-
+ements, nothing but the correct elements, and guarantees
+its output to be correct.
+The T op-k Problem For the top-k problem, the guar-
+antee of Space-Saving ranged from 0 .80 to 1 .0, and the
+precision of Space-Saving ranged from 0.84 to 1.0, as is
+clear from Table 2. In other words, Space-Saving was
+(a) Run Time for FE on Real Data
+0
+50
+100
+150
+200
+250
+300
+1/1000 1/750 1/500 1/250 1/100
+Support
+Run Time (s)
+Space-Saving GroupTest Frequent
+(b) Precision for FE on Real Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+1/1000 1/750 1/500 1/250 1/100
+Support
+Precision
+Space-Saving GroupTest Frequent
+(c) Recall for FE on Real Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+1/1000 1/750 1/500 1/250 1/100
+Support
+Recall
+Space-Saving GroupTest Frequent
+(d) Space for FE on Real Data
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+1/1000 1/750 1/500 1/250 1/100
+Support
+Space Used (MB)
+Space-Saving GroupTest Frequent
+Figure 10: Performance Comparison for the Frequent Elements Problem Using a Real Click Stream
+Support
+ Number of Frequent
+Elements
+Size of
+Output
+Number of Guaranteed
+Frequent Elements
+Accuracy
+ Precision
+1/1000
+ 18
+ 18
+ 18
+ 1.0
+ 1.0
+1/750
+ 11
+ 11
+ 11
+ 1.0
+ 1.0
+1/500
+ 10
+ 10
+ 10
+ 1.0
+ 1.0
+1/250
+ 2
+ 2
+ 2
+ 1.0
+ 1.0
+1/100
+ 2
+ 2
+ 2
+ 1.0
+ 1.0
+Table 1: Space-Saving Guarantee for the Frequent Elements Problem Using a Real Click Stream
+able to guarantee 80% to 100% of its output to be cor-
+rect. Throughout the experimental runs, the number of
+non-guaranteed elements was at most 5.
+6 Answering Continuous Queries
+After validating the theoretical analysis by experimental
+evaluation, using both real and synthetic data, we ex-
+tend the proposed algorithm to answer continuous queries
+about both frequent and top-k elements. Although incre-
+mental reporting of the answer is useful in many appli-
+cations for monitoring interesting elements, we are not
+aware of any proposed solution for this problem. The
+main goal is to incrementally report any changes taking
+place in the answer set, without scanning all the mon-
+itored elements. Since thes e changes can take place af-
+ter any stream observation, the Increment-Counter al-
+gorithm has to be modiﬁed to check for changes in the
+answer set, so that the cache is updated before it is used
+for the next advertisement rendering. The extensions to
+Increment-Counter are discussed below.
+6.1 Continuous Queries for Frequent El-
+ements
+Incremental reporting of frequent elements can be classi-
+ﬁed into two types of reporting. The ﬁrst type is report-
+ing an infrequent element that has become frequent. This
+can happen when an element receives a hit that makes its
+frequency satisfy the minimum support, ⌈φN ⌉.T h i sc a n
+only happen for the observed element. The second type
+of updates is reporting that a group of frequent elements
+have become infrequent. This can happen because the
+minimum support, ⌈φN ⌉, has increased as N gets incre-
+mented. Several elements may become infrequent after
+the last stream observation. Moreover, one stream obser-
+vation can result in both types of updates.
+Checking for updates of both types is more eﬀective
+than running the QueryFrequent algorithms after every
+observation, i.e., after the call to Increment-Counter.
+The subroutineContinuousQueryFrequent that should be
+called at the end of each call to Increment-Counter and
+before the clean up step, is sketched in Figure 12.
+ContinuousQueryFrequent should maintain a pointer,
+ptr
+φ,t o Bucketφ, the bucket of minimum value that sat-
+isﬁes the support. Initially, this pointer points to the
+(a) Run Time for Top-k on Real Data
+0
+1000
+2000
+3000
+4000
+5000
+6000
+10 25 50 75 100
+k
+Run Time (s)
+Space-Saving CountSketch Probabilistic InPlace
+(b) Precision for Top-k on Real Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+10 25 50 75 100
+k
+Precision
+Space-Saving CountSketch Probabilistic InPlace
+(c) Recall for Top-k on Real Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+10 25 50 75 100
+k
+Recall
+Space-Saving CountSketch Probabilistic InPlace
+(d) Space for Top-k on Real Data
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+10 25 50 75 100
+k
+Space Used (MB)
+Space-Saving CountSketch Probabilistic InPlace
+Figure 11: Performance Comparison for the Top-k Problem Using a Real Click Stream
+Number
+of top-k
+Size of
+Output
+Number of Guaran-
+teed Top-k Elements
+Guarantee
+ Precision
+10
+ 10
+ 10
+ 1.0
+ 1.0
+25
+ 25
+ 20
+ 0.80
+ 0.84
+50
+ 50
+ 46
+ 0.92
+ 0.98
+75
+ 75
+ 72
+ 0.96
+ 0.9867
+100
+ 100
+ 98
+ 0.98
+ 0.99
+Table 2: Space-Saving Guarantee for the Top-k Problem Using a Real Click Stream
+Algorithm: ContinuousQueryF requent(counter counti)
+begin
+//Incrementing the stream size
+N ++;
+//Reporting elements that are becoming infrequent
+let Bucket
+φ be the bucket ptrφ points to
+let Bucket+
+φ be Bucketφ’s neighbor of larger value
+if (Bucketφ < ⌈φN ⌉){
+Report Bucketφ’s child-list as infrequent;
+Move ptrφ to Bucket+
+φ ;
+}
+//Reporting ei if it becomes frequent
+let Bucket′
+i be the new bucket of counti
+let Bucket′
+φ be the new bucket ptrφ points to
+if (Bucket′
+i > ⌈φN ⌉ AND Bucket′
+i ≤ Bucket′
+φ){
+let ei be the element of counti
+Report ei as frequent;
+Move ptrφ to Bucket′
+i;
+}
+end;
+Figure 12: Incremental Reporting of Frequent Elements
+initial bucket of the Stream-Summary.A t t h e e n d o f
+each call to the Increment-Counter algorithm and before
+deleting the empty bucket, it should invoke Continuous-
+QueryFrequent. ContinuousQueryFrequent should check
+if Bucketφ still satisﬁes the required support after the
+stream size, N, has been incremented. If it does not sat-
+isfy the support any more, all the elements in the child
+list of Bucketφ should be reported as frequent elements
+that have become infrequent, and ptrφ should be moved
+to Bucket+
+φ , the neighbor of Bucketφ with larger value.
+When the observed element,ei, has its counter,counti,
+incremented, ContinuousQueryFrequent should check the
+new bucket ofcounti, Bucket′
+i.I f counti has moved from
+an infrequent bucket to another infrequent bucket, or
+from a frequent bucket to another frequent bucket, then
+there is no need to update the set of frequent elements.
+Only if the new bucket of count
+i satisﬁes ⌈φN ⌉ and the
+old bucket did not,ei should be reported as an infrequent
+element that is now frequent. In this case, ptrφ should
+be moved to point to Bucket′
+i, the new bucket of counti,
+since we are sure then that this is the bucket of minimum
+value that satisﬁes the support. The algorithm Contin-
+uousQueryFrequent checks for this condition by making
+sure that Bucket′
+i has a value which satisﬁes the support,
+and its value is no greater than the value of the bucket
+pointed to by ptr
+φ.
+Reporting an element that is becoming frequent
+is O(1); and reporting a group of elements that
+are becoming infrequent is O(|elements becoming
+infrequent|). Thus, ContinuousQueryFrequent takes
+O(|updated elements|) to update the cache.
+In the Increment-Counter algorithm, the old bucket
+of counti is deleted if its child list is empty. The Con-
+tinuousQueryFrequent algorithm should be called before
+deleting the old bucket of counti.O t h e r w i s e ,ptrφ could
+be pointing to a deleted bucket, and there would be no
+eﬃcient way to know which bucket is Bucket
++
+φ , except
+by scanning all the buckets in theStream-Summary data
+structure, which is not a constant time operation.
+6.2 Continuous Queries for Top- k Ele-
+ments
+Answering continuous queries about top- k is similar to
+answering continuous queries about frequent elements.
+ContinuousQueryTop-k should maintain a pointer, ptrk,
+to Bucketk, the bucket to which countk belongs, where
+countk is the counter at the kth position in the Stream-
+Summary data structure. Hence, the top- k elements
+should be elements that belong to all the buckets with
+values no less than the value ofBucket
+k. However, there
+might be more than k elements that belong to buck-
+ets with values no less than that of countk.F o r i n -
+stance, if k = 100, and the buckets with values more
+than countk have 95 elements, and Bucketk has more
+than 5 elements, then some elements that belong to
+Bucket
+k will not be reported among the top- k.I n c a s e
+Bucketk has more elements than needed to report the
+top-k, ContinuousQueryTop-k should report a subset of
+the elements of Bucketk as being among the top-k.T h e
+rest of the Bucketk elements, though they have the same
+value ascountk, are not reported as being among the top-
+k.T h u s ,ContinuousQueryTop-k should maintain a set,
+Setk,o fe l e m e n t st h a tb e l o n gt oBucketk, and have been
+reported as Top-k. Initially, Setk is set empty, and ptrk
+points to the initial bucket of the Stream-Summary.
+The underlying idea is to keep track of boundary ele-
+ments that lie on the boundary between the top- k and
+the non-top-k elements. Such elements can move from
+outside the top-k to inside the top- k, if their frequency
+increases. Only an element that belong to Bucketk that
+is not a member of Setk c a nb er e p o r t e da sa ne l e m e n t
+which is entering the top-k set of elements, if it receives
+a hit. Elements which belong to Setk will not change the
+top-k if they received hits. Other elements that belong
+to buckets other than Bucketk will not eﬀect the top-k if
+they receive hits.
+The Stream-Summary data structure needs to be mod-
+iﬁed slightly, so that it can tell ifk distinct elements have
+been observed in the stream. This modiﬁcation helps at
+the transient start, when all distinct elements observed
+are among the top-k.
+Telling whether or not k distinct elements have been
+observed in the stream is an easy problem. It is enough to
+keep a counter that is incremented every time an element
+Algorithm: ContinuousQueryT op-k(counter counti)
+begin
+let ei be the element of counti
+//Case 1: not all top- k have been reported
+if less than k distinct elements are recieved
+if (counti =1 )
+Report ei as among the top- k;
+//Case 2: ei is the kth element reported
+if ei is the kth distinct element recieved {
+Report ei as among the top- k;
+let Bucket1 be the bucket of value 1
+Move ptrk to Bucket1;
+Insert Bucket1’s child-list into Setk ;
+}
+//Case 3: The general case
+//k elements have been already reported as top- k
+let Bucket
+k be the bucket ptrk points to
+let Bucket+
+k be Bucketk’s neighbor of larger value
+let Bucket′
+i be the new bucket of counti
+if (Bucket′
+i = Bucket+
+k ){
+if (ei ∈ Setk ){
+Delete ei from Setk ;
+}else{
+Select any element e from Setk ;
+Delete e from Setk ;
+Report e as not among top- k;
+Report ei as being among top- k;
+}
+if Setk is empty {
+Move ptrk to Bucket+
+k ;
+Insert Bucket+
+k ’s child-list into Setk ;
+}
+}
+end;
+Figure 13: Incremental Reporting of Top-k
+is deleted from the initial bucket in theStream-Summary,
+and is inserted into a bucket of value 1. However, for
+simplicity, we will delete these details from the algorithm,
+and assume an oracle that will answer the question for us.
+After receiving more than k distinct elements, a new
+element reported as being among the top-k, implies that
+another element is no longer in the top-k. The algorithm
+ContinuousQueryTop-k is responsible for this task, and
+s h o u l db ec a l l e da tt h ee n do fe a c hc a l lt oIncrement-
+Counter and before the clean up step, as sketched in Fig-
+ure 13.
+The ﬁrst two cases in ContinuousQueryTop-k handle
+the special cases when the distinct elements in the stream
+are no more thank. In Case 1, the algorithm checks if the
+number of distinct elements observed is strictly less than
+k. If this is true, then e
+i, the observed element should be
+reported among the top-k if this is the ﬁrst occurrence of
+ei.I n C a s e 2 , i fei is the kth distinct element reported,
+then the number of distinct elements has changed from
+k − 1t o k because of the last observation, ei.T h u s ,
+in addition to reporting ei as being among the top- k,
+ptrk has to be moved to Bucket1, the bucket of value 1.
+Since ei is the kth distinct element, the top-k are all the
+elements in all the buckets with values no less than 1.
+Thus, Setk should include all the elements that belong to
+Bucket1.
+Case 3 is the general case. This case is executed only
+if ei moves from Bucketk to Bucket+
+k , the neighbor of
+Bucketk with larger value. If ei was already among the
+top-k, i.e., it did belong to Setk, then the top-k elements
+did not change, and it needs to be deleted fromSetk,s i n c e
+it does not belong toBucketk any more. However, if ei is
+a boundary element, i.e., it did not belong to Setk,t h e n
+ei is moving from outside top-k to inside top-k.T h u s ,ei
+has to be reported as being among the top-k. In addition,
+an element has to be picked fromSetk, deleted fromSetk,
+and reported as a non-top-k element.
+Whether ei belongs to Setk or not, the deletion of an
+element from Setk, might leave Setk empty. In this case,
+we are sure that there are exactlyk elements in the buck-
+ets with values more than that ofBucketk. Those are the
+top-k elements. Hence, ptrk should be moved to point to
+Bucket+
+k , the neighbor of Bucketk with larger value; and
+Setk should be initialized to contain all the elements in
+the child list of Bucket+
+k .
+Since Setk can have at most k elements at a time, we
+assume it can be stored in an associative memory, and
+thus, all the operation on Set
+k is O(1). Otherwise, it
+can be stored in a hash tabl e, and the amortized cost
+of any operation will still be O(1). It is easy to see that
+the amortized cost ofContinuousQueryTop-k is constant.
+Although the step of inserting all the elements of one
+bucket into Setk is not O(1), this cost will be amortized
+since Setk will have exactly one element deleted every
+time an element moves from Bucketk to Bucket+
+k .T h u s
+on average, one element will be inserted, and another
+will be deleted from Setk for every element moving from
+Bucketk to Bucket+
+k ,w h i c hi sO(1) per observation.
+Like ContinuousQueryFrequent, ContinuousQueryTop-
+k should be called before deleting the old bucket ofcounti.
+Otherwise, ptrk could be pointing to a deleted bucket, and
+there would be no constant time method to know which
+bucket is Bucket+
+k .
+7 Discussion
+This paper has devised an integrated approach for solving
+an interesting family of problems in data streams. The
+Stream-Summary data structure was proposed, and uti-
+lized by the Space-Saving algorithm to guarantee strict
+bounds on the error rate for approximate counts of ele-
+ments, using very limited space. We showed that Space-
+Saving can handle both the frequent elements and top-
+k queries because it eﬃciently estimates the elements’
+frequencies. The memory requirements were analyzed
+with special attention to the case of skewed data. More-
+over, this paper introducedand motivated the problem of
+answering continuous queries about top- k, and frequent
+elements, through incremen tal reporting of changes to
+the answer sets. Minor extensions were applied to use
+the same set of algorithms to answer continuous queries.
+We conducted extensive experiments using both synthetic
+and real data sets to validate the beneﬁt of the proposed
+algorithm.
+This is the ﬁrst algorithm, to the best of our knowledge,
+that guarantees the correctness of the frequent elements;
+as well as the correctness and the order of the top-k ele-
+ments, when the data is skewed.
+In practice, if the alphabet is too large, like in the case
+of IP addresses, only a subset of this alphabet is observed
+in the stream, and not all the 2
+32 addresses. Our space
+bounds are actually a function of the number of distinct
+elements which have occurred in the stream. However, in
+our analysis, we have assumed that the entire alphabet is
+observed in the stream, which is the worst case forSpace-
+Saving. Yet, our space bounds are still tighter than those
+of other algorithms.
+The main practical strengths of Space-Saving is that
+it can use whatever space is available to estimate the
+elements’ frequencies, and provide guarantees on its re-
+sults whenever possible. Even when analysts are not sure
+about the appropriate parameters, the algorithm can run
+in the available memory, and the results can be analyzed
+for further tuning. It is interesting that running the algo-
+rithm on the available space ensures that more important
+elements are less susceptible to noise. The underlying rea-
+son is that it can be easily shown that the expected value
+of the over-estimation, ε
+i, increases monotonically with
+the sum of the length of the stream sections when ei was
+not monitored, which is inversely related to fi.
+References
+[1] N. Alon, Y. Matias, and M. Szegedy. The Space
+Complexity of Approximating the Frequency Mo-
+ments. In Proceedings of the 28th ACM STOC Sym-
+posium on the Theory of Computing , pages 20–29,
+1996.
+[2] A. Arasu, S. Babu, and J. Widom. CQL: A Language
+for Continuous Queries over Streams and Relations.
+In Proceedings of the 9th DBPL International Con-
+ference on Data Base and Programming Languages,
+pages 1–11, 2003.
+[3] A. Arasu, S. Babu, and J. Widom. The CQL Con-
+tinuous Query Language: Semantic Foundations and
+Query Execution. Technical Report 2002-67, Stan-
+ford University, 2003.
+[4] B. Babcock, S. Babu, M. Datar, R. Motwani, and
+J. Widom. Models and Issues in Data Stream Sys-
+tems. In Proceedings of the 21st ACM PODS Sympo-
+sium on Principles of Database Systems, pages 1–16,
+2002.
+[5] B. Babcock and C. Olston. Distributed Top-k Mon-
+itoring. In Proceedings of the 22nd ACM SIGMOD
+International Conference on Management of Data ,
+pages 28–39, 2003.
+[6] Burton H. Bloom. Space/Time Trade-oﬀs in Hash
+Coding with Allowable Errors. Communications of
+the ACM, 13(7):422–426, 1970.
+[7] P. Bonnet, J. Gehrke, and P. Seshadri. Towards
+Sensor Database Systems. In Proceedings of the
+2nd IEEE MDM International Conference on Mo-
+bile Data Management, pages 3–14, 2001.
+[8] P. Bose, E. Kranakis, P. Morin, and Y. Tang. Bounds
+for Frequency Estimation of Packet Streams. InPro-
+ceedings of the 10th SIROCCO International Collo-
+quium on Structural Information and Communica-
+tion Complexity, pages 33–42, 2003.
+[9] R. Boyer and J. Moore. A Fast Majority Vote Algo-
+rithm. Technical Report 1981-32, Institute for Com-
+puting Science, University of Texas, Austin, 1981.
+[10] M. Charikar, K. Chen, and M. Farach-Colton. Find-
+ing Frequent Items in Data Streams. In Proceed-
+ings of the 29th ICALP International Colloquium on
+Automata, Languages and Programming, pages 693–
+703, 2002.
+[11] J. Chen, D. DeWitt, F. Tian, and Y. Wang. Nia-
+garaCQ: A Scalable Continuous Query System for
+Internet Databases. In Proceedings of the 19th ACM
+SIGMOD International Conference on Management
+of Data, pages 379–390, 2000.
+[12] G. Cormode, F. Korn, S. Muthukrishnan, and D. Sri-
+vastava. Finding Hierarchical Heavy Hitters in Data
+Streams. In Proceedings of the 29th ACM VLDB In-
+ternational Conference on Very Large Data Bases ,
+pages 464–475, 2003.
+[13] G. Cormode, F. Korn, S. Muthukrishnan, and D. Sri-
+vastava. Diamond in the Rough: Finding Hierar-
+chical Heavy Hitters in Multi-Dimensional Data. In
+Proceedings of the 23rd ACM SIGMOD International
+Conference on Management of Data, pages 155–166,
+2004.
+[14] G. Cormode and S. Muthukrishnan. What’s Hot and
+What’s Not: Tracking Most Frequent Items Dynami-
+cally. InProceedings of the 22nd ACM PODS Sympo-
+sium on Principles of Database Systems, pages 296–
+306, 2003.
+[15] C. Cortes, K. Fisher, D. Pregibon, A. Rogers, and
+F. Smith. Hancock: A Language for Extracting Sig-
+natures from Data Streams. InProceedings of the 6th
+ACM SIGKDD International Conference on Knowl-
+edge Discovery and Data Mining, pages 9–17, 2000.
+[16] M. Datar, A. Gionis, P. Indyk, and R. Motwani.
+Maintaining Stream Statistics over Sliding Windows.
+In Proceedings of the 13th ACM SIAM Symposium
+on Discrete Algorithms, pages 635–644, 2002.
+[17] E. Demaine, A. L´opez-Ortiz, and J. Munro. Fre-
+quency Estimation of Internet Packet Streams with
+Limited Space. In Proceedings of the 10th ESA
+Annual European Symposium on Algorithms, pages
+348–360, 2002.
+[18] C. Estan and G. Varghese. New Directions in Traﬃc
+Measurement and Accounting: Focusing on the Ele-
+phants, Ignoring the Mice. ACM Transactions on
+Computer Systems, 21(3):270–313, 2003.
+[19] M. Fang, S. Shivakumar, H. Garcia-Molina, R. Mot-
+wani, and J. Ullman. Computing Iceberg Queries
+Eﬃciently. In Proceedings of the 24th ACM VLDB
+International Conference on Very Large Data Bases,
+pages 299–310, 1998.
+[20] J. Feigenbaum, S. Kannan, M. Strauss, and
+M. Viswanathan. An Approximate L1-Diﬀerence Al-
+gorithm for Massive Data Streams. InProceedings of
+40th FOCS Annual Symposium on Foundations of
+Computer Science, pages 501–511, 1999.
+[21] M. Fischer and S. Salzberg. Finding a Majority
+Among N Votes: Solution to Problem 81-5. Jour-
+nal of Algorithms, 3:376–379, 1982.
+[22] P. Flajolet and G. Martin. Probabilistic Counting
+Algorithms. Journal of Computer and System Sci-
+ences, 31:182–209, 1985.
+[23] J. Gehrke, F. Korn, and D. Srivastava. On Com-
+puting Correlated Aggregates Over Continual Data
+Streams. In Proceedings of the 20th ACM SIGMOD
+International Conference on Management of Data ,
+pages 13–24, 2001.
+[24] P. Gibbons and Y. Matias. New Sampling-Based
+Summary Statistics for Improving Approximate
+Query Answers. In Proceedings of the 17th ACM
+SIGMOD International Conference on Management
+of Data, pages 331–342, 1998.
+[25] A. Gilbert, Y. Kotidis, S. Muthukrishnan, and
+M. Strauss. Surﬁng Wavelets on Streams: One-Pass
+Summaries for Approximate Aggregate Queries. In
+Proceedings of the 27th ACM VLDB International
+Conference on Very Large Data Bases, pages 79–88,
+2001.
+[26] L. Golab, D. DeHaan, E. Demaine, A. L´opez-Ortiz,
+and J. Munro. Identifying Frequent Items in Sliding
+Windows over OnLine Packet Streams. In Proceed-
+ings of the 1st ACM SIGCOMM Internet Measure-
+ment Conference, pages 173–178, 2003.
+[27] L. Golab and M. Ozsu. Issues in Data Stream Man-
+agement. ACM SIGMOD Record, 32(2):5–14, 2003.
+[28] M. Greenwald and S. Khanna. Space-Eﬃcient Online
+Computation of Quantile Summaries. InProceedings
+of the 19th ACM SIGMOD International Conference
+on Management of Data, pages 58–66, 2001.
+[29] S. Guha, P. Indyk, M. Muthukrishnan, and
+M. Strauss. Histogramming Data Streams with Fast
+Per-Item Processing. In Proceedings of the 29th
+ICALP International Colloquium on Automata, Lan-
+guages and Programming, pages 681–692, 2002.
+[30] S. Guha, N. Koudas, and K. Shim. Data-Streams and
+Histograms. In Proceedings of the 33rd ACM STOC
+Symposium on the Theory of Computing, pages 471–
+475, 2001.
+[31] S. Gunduz and M. Ozsu. A Web Page Predic-
+tion Model Based on Click-Stream Tree Represen-
+tation of User Behavior. In Proceedings of the 9th
+ACM SIGKDD International Conference on Knowl-
+edge Discovery and Data Mining , pages 535–540,
+2003.
+[32] P. Gupta and N. McKeown. Packet Classiﬁcation on
+Multiple Fields. In Proceedings of the ACM SIG-
+COMM International Conference on Applications,
+Technologies, Architectures, and Protocols for Com-
+puter Communication, pages 147–160, 1999.
+[33] P. Haas, J. Naughton, S. Sehadri, and L. Stokes.
+Sampling-Based Estimation of the Number of Dis-
+tinct Values of an Attribute. In Proceedings of the
+21st ACM VLDB International Conference on Very
+Large Data Bases, pages 311–322, 1995.
+[34] C. Hoare. Algorithm 65: Find. Communications of
+the ACM, 4(7):321–322, 1961.
+[35] C. Jin, W. Qian, C. Sha, J. Yu, and A. Zhou. Dy-
+namically Maintaining Frequent Items over a Data
+Stream. In Proceedings of the 12th ACM CIKM In-
+ternational Conference on Information and Knowl-
+edge Management, pages 287–294, 2003.
+[36] R. Karp, S. Shenker, and C. Papadimitriou. A
+Simple Algorithm for Finding Frequent Elements in
+Streams and Bags. ACM Transactions on Database
+Systems, 28(1):51–55, 2003.
+[37] P. Kirschenhofer, H. Prodinger, and C. Martinez.
+Analysis of Hoare’s FIND Algorithm With Median-
+Of-Three Partition. Random Structures Algorithms,
+10(1-2):143–156, 1997.
+[38] X. Lin, H. Lu, J. Xu, and J. Yu. Continuously Main-
+taining Quantile Summaries of the Most Recent N
+Elements over a Data Stream. In Proceedings of the
+20th IEEE ICDE International Conference on Data
+Engineering, pages 362–374, 2004.
+[39] G. Manku and R. Motwani. Approximate Frequency
+Counts over Data Streams. In Proceedings of the
+28th ACM VLDB International Conference on Very
+Large Data Bases, pages 346–357, 2002.
+[40] G. Manku, S. Rajagopalan, and B. Lindsay. Ran-
+dom Sampling Techniques for Space Eﬃcient Online
+Computation of Order Statistics of Large Datasets.
+In Proceedings of the 18th ACM SIGMOD Interna-
+tional Conference on Management of Data , pages
+251–262, 1999.
+[41] Y. Matias, J. Vitter, and M. Wang. Dynamic Mainte-
+nance of Wavelet-Based Histograms. In Proceedings
+of the 26th ACM VLDB International Conference on
+Very Large Data Bases, pages 101–110, 2000.
+[42] A. Metwally, D. Agrawal, and A. El Abbadi. Du-
+plicate Detection in Click Streams. In Proceedings
+of the 14th WWW International World Wide Web
+Conference, pages 12–21, 2005. An extended version
+appears as a University of California, Santa Barbara,
+Department of Computer Sciemce, Technical Report
+2004-23.
+[43] A. Metwally, D. Agrawal, and A. El Abbadi. Eﬃ-
+cient Computation of Frequent and Top-k Elements
+in Data Streams. In Proceedings of the 10th ICDT
+International Conference on Database Theory, pages
+398–412, 2005. An extended version appears as a
+University of California, Santa Barbara, Department
+of Computer Sciemce, Technical Report 2005-23.
+[44] J. Misra and D. Gries. Finding Repeated Elements.
+Science of Computer Programming, 2:143–152, 1982.
+[45] K. Whang, B. Vander-Zanden, and H. Taylor.
+A Linear-Time Probabilistic Counting Algorithm
+for Database Applications. ACM Transactions on
+Database Systems, 15:208–229, 1990.
+[46] Y. Zhu and D. Shasha. StatStream: Statistical Mon-
+itoring of Thousands of Data Streams in Real Time.
+In Proceedings of the 28th ACM VLDB International
+Conference on Very Large Data Bases , pages 358–
+369, 2002.
+[47] G. Zipf. Human Behavior and The Principle of Least
+Eﬀort. Addison-Wesley, 1949.

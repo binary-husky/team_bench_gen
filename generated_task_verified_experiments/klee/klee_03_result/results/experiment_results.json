@@ -1,0 +1,1604 @@
+{
+  "seeds": [
+    1,
+    7,
+    42
+  ],
+  "functions": [
+    {
+      "name": "get_sign",
+      "args": [
+        "x"
+      ],
+      "source": "\ndef get_sign(x):\n    if x < 0:\n        return -1\n    if x == 0:\n        return 0\n    return 1\n"
+    },
+    {
+      "name": "classify_triangle",
+      "args": [
+        "a",
+        "b",
+        "c"
+      ],
+      "source": "\ndef classify_triangle(a, b, c):\n    if a + b <= c or a + c <= b or b + c <= a:\n        return 0\n    if a == b and b == c:\n        return 3\n    if a == b or b == c or a == c:\n        return 2\n    return 1\n"
+    },
+    {
+      "name": "k_independent_ifs_2",
+      "args": [
+        "x1",
+        "x2"
+      ],
+      "source": "def k_independent_ifs_2(x1, x2):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    return r\n"
+    },
+    {
+      "name": "k_independent_ifs_3",
+      "args": [
+        "x1",
+        "x2",
+        "x3"
+      ],
+      "source": "def k_independent_ifs_3(x1, x2, x3):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    return r\n"
+    },
+    {
+      "name": "k_independent_ifs_4",
+      "args": [
+        "x1",
+        "x2",
+        "x3",
+        "x4"
+      ],
+      "source": "def k_independent_ifs_4(x1, x2, x3, x4):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    return r\n"
+    },
+    {
+      "name": "k_independent_ifs_5",
+      "args": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5"
+      ],
+      "source": "def k_independent_ifs_5(x1, x2, x3, x4, x5):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    if x5 > 0:\n        r = r + 16\n    return r\n"
+    }
+  ],
+  "runs": [
+    {
+      "function": "get_sign",
+      "seed": 1,
+      "n_tests": 3,
+      "n_paths": 3,
+      "branches_covered": 4,
+      "branches_total": 4,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x": 1073741824
+        },
+        {
+          "x": 0
+        },
+        {
+          "x": -1
+        }
+      ],
+      "source": "\ndef get_sign(x):\n    if x < 0:\n        return -1\n    if x == 0:\n        return 0\n    return 1\n"
+    },
+    {
+      "function": "get_sign",
+      "seed": 7,
+      "n_tests": 3,
+      "n_paths": 3,
+      "branches_covered": 4,
+      "branches_total": 4,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x": 1073741824
+        },
+        {
+          "x": 0
+        },
+        {
+          "x": -1
+        }
+      ],
+      "source": "\ndef get_sign(x):\n    if x < 0:\n        return -1\n    if x == 0:\n        return 0\n    return 1\n"
+    },
+    {
+      "function": "get_sign",
+      "seed": 42,
+      "n_tests": 3,
+      "n_paths": 3,
+      "branches_covered": 4,
+      "branches_total": 4,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x": -1
+        },
+        {
+          "x": 0
+        },
+        {
+          "x": 1073741824
+        }
+      ],
+      "source": "\ndef get_sign(x):\n    if x < 0:\n        return -1\n    if x == 0:\n        return 0\n    return 1\n",
+      "tests_mean": 3,
+      "tests_all": [
+        3,
+        3,
+        3
+      ],
+      "paths_mean": 3,
+      "paths_all": [
+        3,
+        3,
+        3
+      ],
+      "cov_mean": 1.0,
+      "cov_all": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "function": "classify_triangle",
+      "seed": 1,
+      "n_tests": 4,
+      "n_paths": 4,
+      "branches_covered": 6,
+      "branches_total": 6,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "a": -1074178287,
+          "b": -1074120967,
+          "c": 1073305361
+        },
+        {
+          "a": 735226990,
+          "b": 1105435728,
+          "c": 735226990
+        },
+        {
+          "a": -2147483640,
+          "b": -2147483640,
+          "c": -2147483640
+        },
+        {
+          "a": 1073741682,
+          "b": 2147483250,
+          "c": 1073742080
+        }
+      ],
+      "source": "\ndef classify_triangle(a, b, c):\n    if a + b <= c or a + c <= b or b + c <= a:\n        return 0\n    if a == b and b == c:\n        return 3\n    if a == b or b == c or a == c:\n        return 2\n    return 1\n"
+    },
+    {
+      "function": "classify_triangle",
+      "seed": 7,
+      "n_tests": 4,
+      "n_paths": 4,
+      "branches_covered": 6,
+      "branches_total": 6,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "a": -2145386497,
+          "b": -1071644374,
+          "c": -1073742041
+        },
+        {
+          "a": -1275259559,
+          "b": -1099892750,
+          "c": -1275259559
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "c": 1
+        },
+        {
+          "a": 1073741631,
+          "b": 1073742335,
+          "c": 2147481282
+        }
+      ],
+      "source": "\ndef classify_triangle(a, b, c):\n    if a + b <= c or a + c <= b or b + c <= a:\n        return 0\n    if a == b and b == c:\n        return 3\n    if a == b or b == c or a == c:\n        return 2\n    return 1\n"
+    },
+    {
+      "function": "classify_triangle",
+      "seed": 42,
+      "n_tests": 4,
+      "n_paths": 4,
+      "branches_covered": 6,
+      "branches_total": 6,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "a": 268435731,
+          "b": 1879048238,
+          "c": 2147483647
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "c": 1
+        },
+        {
+          "a": -2025414209,
+          "b": -1757295748,
+          "c": -2025414209
+        },
+        {
+          "a": -2106589183,
+          "b": -2106589167,
+          "c": 40894465
+        }
+      ],
+      "source": "\ndef classify_triangle(a, b, c):\n    if a + b <= c or a + c <= b or b + c <= a:\n        return 0\n    if a == b and b == c:\n        return 3\n    if a == b or b == c or a == c:\n        return 2\n    return 1\n",
+      "tests_mean": 4,
+      "tests_all": [
+        4,
+        4,
+        4
+      ],
+      "paths_mean": 4,
+      "paths_all": [
+        4,
+        4,
+        4
+      ],
+      "cov_mean": 1.0,
+      "cov_all": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "function": "k_independent_ifs_2",
+      "seed": 1,
+      "n_tests": 4,
+      "n_paths": 4,
+      "branches_covered": 4,
+      "branches_total": 4,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1
+        }
+      ],
+      "source": "def k_independent_ifs_2(x1, x2):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_2",
+      "seed": 7,
+      "n_tests": 4,
+      "n_paths": 4,
+      "branches_covered": 4,
+      "branches_total": 4,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1
+        }
+      ],
+      "source": "def k_independent_ifs_2(x1, x2):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_2",
+      "seed": 42,
+      "n_tests": 4,
+      "n_paths": 4,
+      "branches_covered": 4,
+      "branches_total": 4,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 1,
+          "x2": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0
+        }
+      ],
+      "source": "def k_independent_ifs_2(x1, x2):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    return r\n",
+      "tests_mean": 4,
+      "tests_all": [
+        4,
+        4,
+        4
+      ],
+      "paths_mean": 4,
+      "paths_all": [
+        4,
+        4,
+        4
+      ],
+      "cov_mean": 1.0,
+      "cov_all": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "function": "k_independent_ifs_3",
+      "seed": 1,
+      "n_tests": 8,
+      "n_paths": 8,
+      "branches_covered": 6,
+      "branches_total": 6,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1
+        }
+      ],
+      "source": "def k_independent_ifs_3(x1, x2, x3):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_3",
+      "seed": 7,
+      "n_tests": 8,
+      "n_paths": 8,
+      "branches_covered": 6,
+      "branches_total": 6,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1
+        }
+      ],
+      "source": "def k_independent_ifs_3(x1, x2, x3):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_3",
+      "seed": 42,
+      "n_tests": 8,
+      "n_paths": 8,
+      "branches_covered": 6,
+      "branches_total": 6,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0
+        }
+      ],
+      "source": "def k_independent_ifs_3(x1, x2, x3):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    return r\n",
+      "tests_mean": 8,
+      "tests_all": [
+        8,
+        8,
+        8
+      ],
+      "paths_mean": 8,
+      "paths_all": [
+        8,
+        8,
+        8
+      ],
+      "cov_mean": 1.0,
+      "cov_all": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "function": "k_independent_ifs_4",
+      "seed": 1,
+      "n_tests": 16,
+      "n_paths": 16,
+      "branches_covered": 8,
+      "branches_total": 8,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1
+        }
+      ],
+      "source": "def k_independent_ifs_4(x1, x2, x3, x4):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_4",
+      "seed": 7,
+      "n_tests": 16,
+      "n_paths": 16,
+      "branches_covered": 8,
+      "branches_total": 8,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1
+        }
+      ],
+      "source": "def k_independent_ifs_4(x1, x2, x3, x4):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_4",
+      "seed": 42,
+      "n_tests": 16,
+      "n_paths": 16,
+      "branches_covered": 8,
+      "branches_total": 8,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0
+        }
+      ],
+      "source": "def k_independent_ifs_4(x1, x2, x3, x4):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    return r\n",
+      "tests_mean": 16,
+      "tests_all": [
+        16,
+        16,
+        16
+      ],
+      "paths_mean": 16,
+      "paths_all": [
+        16,
+        16,
+        16
+      ],
+      "cov_mean": 1.0,
+      "cov_all": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "function": "k_independent_ifs_5",
+      "seed": 1,
+      "n_tests": 32,
+      "n_paths": 32,
+      "branches_covered": 10,
+      "branches_total": 10,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        }
+      ],
+      "source": "def k_independent_ifs_5(x1, x2, x3, x4, x5):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    if x5 > 0:\n        r = r + 16\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_5",
+      "seed": 7,
+      "n_tests": 32,
+      "n_paths": 32,
+      "branches_covered": 10,
+      "branches_total": 10,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        }
+      ],
+      "source": "def k_independent_ifs_5(x1, x2, x3, x4, x5):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    if x5 > 0:\n        r = r + 16\n    return r\n"
+    },
+    {
+      "function": "k_independent_ifs_5",
+      "seed": 42,
+      "n_tests": 32,
+      "n_paths": 32,
+      "branches_covered": 10,
+      "branches_total": 10,
+      "branch_coverage": 1.0,
+      "tests": [
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 1,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 1,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 1,
+          "x4": 0,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 1,
+          "x5": 0
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 1
+        },
+        {
+          "x1": 0,
+          "x2": 0,
+          "x3": 0,
+          "x4": 0,
+          "x5": 0
+        }
+      ],
+      "source": "def k_independent_ifs_5(x1, x2, x3, x4, x5):\n    r = 0\n    if x1 > 0:\n        r = r + 1\n    if x2 > 0:\n        r = r + 2\n    if x3 > 0:\n        r = r + 4\n    if x4 > 0:\n        r = r + 8\n    if x5 > 0:\n        r = r + 16\n    return r\n",
+      "tests_mean": 32,
+      "tests_all": [
+        32,
+        32,
+        32
+      ],
+      "paths_mean": 32,
+      "paths_all": [
+        32,
+        32,
+        32
+      ],
+      "cov_mean": 1.0,
+      "cov_all": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

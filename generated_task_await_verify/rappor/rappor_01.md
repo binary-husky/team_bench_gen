@@ -33,3 +33,13 @@ Look at `./summary_rappor_01_ldp.md`, check whether the answer covers the follow
     - **(a) 局部 DP 定义**：对相邻输入（比特 `b=0` vs `b=1`），任意输出 `o` 的概率比 `Pr[out=o|b=1]/Pr[out=o|b=0] ≤ e^ε`。
     - **(b) PRR 的 ε**：`o=1` 比值 `(1−f/2)/(f/2) = (2−f)/f`，`o=0` 为其倒数，均被 `(2−f)/f` 控制 ⟹ **ε_perm = ln((2−f)/f)**；`f=0.5` ⟹ ε_perm = ln 3 ≈ 1.10。
     - **(c) IRR 的 ε 与结论**：`o=1` 比值 `q/p` ⟹ **ε_irr = ln(q/p)**；`p=0.5,q=0.75` ⟹ ln 1.5 ≈ 0.405。结论：随机响应层的 ε = 输出概率比的对数；`f` 越大 / `q−p` 越大 → ε 越大 → 隐私越弱（反之越强但效用越差）。
+
+[Judge V2]
+
+查阅 `./summary_rappor_01_ldp.md` —— 基于真实推导结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给出局部 DP 定义：相邻输入 `b=0`/`b=1` 下任意输出 `o` 的概率比 `Pr[out=o|b=1]/Pr[out=o|b=0] ≤ e^ε`（双向，取倒数亦然）。（细化原 [Judge] 第 1a 点）
+2. 须推导 PRR：`o=1` 比值 `(2−f)/f`、`o=0` 为其倒数 ⇒ `ε_perm=ln((2−f)/f)`；`f=0.5`⇒`ln3≈1.10`。（细化原 [Judge] 第 1b 点——明确两输出比值）
+3. 须推导 IRR：`ε=max(ln(q/p),ln((1−q)/(1−p)))`（两输出均约束），`p=0.5,q=0.75`⇒`ln1.5≈0.405`；端到端 `ε≈ε_perm+ε_irr`（串行组合）；`f` 大⇒`ε_perm` 小更私密但效用差。（细化原 [Judge] 第 1c 点——补 max 形式与串行组合）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

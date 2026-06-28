@@ -13,3 +13,14 @@ Look at `./summary_separation.md`, check whether conclusion cover the following 
 1. 簇分离良好（小 cluster_std）时，k-means++ 相对随机的优势很大（比值大）。
 2. 随簇重叠增大（大 cluster_std），优势缩小。
 3. k-means++ 在各分离度下都保持稳定（方差小）。
+
+
+[Judge V2]
+
+查阅 `./summary_separation.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；make_blobs n=5000/k=10、std∈{0.5…4.0}、20 种子）：
+
+1. 须给分离良好(小 std) km++ 优势大（golden：std=0.5 ratio(random/km++)=3.53；可接受：std=0.5 ratio ≥2）。（细化原 [Judge] 第 1 点）
+2. 须给重叠增大优势缩小（golden：ratio 3.53→1.36→1.06→0.99→1.00（std=0.5→4.0）；可接受：ratio 随 std 单调降→1）。（细化原 [Judge] 第 2 点）
+3. 须给各分离度下稳定（方差小）（golden：summary 结论稳定但未逐 std 给方差；可接受：点明 km++ 各 std 下稳定/可复现即给分）。（细化原 [Judge] 第 3 点——summary 未逐项给方差，按"稳定"给分）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

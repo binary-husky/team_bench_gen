@@ -26,3 +26,15 @@ Look at `./summary_raft_01_majority.md`, check whether the answer covers the fol
     - **(a) 鸽巢论证**：两个严格多数集合大小之和 > N/2 + N/2 = N，而每节点一 term 至多一票 ⇒ 两集合不相交 ⇒ 不相交两集合之和 > N 不可能（总票数 ≤ N）⇒ **同一 term 至多一个候选人获严格多数**。
     - **(b) 每 term 至多一个 leader 是一致性前提**：plurality 下同一 term 内网络分区可使不同子集各自选出"得票最多者"，出现两个 leader，二者向不同 follower 复制**不同 entry 到同一 log index**，造成日志分叉/冲突。
     - **(c) 严格多数集合两两相交 ⇒ Leader Completeness**：两个 > N/2 的集合必相交，故新 leader 的多数集合必与已提交 entry 所在多数集合相交 ⇒ 至少一个持有该 entry 的节点进入新多数 ⇒ 配合选举限制（拒绝 log 更旧者）⇒ 新 leader 含该已提交 entry ⇒ **已提交条目永不丢失**；plurality 多数集合不一定相交，该传递链在"相交"一步断裂，已提交 entry 可能丢失。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_raft_01_majority.md` —— 基于真实推导结果对上方 [Judge] 的修订（以实测为准；Ongaro-Ousterhout ATC'14）：
+
+1. 须给 (a) 鸽巢：每 term 每节点一票 ⇒ 总票 ≤N；两严格多数集和 >N ⇒ 必相交 ⇒ 一节点投两次，不可能 ⇒ **同 term 至多一个 leader**。（细化原 [Judge] 第 1a 点）
+2. 须给 (b) plurality ⇒ 日志分叉：分区子集可各自选"最多票"leader 于同 term ⇒ 两 leader 同 log index 追加不同 entry ⇒ 日志分叉/冲突，违反单拷贝一致性。（细化原 [Judge] 第 1b 点）
+3. 须给 (c) 严格多数集两两相交 ⇒ Leader Completeness：任两 >N/2 集相交 ⇒ 新 leader 多数集与已提交 entry 多数集相交 ⇒ 某持有已提交 entry 的节点在新多数中；配选举限制（拒绝更旧 log）⇒ 新 leader 含已提交 entry ⇒ 已提交条目永不丢；plurality 集不一定相交，传递链断裂。（细化原 [Judge] 第 1c 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

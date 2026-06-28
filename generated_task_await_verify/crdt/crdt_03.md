@@ -28,3 +28,15 @@ Look at `./summary_crdt_03_order_invariance.md`, check whether conclusion covers
 1. 给出了在 ≥100 种乱序+重复投递方案下，每种 CRDT（G-Counter/PN-Counter/OR-Set/LWW-Register）得到的**不同最终状态个数 = 1**，以表格呈现。
 2. **对照实验**：朴素非 CRDT 计数器在同样乱序+重复下得到**多于一个**的最终状态个数（随投递顺序/重复而变），说明 CRDT 的不变性来自 merge 的交换+结合+幂等。
 3. 明确把"最终状态唯一"归因于 `merge` 满足**交换+结合+幂等**三性（乱序↔交换+结合；重复↔幂等），这正是 CRDT 能在不可靠/乱序/重复网络下收敛的结构原因。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_crdt_03_order_invariance.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给 ≥100 方案下每 CRDT 仅 1 终态（golden：200 方案全 =1、G-Counter=32/PN=27/LWW=v7/OR-Set={a,b,c,d}；可接受：≥100 方案且 =1）。（细化原 [Judge] 第 1 点）
+2. 须给朴素基线发散（golden：Δ-counter 41、overwrite 7；可接受：朴素 >1 即发散）。（细化原 [Judge] 第 2 点）
+3. 须归因 merge 三律——四 CRDT 过交换/结合/幂等微断言（golden：True×3；可接受：通过三律微断言）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

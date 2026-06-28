@@ -13,3 +13,14 @@ Look at `./summary_approx_ratio.md`, check whether conclusion cover the followin
 1. 良好分离簇上，实测近似比接近 1（近最优）。
 2. 近似比随 k 增大仍保持较小（最坏界 O(log k) 在实践中很松）。
 3. 偶有偏离但整体有界、远低于 8(ln k + 2)。
+
+
+[Judge V2]
+
+查阅 `./summary_approx_ratio.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；良好分离簇、120 random_state、自变量 k）：
+
+1. 须给良好分离簇实测近似比接近 1（golden：mean 1.025–1.070、max 1.057–1.188；可接受：mean ≤1.1）。（细化原 [Judge] 第 1 点）
+2. 须给近似比随 k 仍较小（O(log k) 实践很松）（golden：mean 1.025→1.070 缓升、远低于 ln k 与 8(ln k+2)=28.9–47.3；可接受：随 k 不对数发散）。（细化原 [Judge] 第 2 点）
+3. 须给偏离有界、远低于 8(ln k+2)（golden：max ~1.19 vs 8(ln k+2) 28.9–47.3；可接受：max ≤2 且 ≪8(ln k+2)）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

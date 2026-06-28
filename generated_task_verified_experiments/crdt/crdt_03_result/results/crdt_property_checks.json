@@ -1,0 +1,22 @@
+{
+  "G-Counter": {
+    "commutative": true,
+    "associative": true,
+    "idempotent": true
+  },
+  "PN-Counter": {
+    "commutative": true,
+    "associative": true,
+    "idempotent": true
+  },
+  "LWW-Register": {
+    "commutative": true,
+    "associative": true,
+    "idempotent": true
+  },
+  "OR-Set": {
+    "commutative": true,
+    "associative": true,
+    "idempotent": true
+  }
+}

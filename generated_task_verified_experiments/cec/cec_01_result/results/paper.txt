@@ -1,0 +1,444 @@
+                                                        RCMAES: A Robust CMA-ES Variant for
+                                                              CEC2026 Competition
+                                                                             Khoirul Faiq Muzakka∗† , Sören Möller∗ , Martin Finsterbusch∗
+                                                          ∗ Institute of Energy Materials and Devices (IMD-2), Forschungszentrum Jülich GmbH, Germany
+                                                                                                   † Email: k.muzakka@fz-juelich.de
+
+
+
+                                            Abstract—This paper proposes RCMAES, a novel variant of                         on the CEC2017, CEC2020, and CEC2022 benchmark suites,
+                                         the Covariance Matrix Adaptation Evolution Strategy (CMA-                          which together cover a wide range of problem dimensionali-
+                                         ES) for CEC benchmark optimization. RCMAES integrates a                            ties and evaluation budgets. In particular, CEC2017 includes
+                                         dimension-dependent nonlinear population-size reduction strat-
+                                                                                                                            higher-dimensional settings (D = 10, 30, 50, and 100), while
+arXiv:2604.27138v1 [cs.NE] 29 Apr 2026
+
+
+
+
+                                         egy with an adaptive restart mechanism within a pure CMA-
+                                         ES framework. RCMAES is evaluated on three benchmark                               CEC2020 and CEC2022 focus on lower to medium dimen-
+                                         suites (CEC2017, CEC2020, and CEC2022) and compared with                           sions (D ≤ 20) with larger relative evaluation budgets, with
+                                         state-of-the-art DE algorithms as well as its closely related                      CEC2020 providing the largest evaluation budget among the
+                                         counterpart, BIPOP-aCMAES. Experimental results show that                          three suites.
+                                         RCMAES achieves competitive and robust performance across
+                                         all benchmarks.                                                                       To support reproducibility, all algorithms and CEC bench-
+                                            Index Terms—Evolutionary Computation, Evolutionary algo-                        mark problems used in this work, including RCMAES, are
+                                         rithms, CMA-ES, Population Size Reduction                                          implemented within the Minion framework [5] and are pub-
+                                                                                                                            licly available. Experimental results generated in this study
+                                                                    I. I NTRODUCTION                                        can be shared upon reasonable request.
+                                            The IEEE Congress on Evolutionary Computation (CEC)                                                     II. CMA-ES
+                                         competitions on bound-constrained single-objective optimiza-
+                                                                                                                               The Covariance Matrix Adaptation Evolution Strategy
+                                         tion provide a standard testbed for evaluating evolutionary
+                                                                                                                            (CMA-ES) [1] is a stochastic, derivative-free evolutionary
+                                         algorithms under fixed function evaluation budgets. In recent
+                                                                                                                            algorithm designed for continuous black-box optimization.
+                                         editions, Differential Evolution (DE) and its variants have been
+                                                                                                                            CMA-ES performs search by iteratively sampling candidate
+                                         the most frequently adopted approaches.
+                                                                                                                            solutions from a multivariate normal distribution and adapting
+                                            The Covariance Matrix Adaptation Evolution Strategy
+                                                                                                                            its parameters to capture the underlying structure of the
+                                         (CMA-ES) [1] follows a distinct optimization paradigm based
+                                                                                                                            objective-function landscape.
+                                         on learning second-order information via covariance ma-
+                                         trix adaptation. Although CMA-ES is a well-established and                         A. Sampling and Mean Update
+                                         widely studied algorithm, pure CMA-ES variants are less                              At generation t, CMA-ES samples λ offspring according to
+                                         commonly used as competitive submissions in recent CEC                                               (t)                   2
+
+                                         bound-constrained competitions.                                                                     xk ∼ N (m(t) , σ (t) C(t) ),                        (1)
+                                            Motivated by competition-oriented advances in DE, this                                   (t)                                  (t)
+                                                                                                                            where m is the distribution mean, σ is the global step
+                                         work revisits CMA-ES from a CEC competition perspective.                           size, and C(t) is the covariance matrix.
+                                         Inspired by the Adaptive Restart–Refine Differential Evolution                        After evaluating all offspring, the mean is updated by
+                                         (ARRDE) algorithm [2], we incorporate a restart mechanism                          weighted recombination of the best µ individuals:
+                                         with nonlinear, dimension-dependent population-size reduc-                                                        µ
+                                         tion into a pure CMA-ES framework. Unlike IPOP- and                                                                            (t)
+                                                                                                                                                           X
+                                                                                                                                                m(t+1) =         wi xi:λ ,                       (2)
+                                         BIPOP-aCMA-ES [3], [4], which increase population size                                                            i=1
+                                         after restarts, the proposed strategy favors repeated restarts                             (t)
+                                         with the same or reduced population sizes and initializes new                      where xi:λ denotesPthe i-th best solution and wi are positive
+                                         search phases away from previously converged regions.                              weights satisfying i wi = 1.
+                                            Based on these ideas, we propose RCMAES (population-                            B. Covariance Matrix Adaptation
+                                         reduction Active CMA-ES with Restart), a CMA-ES variant
+                                                                                                                              The covariance matrix is updated using a combination of
+                                         tailored for bound-constrained optimization in the CEC com-
+                                                                                                                            rank-one and rank-µ updates:
+                                         petition setting. The algorithm is evaluated comprehensively
+                                                                                                                                                                                µ
+                                                                                                                                                                                X
+                                            © 2026 IEEE. Personal use of this material is permitted. Permission from         C(t+1) = (1 − c1 − cµ )C(t) + c1 pc p⊤
+                                                                                                                                                                  c + cµ              wi yi yi⊤ , (3)
+                                         IEEE must be obtained for all other uses, in any current or future media,                                                              i=1
+                                         including reprinting/republishing this material for advertising or promotional
+                                         purposes, creating new collective works, for resale or redistribution to servers   where pc is the evolution path for covariance adaptation, yi =
+                                                                                                                              (t)
+                                         or lists, or reuse of any copyrighted component of this work in other works.       (xi:λ − m(t) )/σ (t) , and c1 and cµ are learning rates.
+  This update allows CMA-ES to learn correlations between                   Algorithm 1 RCMAES (Restart CMA-ES with Population
+variables and adapt the search distribution to the local topology           Reduction)
+of the objective function.                                                   1: Input: f , D, bounds [L, U ], budget Nmax
+                                                                             2: Nevals ← 0; (x⋆ , f ⋆ ) ← (∅, +∞); ε ← 10−12
+C. Step-Size Adaptation                                                      3: Compute N0 by (6) and exponent r by (9)
+  CMA-ES employs cumulative step-size adaptation (CSA) to                    4: while Nevals < Nmax do                         ▷ restart loop
+control the global step size:                                                5:     Sample mean m uniformly in [L, U ], avoiding previ-
+                           
+                             cσ  ∥pσ ∥
+                                                                              ous convergence regions if any
+         (t+1)     (t)
+       σ       = σ exp                     −1     ,   (4)                    6:     Initialize σ ← 0.3, C ← I, pc , pσ ← 0
+                            dσ E∥N (0, I)∥
+                                                                             7:     while Nevals < Nmax do              ▷ one CMA-ES run
+where pσ is the evolution path for step-size control, and                    8:         t ← Nevals /Nmax
+cσ and dσ are learning parameters. This mechanism enables                    9:         Np ← N0 − (N0 − D) [1 − (1 − t)r ]
+self-adaptive control of the exploration–exploitation trade-off             10:         Sample and evaluate Np offspring using CMA-ES
+without manual tuning.                                                      11:         Apply bound-constraint handling
+D. Active Covariance Matrix Adaptation                                      12:         Nevals ← Nevals + Np
+                                                                            13:         Update (x⋆ , f ⋆ )
+   Instead of using (3), one can also use active covariance                 14:         Update m, σ, and C using active CMA-ES
+adaptation [6], which extends the standard covariance update                15:         if (fmax − fmin )/ max(|fmean |, ε) ≤ 10−8 then
+by incorporating information from unsuccessful search direc-                16:              Store converged mean
+tions. Negative recombination weights are assigned to poorly                17:              break        ▷ terminate current run and restart
+performing solutions, yielding the modified update:                         18:         end if
+      C(t+1) = (1 − c1 − c+    −   (t)
+                                       + c1 pc p⊤                           19:     end while
+                          µ − cµ )C             c
+                     µ                        λ                             20: end while
+                                                                            21: return x⋆
+                     X                        X
+              + c+
+                 µ         wi+ yi yi⊤ − c−
+                                         µ           |wj− |yj yj⊤ ,   (5)
+                     i=1                     j=µ+1
+
+where wi+ > 0 and wj− < 0 denote positive and negative                         The population is then evolved according to the standard
+recombination weights, respectively. Active covariance adap-                CMA-ES update rules. During optimization, the population
+tation accelerates learning by explicitly decreasing variance               size is reduced in a nonlinear, time-dependent manner. Let
+in unpromising directions and has been shown to improve                     Nevals denote the number of function evaluations used so far,
+convergence speed and robustness[6].                                        and define t = Nevals /Nmax . The population size at time t is
+                                                                            given by
+        III. T HE P ROPOSED RCMAES A LGORITHM
+                                                                                                                              r
+   The design of RCMAES is motivated by the trade-off                                  Np (t) = N0 − (N0 − D)[1 − (1 − t) ] ,            (8)
+between population size and evaluation budget. While larger                                 r = 1.7 − 0.01D.                             (9)
+populations improve exploration in high-dimensional prob-
+                                                                            This formulation yields more aggressive population reduction
+lems, they quickly exhaust the available budget, requiring
+                                                                            for low-dimensional problems and more conservative reduc-
+population-size reduction. Unlike many DE variants (e.g.,
+                                                                            tion for higher-dimensional ones. In particular, when r = 1,
+LSHADE [7]) that use linear reduction, RCMAES adopts
+                                                                            the schedule reduces to a linear scheme.
+a nonlinear, dimension-dependent strategy. More aggressive
+                                                                               The coefficients in (6) and (9) were obtained through
+reduction is applied in lower dimensions, where large pop-
+                                                                            empirical tuning on the CEC2017, CEC2020, and CEC2022
+ulations are less critical; however, this increases the risk of
+                                                                            benchmark suites. Notably, the proposed formulation implies
+premature convergence, which is mitigated by an explicit
+                                                                            that r ≥ 1 (i.e., faster-than-linear reduction) occurs when
+restart mechanism.
+                                                                            D ≤ 70, whereas for D > 70, the reduction becomes slower
+   Given a maximum evaluation budget Nmax and problem
+                                                                            than linear. For example, at D = 100, r = 0.7, resulting in a
+dimensionality D, RCMAES initializes the population by
+                                                                            significantly more gradual reduction.
+sampling individuals from a Gaussian distribution centered at                  We observed that this dimension-dependent schedule pro-
+a randomly selected mean within the search bounds. The initial              vides a favorable balance between exploration and exploita-
+population size N0 is defined as                                            tion. In lower-dimensional settings, more aggressive reduction
+                N0 = D × max[2, 10η − 20] ,                           (6)   leads to more frequent restarts, which enhances the ability to
+                  η = log10 (Nmax /D),                                (7)   escape local optima. Empirical observations (from an ablation
+                                                                            study, omitted due to space constraints) indicate that this
+making it dependent on both the available evaluation budget                 behavior is particularly beneficial for complex, multimodal
+and the problem dimension. This functional form allows larger               problems in the CEC2020 benchmark suite.
+initial populations when sufficient evaluations are available,                 A restart is triggered when population convergence is de-
+while remaining conservative under tight budgets.                           tected, defined as δ = (fmax −fmin )/ max(|fmean |, ε) ≤ 10−8 ,
+where ε = 10−12 and fmax , fmin , and fmean denote the              rank. Let ri,j,k denote the rank of algorithm k on problem j
+maximum, minimum, and mean objective values in the current          in run i. The overall Friedman score is defined as
+population, respectively. Upon restart, the population size                                        Np Nruns
+continues to follow (8), while the covariance matrix, step                                   1     X   X
+                                                                                     Rk =                   ri,j,k .
+size, and evolution paths are reset. The new mean is sampled                              Np Nruns j=1 i=1
+outside a local exclusion region defined as a hyper-rectangular
+                                                                    Smaller values of Rk indicate superior overall performance.
+box centered at the previous converged mean, with side
+                                                                       To assess whether one algorithm outperforms another in
+lengths equal to 10% of the variable bounds. This mechanism
+                                                                    terms of win, tie, or loss outcomes, pairwise win/tie/loss
+encourages exploration of previously unexplored regions of
+                                                                    (W/T/L) statistics are employed. For each pair of algorithms,
+the search space.
+                                                                    results from Nruns independent runs are compared using the
+   To handle bound constraints, RCMAES adopts a stochastic          Mann–Whitney U test [16] at a significance level of α = 0.05.
+repair strategy, as the original CMA-ES is designed for un-         If no statistically significant difference is detected, the compar-
+constrained optimization and does not provide native support        ison is recorded as a tie. Otherwise, the direction of preference
+for bound constraints. When a candidate violates the search         is determined according to the rank-sum statistic, yielding
+bounds, the infeasible coordinate is re-sampled uniformly           either a win or a loss.
+within a truncated interval adjacent to the violated boundary.         Accuracy-based performance is measured using the relative
+The width of this interval is limited by the violation magnitude,   error. For algorithm k on problem j, the relative error is
+ensuring small corrective steps while preserving diversity near     defined as
+the boundary.                                                                                   Nruns
+   The algorithm terminates when the evaluation budget Nmax                                1 X        fj (xi,k,j ) − fj (x∗j )
+                                                                                 ϵk,j =                                        ,
+is exhausted. Pseudocode for RCMAES is provided in Algo-                                  Nruns i=1          fj (x∗j )
+rithm 1.
+                                                                    where xi,k,j is the solution obtained by algorithm k in run i,
+    IV. N UMERICAL E XPERIMENTS AND D ISCUSSIONS                    fj (·) is the objective function, and x∗j is the known global
+                                                                    optimum. Note that for the considered benchmark suites
+A. Experimental Setup                                               (CEC2017, CEC2020, and CEC2022), all function values are
+   The proposed RCMAES is evaluated on three benchmark              strictly positive, ensuring that the relative error is well-defined.
+suites: CEC2017 [8], CEC2020 [9], and CEC2022 [10]. For                To limit the influence of outlier problems, the relative error
+all experiments, the maximum number of function evaluations         is mapped to a bounded interval via
+(Nmax ) follows the official competition specifications. Each                                           ϵk,j
+                                                                                             Ek,j =            ,
+algorithm is executed for 51 independent runs, using the run                                          1 + ϵk,j
+index as the random seed to ensure reproducibility. All experi-
+                                                                    which restricts values to [0, 1). This transformation retains
+ments are conducted within the Minion framework [5], imple-
+                                                                    sensitivity for small errors while preventing large errors from
+mented in C++ and compiled with MSVC on a Windows 11
+                                                                    dominating the aggregated score. The overall accuracy-based
+workstation. All function evaluations are performed using
+                                                                    score Ek of algorithm k is obtained by averaging Ek,j over all
+standard double-precision floating-point arithmetic. Reported
+                                                                    benchmark problems for the given dimension.
+results are presented with standard numerical formatting for
+readability, which may affect the ranking in cases where            C. Results
+performance differences are extremely small.                             a) CEC2017: Table I summarizes the results on the
+   RCMAES is compared against representative state-of-the-          CEC2017 benchmark suite for D = 10, 30, 50, and 100
+art DE and CMA-ES algorithms, including BIPOP-aCMA-                 using W/T/L statistics, Friedman rank R, and the accuracy-
+ES [4], ARRDE [2], jSO [11], j2020 [12], LSRTDE [13],               based metric E. Since these metrics capture different aspects
+and NL-SHADE-RSP [14]. All algorithms use the parameter             of performance, they should be interpreted jointly.
+settings recommended in their original publications.                   Across all dimensions, RCMAES exhibits a strong pairwise
+                                                                    W/T/L profile. At D = 10, RCMAES performs competitively
+B. Scoring Methodology                                              against all algorithms, with the exception of ARRDE and
+   Algorithm performance is evaluated using both rank-based         NL-SHADE-RSP. At higher dimensions (D = 30, 50, and
+and accuracy-based metrics, following standard CEC eval-            100), RCMAES demonstrates pairwise superiority, winning
+uation practices. Let k denote the algorithm index, j the           substantially more often against most competing algorithms.
+benchmark problem, i the independent run, D the problem                Notably, RCMAES outperforms LSRTDE in direct pair-
+dimension, Np the number of benchmark problems, and Nruns           wise comparisons, despite LSRTDE being a particularly
+the number of independent runs.                                     strong baseline. In its original publication[13], LSRTDE was
+   For rank-based assessment, Friedman ranking [15] is em-          shown to exhibit decisive and systematic dominance over the
+ployed. For each problem and run, algorithms are ranked             CEC2017 winning algorithms, such as jSO, establishing a
+according to their final objective values, with smaller values      clear performance gap rather than marginal improvements.
+indicating better performance; ties are assigned the average        The W/T/L statistics reported in Table I are consistent with
+                                                             TABLE I
+   CEC2017 RESULTS AT D = 10, 30, 50, 100 SHOWING ACCURACY E , F RIEDMAN RANK R, AND WIN / TIE / LOSS (W/T/L) STATISTICS OF RCMAES
+        AGAINST COMPETING ALGORITHMS . VALUES IN PARENTHESES DENOTE RANKS ; BOLDFACE INDICATES THE BEST PERFORMANCE .
+
+      Algorithm                   10D                               30D                        50D                         100D
+                       E            R       W/T/L         E           R     W/T/L       E        R      W/T/L      E          R        W/T/L
+      ARRDE        0.031 (1)    3.349 (1)   5/11/13   0.094 (4)   3.445 (3) 13/13/3 0.160 (4) 3.402 (3) 20/8/1 0.252 (3)   3.438 (3)   22/1/6
+      jSO          0.036 (4)    3.620 (2)   10/9/10   0.092 (3)   3.452 (4) 19/8/2 0.157 (3) 3.419 (4) 18/9/2 0.260 (4)    3.523 (4)   21/2/6
+      j2020        0.037 (5)    4.577 (6)   13/10/6   0.200 (7)   6.016 (7) 25/4/0 0.403 (7) 6.139 (7) 26/2/1 0.596 (7)    6.318 (7)   25/3/1
+      NL-SHADE-RSP 0.035 (2)    3.894 (5)   11/6/12   0.168 (6)   5.144 (6) 23/3/3 0.362 (6) 5.886 (6) 26/2/1 0.546 (6)    6.035 (6)   27/1/1
+      LSRTDE       0.063 (7)    3.716 (3)   10/9/10   0.068 (1)   2.396 (1) 12/11/6 0.101 (1) 2.083 (1) 14/9/6 0.199 (2)   2.125 (1)   16/4/9
+      RCMAES       0.035 (3)    3.731 (4)      –      0.071 (2)   2.436 (2)    –    0.129 (2) 2.139 (2)   –    0.190 (1)   2.261 (2)     –
+      BIPOP-aCMAES 0.051 (6)    5.114 (7)    21/8/0   0.164 (5)   5.111 (5) 25/3/1 0.262 (5) 4.931 (5) 24/3/2 0.354 (5)    4.300 (5)   22/2/5
+
+
+
+this characterization, as LSRTDE continues to significantly                achieved strong rankings on CEC2017, ranks last or near last
+outperform these earlier winners. Against this strong reference,           across all dimensions on CEC2020. In contrast, algorithms
+RCMAES nonetheless achieves more frequent wins in direct                   that performed less favorably on CEC2017, such as j2020 and
+comparisons.                                                               NL-SHADE-RSP, achieve substantially improved rankings on
+   In terms of Friedman ranking, RCMAES ranks second at                    CEC2020, with NL-SHADE-RSP consistently ranking among
+D = 30, 50, and 100, and third at D = 10, while LSRTDE                     the top methods. These observations are consistent with the
+attains the top rank for D ≥ 30. The apparent discrepancy                  findings reported in [17], [18].
+between the strong W/T/L results and the Friedman ranks                       Although RCMAES experiences a degradation in overall
+can be attributed to the fundamentally different nature of                 ranking on CEC2020, this degradation is relatively moderate,
+these measures. Friedman ranking aggregates relative ordering              indicating better robustness compared to the competing algo-
+across all algorithms, such that poor performance on a small               rithms.
+number of functions can disproportionately affect the overall
+rank. In the case of RCMAES, this effect is primarily due
+to function F29, on which RCMAES performs relatively                             c) CEC2022: Table III summarizes the results on the
+poorly. In contrast, W/T/L analysis reflects pairwise statisti-            CEC2022 benchmark suite for D = 5, 10, 15, and 20.
+cal significance. Indeed, when restricting the comparison to               RCMAES achieves the best performance at D = 20, ranking
+RCMAES and LSRTDE only, or when excluding F29, we                          first according to both the accuracy metric E and the Friedman
+verified that RCMAES achieves a better Friedman rank than                  rank R. At D = 10, however, RCMAES ranks fourth in terms
+LSRTDE. Overall, these results indicate that the performance               of E and fifth according to R.
+of RCMAES and LSRTDE is very close, with differences
+largely attributable to isolated functions rather than systematic          D. CEC2026
+superiority.                                                                  The IEEE CEC2026 competition on single-objective bound-
+   The accuracy-based metric E provides complementary in-                  constrained optimization adopts the CEC2017 benchmark suite
+sight into solution quality. LSRTDE achieves the lowest error              at D = 30. The competition emphasizes both fast convergence
+values at D = 30 and D = 50, with RCMAES ranking                           toward the global optimum and high final solution accuracy.
+closely behind and attaining the lowest error at D = 100. The              While the final accuracy has been reported in Table I, this sub-
+accuracy differences between these two algorithms are small,               section focuses on convergence behavior, illustrated in Fig. 1,
+while both clearly outperform the remaining methods. At                    which shows the average error f − f ∗ across independent runs
+D = 10, ARRDE achieves the best accuracy, with RCMAES                      as a function of the normalized evaluation budget Nevals /D.
+yielding comparable error values, whereas LSRTDE ranks last                   From the convergence curves, RCMAES demonstrates
+under this metric.                                                         strong performance on basic functions, particularly F4, F6,
+                                                                           F7, and F9, where it converges rapidly toward high-quality
+                                                                           solutions. In contrast, LSRTDE shows clear strengths on
+      b) CEC2020: Table II summarizes the results on the                   hybrid functions, such as F11, F13, and F15.
+CEC2020 benchmark suite for D = 5, 10, 15, and 20.                            Algorithms that perform well on CEC2020, such as NL-
+Compared to its performance on CEC2017, RCMAES is less                     SHADE-RSP and j2020, exhibit comparatively slow conver-
+competitive on this benchmark. However, all three perfor-                  gence on CEC2017 at D = 30. Meanwhile, BIPOP-aCMAES
+mance indicators—Friedman rank R, accuracy E, and W/T/L                    converges rapidly in the early stages but frequently stagnates
+statistics—exhibit consistent improvement as the problem di-               at local optima, resulting in final solutions that remain far from
+mension increases. Notably, at D = 15 and D = 20, RC-                      the global optimum.
+MAES performs competitively relative to j2020, despite j2020                  For composition functions, most algorithms display similar
+being specifically designed for the CEC2020 benchmark.                     convergence trends. RCMAES, however, occasionally achieves
+   A marked contrast with the CEC2017 results is observed                  faster convergence than competing methods, as observed on
+when examining overall algorithm behavior. LSRTDE, which                   functions F22 and F23.
+                                                               TABLE II
+CEC2020 RESULTS AT D = 5, 10, 15, 20 SHOWING ACCURACY E , F RIEDMAN RANK R, AND WIN / TIE / LOSS (W/T/L) STATISTICS OF RCMAES AGAINST
+            COMPETING ALGORITHMS . VALUES IN PARENTHESES DENOTE RANKS ; BOLDFACE INDICATES THE BEST PERFORMANCE .
+
+       Algorithm                    5D                       10D                       15D                       20D
+                        E            R      W/T/L     E        R      W/T/L     E        R      W/T/L     E        R      W/T/L
+       ARRDE        0.008 (1)     3.372 (2) 1/3/6 0.009 (1) 3.425 (3) 2/3/5 0.018 (1) 3.463 (2) 3/3/4 0.023 (1) 3.378 (1) 4/1/5
+       jSO          0.018 (4)     4.097 (4) 1/4/5 0.029 (5) 4.397 (6) 4/2/4 0.039 (7) 4.934 (6) 6/2/2 0.036 (6) 4.961 (6) 6/2/2
+       j2020        0.010 (2)     3.837 (3) 2/2/6 0.011 (2) 3.374 (2) 2/2/6 0.027 (4) 3.885 (5) 4/3/3 0.039 (7) 3.786 (5) 3/3/4
+       NL-SHADE-RSP 0.010 (3)     2.875 (1) 0/2/8 0.018 (3) 3.154 (1) 1/4/5 0.022 (2) 3.103 (1) 1/3/6 0.032 (3) 3.393 (2) 4/2/4
+       LSRTDE       0.018 (5)     4.560 (6) 2/7/1 0.032 (7) 5.579 (7) 8/2/0 0.038 (6) 5.458 (7) 8/2/0 0.035 (5) 5.481 (7) 9/1/0
+       RCMAES       0.019 (6)     4.519 (5)   –   0.023 (4) 4.111 (5)   –   0.024 (3) 3.680 (4)   –   0.024 (2) 3.527 (4)   –
+       BIPOP-aCMAES 0.020 (7)     4.741 (7) 3/6/1 0.030 (6) 3.961 (4) 3/2/5 0.028 (5) 3.476 (3) 2/3/5 0.032 (4) 3.473 (3) 2/4/4
+
+
+                                                         TABLE III
+CEC2022 RESULTS FOR D = 10 AND D = 20, REPORTING ACCURACY E , F RIEDMAN RANK R, AND WIN / TIE / LOSS (W/T/L) STATISTICS OF RCMAES
+        AGAINST COMPETING ALGORITHMS . VALUES IN PARENTHESES DENOTE RANKS ; BOLDFACE INDICATES THE BEST PERFORMANCE .
+
+                              Algorithm                       10D                                20D
+                                                     E          R        W/T/L         E           R        W/T/L
+                              ARRDE              0.014 (3)   3.516 (1)   2/4/6     0.017 (2)    3.320 (2)   3/6/3
+                              jSO                0.016 (5)   3.992 (4)   2/6/4     0.035 (6)    4.227 (5)   5/6/1
+                              j2020              0.013 (1)   3.660 (2)   2/4/6     0.026 (4)    4.696 (6)   7/4/1
+                              NL-SHADE-RSP       0.014 (2)   3.790 (3)   2/6/4     0.038 (7)    4.876 (7)   7/4/1
+                              LSRTDE             0.016 (6)   4.233 (6)   4/6/2     0.034 (5)    4.069 (4)   5/7/0
+                              RCMAES             0.016 (4)   4.029 (5)     –       0.016 (1)    3.170 (1)     –
+                              BIPOP-aCMAES       0.021 (7)   4.780 (7)   4/7/1     0.023 (3)    3.642 (3)   5/3/4
+
+
+
+   Following the CEC2026 competition guidelines, time com-                [2] Khoirul Faiq Muzakka, Ahsani Hafizhu Shali, Haris Suhendar, Sören
+plexity is evaluated using two measures: T1 , the average time                Möller, and Martin Finsterbusch. Robust differential evolution via
+                                                                              nonlinear population size reduction and adaptive restart: The arrde
+required to evaluate each of the 29 benchmark functions in                    algorithm. https://arxiv.org/abs/2511.18429, 2026.
+30D for 10 000 evaluations, and T2 , the average time required            [3] A. Auger and N. Hansen. A restart cma evolution strategy with
+for the algorithm to run with 10 000 function evaluations.                    increasing population size. In 2005 IEEE Congress on Evolutionary
+                                                                              Computation, volume 2, pages 1769–1776 Vol. 2, 2005.
+For RCMAES, the measured values are T1 = 0.0453, T2 =                     [4] Nikolaus Hansen. Benchmarking a BI-Population CMA-ES on the
+0.0802, resulting in a normalized computational overhead of                   BBOB-2009 Function Testbed. In ACM-GECCO Genetic and Evolu-
+(T2 − T1 )/T1 = 0.7705.                                                       tionary Computation Conference, Montreal, Canada, July 2009.
+                                                                          [5] Khoirul Faiq Muzakka, Sören Möller, and Martin Finsterbusch. Min-
+                        V. C ONCLUSION                                        ion : a high-performance derivative-free optimization library designed
+                                                                              for solving complex optimization problems., February 2025. GitHub
+   This paper introduced RCMAES, a CMA-ES variant that                        repository: https://github.com/khoirulmuzakka/Minion.
+integrates a dimension-dependent nonlinear population-size                [6] Nikolaus Hansen and Raymond Ros. Benchmarking a weighted neg-
+                                                                              ative covariance matrix update on the bbob-2010 noisy testbed. In
+reduction strategy with an adaptive restart mechanism. Ex-                    Proceedings of the 12th Annual Conference Companion on Genetic and
+perimental results on the CEC2017, CEC2020, and CEC2022                       Evolutionary Computation, GECCO ’10, page 1681–1688, New York,
+benchmark suites demonstrate that RCMAES achieves com-                        NY, USA, 2010. Association for Computing Machinery.
+petitive and robust performance compared with state-of-the-art            [7] Ryoji Tanabe and Alex S. Fukunaga. Improving the search performance
+                                                                              of shade using linear population size reduction. In 2014 IEEE Congress
+algorithms. Notably, RCMAES exhibits stable behavior across                   on Evolutionary Computation (CEC), pages 1658–1665, 2014.
+benchmark suites with differing characteristics.                          [8] N.H.Awad, M.Z.Ali, P.N.Suganthan, J.J.Liang, , and B.Y.Qu. Prob-
+                                                                              lem Definitions and Evaluation Criteria for the CEC 2017 Special
+                     ACKNOWLEDGMENTS                                          Session and Competition on Single Objective Real-Parameter Numer-
+                                                                              ical Optimization. Technical report, Nanyang Technological Univer-
+   The authors acknowledge financial support from the German                  sity, Jordan University of Science and Technology, and Zhengzhou
+Federal Ministry of Education and Research (BMBF) under                       University, 2016.       Available at https://github.com/P-N-Suganthan/
+                                                                              CEC2017-BoundContrained.
+Grant No. 13XP0445 (For-Analytik). K.F.M., S.M., and M.F.
+                                                                          [9] C. T. Yue, K. V. Price, P. N. Suganthan, J. J. Liang, M. Z. Ali,
+are supported by this grant.                                                  B. Y. Qu, N. H. Awad, and P. P. Biswas. Problem Definitions and
+   The authors acknowledge the use of artificial intelligence                 Evaluation Criteria for the CEC 2020 Special Session and Compe-
+tools (ChatGPT, OpenAI) for language refinement and clarity                   tition on Single Objective Bound Constrained Numerical Optimiza-
+                                                                              tion. Technical report, Zhengzhou University and Nanyang Technolog-
+improvement during manuscript preparation. All technical                      ical University, 2019. Available at https://github.com/P-N-Suganthan/
+content, experiments, and conclusions were developed and                      2020-Bound-Constrained-Opt-Benchmark.
+verified by the authors.                                                 [10] A. Kumar, K. V. Price, A. W. Mohamed, A. A. Hadi, and P. N.
+                                                                              Suganthan. Problem definitions and evaluation criteria for the cec 2022
+                          R EFERENCES                                         special session and competition on single objective bound constrained
+                                                                              numerical optimization. Technical report, Nanyang Technological Uni-
+[1] Nikolaus Hansen and Andreas Ostermeier. Completely derandomized           versity, Singapore, 2021. Available: https://github.com/P-N-Suganthan/
+    self-adaptation in evolution strategies. Evolutionary Computation,        2022-SO-BO.
+    9(2):159–195, 2001.                                                  [11] Janez Brest, Mirjam Sepesy Maučec, and Borko Bošković. Single
+                                                  ARRDE            NL-SHADE-RSP             RCMAES            jSO         LSRTDE             BIPOP-aCMAES           J2020
+ 1012                                                                                                                          103
+            F1                             1014       F2                             105         F3                                         F4                               102       F5
+  109
+                                           1010                                      104
+  106                                                                                                                            102                                         100
+                                           106
+  103                                                                                103
+                                           102                                                                                   101                                        10 2
+  100                                                                                102
+ 10 3                                  10 2                                                                                                                                 10 4
+                                                                                     101                                         100
+        0         250   500   750   1000          0         250   500   750   1000           0         250   500    750   1000          0         250   500   750    1000          0         250   500   750   1000
+            F6                             103        F7                                         F8                              104        F9                              1011       F10
+                                                                                     104                                                                                     109
+  103                                      102                                       102                                                                                     107
+                                                                                                                                 103
+                                                                                     100                                                                                     105
+                                           101
+  102                                                                             10 2                                                                                       103
+                                                                                                                                 102
+                                           100                                    10 4                                                                                       101
+        0         250   500   750   1000          0         250   500   750   1000           0         250   500    750   1000          0         250   500   750    1000          0         250   500   750   1000
+ 1011       F11                                       F12
+                                                                                     1010        F13                             1011       F14                              105       F15
+                                           1010                                                                                   109
+  109                                                                                108                                                                                     104
+                                           108                                                                                    107
+  107                                                                                106
+                                           106                                                                                    105                                        103
+  105
+                                           104                                       104                                          103                                        102
+  103
+  101                                      102                                       102                                          101
+                                                                                                                                                                             101
+        0         250   500   750   1000          0         250   500   750   1000           0         250   500    750   1000          0         250   500   750    1000          0         250   500   750   1000
+  108                                                                                1011
+            F16                            1010       F17                                        F18                                        F19                                        F20
+                                                                                      109                                        103                                         103
+  106                                      108
+                                                                                     107
+                                           106
+  104                                                                                105                                         102
+                                           104                                       103
+  102                                      102                                       101                                         101
+        0         250   500   750   1000          0         250   500   750   1000           0         250   500    750   1000          0         250   500   750    1000          0         250   500   750   1000
+            F21                                       F22                                        F23                             105        F24                                        F25
+  104
+                                                                                                                                                                             104
+                                                                                                                                 104
+  103                                      103                                       103
+                                                                                                                                                                             103
+                                                                                                                                 103
+  102
+        0         250   500   750   1000          0         250   500   750   1000           0         250   500    750   1000          0         250   500   750    1000          0         250   500   750   1000
+  104       F26                                       F27                                        F28                                        F29
+                                                                                     108                                         1010
+                                           104                                       107
+                                                                                                                                 108
+                                                                                     106
+                                                                                     105                                         106
+  103                                      103                                       104
+                                                                                     103                                         104
+        0         250   500   750   1000          0         250   500   750   1000           0         250   500    750   1000          0         250   500   750    1000
+
+Fig. 1. Average convergence curves on the CEC2017 benchmark at D = 30. The plots show the mean error f − f ∗ over all runs as a function of the
+normalized number of function evaluations Nevals /D.
+
+
+
+     objective real-parameter optimization: Algorithm jso. In 2017 IEEE                                       [15] Milton Friedman. The use of ranks to avoid the assumption of normality
+     Congress on Evolutionary Computation (CEC), pages 1311–1318, 2017.                                            implicit in the analysis of variance. Journal of the American Statistical
+[12] Janez Brest, Mirjam Sepesy Maučec, and Borko Bošković. Differential                                        Association, 32(200):675–701, 1937.
+     evolution algorithm for single objective bound-constrained optimization:                                 [16] H. B. Mann and D. R. Whitney. On a Test of Whether one of Two
+     Algorithm j2020. In 2020 IEEE Congress on Evolutionary Computation                                            Random Variables is Stochastically Larger than the Other. The Annals
+     (CEC), pages 1–8, 2020.                                                                                       of Mathematical Statistics, 18(1):50 – 60, 1947.
+[13] Vladimir Stanovov and Eugene Semenkin. Success rate-based adaptive                                       [17] Adam P. Piotrowski, Jaroslaw J. Napiorkowski, and Agnieszka E.
+     differential evolution l-srtde for cec 2024 competition. In 2024 IEEE                                         Piotrowska. Choice of benchmark optimization problems does matter.
+     Congress on Evolutionary Computation (CEC), pages 1–8, 2024.                                                  Swarm and Evolutionary Computation, 83:101378, 2023.
+[14] Vladimir Stanovov, Shakhnaz Akhmedova, and Eugene Semenkin. Nl-                                          [18] Adam P. Piotrowski, Jaroslaw J. Napiorkowski, and Agnieszka E.
+     shade-rsp algorithm with adaptive archive and selective pressure for cec                                      Piotrowska. Metaheuristics should be tested on large benchmark set
+     2021 numerical optimization. In 2021 IEEE Congress on Evolutionary                                            with various numbers of function evaluations. Swarm and Evolutionary
+     Computation (CEC), pages 809–816, 2021.                                                                       Computation, 92:101807, 2025.
+

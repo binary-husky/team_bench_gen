@@ -13,3 +13,15 @@ Look at `./summary_failure_tolerance.md`, check whether conclusion cover the fol
 1. 后继列表足够长（r=16）时，查找成功率在 f 高达约 0.5 时仍接近 100%。
 2. 无后继列表（r=1）时，成功率随 f 增大急剧下降。
 3. 结论指出 Chord 的容错能力来自维护足够长的后继列表以跳过连续失效节点。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_failure_tolerance.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给 r=16 时成功率至 f=0.5 ~100%（golden：1.0000/1.0000/1.0000/0.9999/1.0000；可接受：各 f 成功率 ≥0.999）。（细化原 [Judge] 第 1 点）
+2. 须给 r=1 时成功率随 f 急降（golden：1.000/0.784/0.579/0.422/0.158；可接受：f=0.5 时 ≤0.2 且随 f 单调降）。（细化原 [Judge] 第 2 点）
+3. 须说明容忍来自长后继表（golden：f¹⁶ at f=0.5 ≈1.5e-5、r=16 比 r=1 快 6.3×；可接受：r=16 at f=0.5 成功率 ≥0.999 且 ≥6× r=1）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

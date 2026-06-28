@@ -30,3 +30,14 @@ Look at `./summary_raft_04_failover.md`, check whether conclusion covers the fol
 1. 给出了 leader 被杀后 **故障检测+重选时延**（均值/中位数/最大，跨 ≥10 种子），以 tick 计，量级在一个选举超时上限附近。
 2. 杀后新提交的 100 条**最终被提交的比例接近 100%**（集群选出新 leader 并继续正常提交）。
 3. **故障前已提交条目存活率 = 100%**：新 leader 的日志仍含故障前已提交的全部条目，无丢失——验证 Raft 在单点 leader 故障下的可用性与已提交数据持久性。
+
+
+[Judge V2]
+
+查阅 `./summary_raft_04_failover.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；N=5、leader 中途宕机、12 种子）：
+
+1. 须给 leader 被杀后故障检测+重选时延、≥10 种子、tick 计（golden：12 种子、20–29 tick、均值 23.7、最大 29、≤选举超时上限 40；可接受：≤40 tick 且 ≥10 种子）。（细化原 [Judge] 第 1 点）
+2. 须给杀后新提交 100 条最终提交比例近 100%（golden：12/12 种子 100/100；可接受：≥99%）。（细化原 [Judge] 第 2 点）
+3. 须给故障前已提交条目存活率 100%（golden：100/100 存活、Leader Completeness；可接受：=100%）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

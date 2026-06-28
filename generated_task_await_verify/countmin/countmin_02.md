@@ -28,3 +28,15 @@ Look at `./summary_cm_02_width_vs_error.md`, check whether conclusion covers the
 1. 给出了 `w ∈ {128,…,4096}` 每个宽度下点查询高估量 `â[i]-a[i]` 的**均值**与**99 百分位**（Zipfian 与均匀两种分布），以表格或图呈现，基于 ≥3 个哈希种子。
 2. 高估误差随 `w` 近似 **1/w** 下降：`w` 翻倍时高估量约减半（实测比值与理论 1/2 相差在一个不大的常数倍以内）。
 3. 偏态（Zipfian）分布的点查询高估**显著大于**均匀分布，并给出原因说明（高频 item 使 `‖a‖₁` 更集中、碰撞贡献被放大）。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_cm_02_width_vs_error.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给逐 w 均值/p99 高估表对照 ‖a‖₁/w（golden：w=1024 Zipf 均值 373/p99 570、Uniform 925/976；可接受：高估 ≥‖a‖₁/w 且同量级）。（细化原 [Judge] 第 1 点）
+2. 须给高估 ≈1/w 下降（golden：斜率 Uniform 均值 −1.03、p99 −1.005；可接受：斜率 ∈[−1.1,−0.9]）。（细化原 [Judge] 第 2 点）
+3. **重写原 [Judge] 第 3 点**：原判"Zipf 高估大于 Uniform"不成立——golden：Zipf 均值 0.40×、p99 0.58× Uniform；可接受：承认 Zipf 典型高估 ≤ Uniform 即给分。（重写原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

@@ -1,0 +1,8 @@
+_*.log
+
+# Heavey external source-code clones referenced by CEC2022 reproduction (cec_01_result);
+# the actual experiment artifacts (results/work/, paper.txt) are still tracked.
+generated_task_verified_experiments/cec/cec_01_result/results/cec2022_official/
+generated_task_verified_experiments/cec/cec_01_result/results/minion_src/
+generated_task_verified_experiments/**/results/cec2022_official/
+generated_task_verified_experiments/**/results/minion_src/

@@ -36,3 +36,16 @@ Look at `./summary_hll_01_se_scaling.md`, check whether the answer covers the fo
     - **(ii) TRUE**——要 `SE` 减半 ⟺ `sqrt(m)` 翻倍 ⟺ `m` 变 **4 倍** ⟺ 内存（∝ m）变 **4 倍**。
     - **(iii) TRUE**——`p` 增加 1 ⟺ `m` 翻倍 ⟺ `SE` 变 `1.04/sqrt(2m) = (1.04/sqrt(m))/sqrt(2) ≈ 0.707·SE`，即降约 **29%**。
     - 总结句明确：**减半标准差 ⟺ `m` ×4 ⟺ 内存 ×4 ⟺ `p` 增加 2**（因为 `m = 2^p`，`m` 变 4 倍等价于 `p` 加 2）。
+
+
+---
+
+[Judge V2]
+
+查阅 `./summary_hll_01_se_scaling.md` —— 基于真实推导结果对上方 [Judge] 的修订（以实测为准；论文 Theorem 1(ii)：β_∞=√(3ln2−1)≈1.03896，SE=β_m/√m）：
+
+1. **重写 claim (i)**：原判"m 翻倍 SE 减半"为假。golden answer：m 翻倍 SE 乘 1/√2≈0.7071（降 **29.3%**），非减半；正确规则：SE 减半需 m→4m（`SE(4m)/SE(m)=1/2`）。可接受范围：每次 m 翻倍 SE 降幅 ∈[27%,31%]（0.7071±0.02）。（重写原 [Judge] claim(i)）
+2. claim (ii) 成立：SE 减半 ⟺ √m 翻倍 ⟺ m→4m；内存 B∝m 即 B→4B。golden=B→4B；可接受：减半 SE 所需内存倍数 ∈[3.8,4.2]×。（细化原 [Judge] claim(ii)）
+3. claim (iii) 成立：m=2^p 时 `SE(p+1)/SE(p)=2^{−1/2}≈0.7071`，p 每增 1 SE 降 ≈29.3%；故 SE 减半 ⟺ m×4 ⟺ 内存×4 ⟺ p+2。golden=p+2；可接受：所需 p 增量 ∈[1.9,2.1]。（细化原 [Judge] claim(iii))
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

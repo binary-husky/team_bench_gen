@@ -1,0 +1,72 @@
+[
+  {
+    "width": 8,
+    "a": {
+      "status": "SAT",
+      "time_ms": 42.62802400626242,
+      "model": {
+        "x": 1,
+        "y": 255,
+        "x+y(mod 2^w)": 0,
+        "true_sum": 256
+      }
+    },
+    "b": {
+      "status": "UNSAT",
+      "time_ms": 2.363475039601326,
+      "model": null,
+      "verdict": "PROVED (property holds)"
+    },
+    "c1": {
+      "status": "SAT",
+      "time_ms": 17.44641497498378,
+      "model": {
+        "x": 202,
+        "y": 9,
+        "x*y(mod 2^w)": 26,
+        "(x*y)/y(mod 2^w)": 2
+      }
+    },
+    "c2": {
+      "status": "UNSAT",
+      "time_ms": 58.09851601952687,
+      "model": null,
+      "verdict": "PROVED (property holds)"
+    }
+  },
+  {
+    "width": 16,
+    "a": {
+      "status": "SAT",
+      "time_ms": 9.830042952671647,
+      "model": {
+        "x": 1,
+        "y": 65535,
+        "x+y(mod 2^w)": 0,
+        "true_sum": 65536
+      }
+    },
+    "b": {
+      "status": "UNSAT",
+      "time_ms": 3.7922209594398737,
+      "model": null,
+      "verdict": "PROVED (property holds)"
+    },
+    "c1": {
+      "status": "SAT",
+      "time_ms": 37.287523970007896,
+      "model": {
+        "x": 65199,
+        "y": 33,
+        "x*y(mod 2^w)": 54415,
+        "(x*y)/y(mod 2^w)": 1648
+      }
+    },
+    "c2": {
+      "status": "UNSAT",
+      "time_ms": 60890.90017200215,
+      "model": null,
+      "verdict": "PROVED (property holds)"
+    }
+  }
+]

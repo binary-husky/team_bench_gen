@@ -29,3 +29,14 @@ Look at `./summary_crdt_05_addwins_pncounter.md`, check whether conclusion cover
 1. 给出了 **(A) OR-Set add-wins 正确率**（≥1000 个并发 add+remove 对中 `x` 保留的比例，应为 100%）与 **(B) PN-Counter 值误差**（merge 后 `P−N` 与顺序回放精确值之差，应为 0），基于 ≥5 种子，以表格呈现。
 2. **OR-Set add-wins 100% 成立**：并发的 `add(x)` 与 `remove(x)`，`x` 始终保留（remove 只删已观察到的旧 token，删不掉并发新 add 的 token）——并说明若改用"删除全部"语义会破坏 add-wins。
 3. **PN-Counter decrement 正确**：`P−N` 在跨副本并发 increment/decrement 后与精确顺序回放值**误差为 0**，验证 decrement 通过两个单调 G-Counter 的差被正确实现（呼应 _01 的结论）。
+
+
+[Judge V2]
+
+查阅 `./summary_crdt_05_addwins_pncounter.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给 (A) OR-Set add-wins 正确率 + (B) PN-Counter 误差表、≥5 种子（golden：7 种子、A=100.00%（14000/14000）、B 最大|误差|=0；可接受：≥5 种子、A≥99.9%、|误差|=0）。（细化原 [Judge] 第 1 点）
+2. 须论证 OR-Set add-wins 100%：并发 add+remove 下 x 始终保留（remove 只删已观察旧 token、删不掉并发新 token），并说明"删除全部"语义（2P-Set）破坏 add-wins（golden：2P-Set 保留率 0.00%；可接受：对照语义保留率 ≤1%）。（细化原 [Judge] 第 2 点）
+3. 须给 PN-Counter decrement 误差 0：跨副本并发 inc/dec 后 P−N 与顺序回放精确值一致（golden：7 种子均误差 0；可接受：|误差|=0），验证 decrement=两单调 G-Counter 之差（呼应 _01）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

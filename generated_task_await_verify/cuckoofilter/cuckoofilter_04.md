@@ -13,3 +13,14 @@ Look at `./summary_deletion.md`, check whether conclusion cover the following po
 1. cuckoo filter 删除后，保留键的假阴性率为 0（删除不影响其他键）。
 2. 被删除的键被正确移除（查询返回不存在）。
 3. 标准 Bloom filter 无法安全删除（按位清除会引入假阴性），与 cuckoo 形成对比。
+
+
+[Judge V2]
+
+查阅 `./summary_deletion.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；b=4、f=12、N=1×10⁵）：
+
+1. 须给删除后保留键假阴性率 0（golden：FNR=0/50000=0.0%；可接受：FNR=0）。（细化原 [Judge] 第 1 点）
+2. 须给被删键正确移除（golden：correct-removal=99.942%（29 FP/50000）、fresh FPR=0.0500%；可接受：correct-removal ≥99.9%）。（细化原 [Judge] 第 2 点）
+3. 须给标准 Bloom 无法安全删除（按位清零引入假负），与 cuckoo 对比（golden：Bloom 按位删除致假负；可接受：说明 Bloom 按位删除破坏其他键即可）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

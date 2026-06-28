@@ -1,0 +1,17 @@
+You are authoring a [Judge V2] grading standard from a REAL experiment result.
+
+Read these two files in THIS directory:
+  - ./task.md            : the ORIGINAL task spec, INCLUDING its conjectured [Judge] section (what the generator GUESSED, not measured).
+  - ./summary_betweenness_04_sampling.md  : the REAL measured conclusion an executor produced by actually running the experiment.
+
+Compare the real result against the original [Judge] conjecture, then author a [Judge V2] section that ENCODES THE REAL VERDICT (grounded in measured numbers, NOT a conjecture).
+
+Required format of the block you write:
+  - First a header line exactly:  Look at `./summary_betweenness_04_sampling.md` — REAL verdict (measured by execution; supersedes the conjectured [Judge] above):
+  - Then AT MOST 3 numbered points. Each point states the measured finding WITH ACTUAL NUMBERS quoted from the summary, and ends with a tag in parentheses: (confirms original [Judge] point k), or (differs from original [Judge] point k: <how>), or (not covered by original [Judge]).
+
+Rules:
+  - EVERY number must appear in the summary — do NOT invent or round carelessly.
+  - <= 3 points total; each clear and verifiable from the summary.
+  - Write the block to the file ./_judge_v2_block.md (header line + numbered points, nothing else, no code fence).
+  - Then create an empty file named __DONE__ in this directory and stop.

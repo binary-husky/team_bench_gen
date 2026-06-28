@@ -29,3 +29,14 @@ Look at `./summary_klee_04_deep_branch.md`, check whether conclusion covers the 
 1. 给出了**符号执行**（是否找到 TARGET + z3 求解次数）与**随机 fuzzing**（N∈{1e3,1e4,1e5} 下是否找到 + 命中率）的对比表。
 2. **符号执行确定性找到**到达深层 TARGET 的输入（求解累积 PC 即得一个满足模型），求解次数为个位数～数十。
 3. **随机 fuzzing 在合理 N 下命中率极低（接近 0）**：满足累积 guard 条件的输入测度极小，随机采样难命中；验证"解路径约束"在稀有目标可达性上远胜随机 fuzzing。
+
+
+[Judge V2]
+
+查阅 `./summary_klee_04_deep_branch.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；z3 符号执行 vs 随机 fuzzing、深层 TARGET）：
+
+1. 须给符号执行(是否找到+z3次数) vs 随机fuzzing(N∈{1e3,1e4,1e5}命中率)对比表（golden：符号 1 次 z3 找到 x=17、fuzzing 3 量级×3 种子命中 0（命中率 0）、真实概率 1.16e-9；可接受：表格呈现）。（细化原 [Judge] 第 1 点）
+2. 须给符号执行确定性找到深层 TARGET（求解累积 PC 即得模型、次数个位数~数十）（golden：1 次 z3、x=17；可接受：找到 + 次数 ≤数十）。（细化原 [Judge] 第 2 点）
+3. 须给随机 fuzzing 命中率极低近 0（golden：0 命中、真实概率 1.16e-9；可接受：命中率 ≤1e-6）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

@@ -13,3 +13,14 @@ Look at `./summary_lf_mapping.md`, check whether conclusion cover the following 
 1. LF-mapping 从 BWT 精确重建出原文（逐字节相等）。
 2. 重建是逐字符、自后向前进行的。
 3. 确认 BWT 可逆性，正是反向搜索成立的基础。
+
+
+[Judge V2]
+
+查阅 `./summary_lf_mapping.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；N=262144 字节、seed=20240626、纯 Python）：
+
+1. 须给 LF-mapping 从 BWT 精确重建原文、逐字节相等（golden：256KB 文本完全相等、首个不匹配位置=无；可接受：完全相等、无不匹配）。（细化原 [Judge] 第 1 点）
+2. 须给重建逐字符、自后向前进行（从第 0 行反复 `LF` 收集 `L[i]` 得正文逆序再反转；golden：重建耗时 0.13s < 构造 0.51s；可接受：说明逐字符后向流程）。（细化原 [Judge] 第 2 点）
+3. 须确认 BWT 可逆性是反向搜索基础——`LF` 为双射（以 `L[i]` 结尾的行一一对应以 `L[i]` 开头的行，沿哨兵行反复 LF 逆序遍历原文不丢不重排）；可接受：点明 LF 双射 + 反向搜索基础。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

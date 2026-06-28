@@ -11,3 +11,13 @@
 Look at `./summary_logic.md`, check whether conclusion cover the following points
 
 1. 标准答案：b 个符号位是独立的 Bernoulli(p) 试验（p = 1 − θ/π），一致位数 K ~ Binomial(b, p)，一致占比 K/b 即估计 p̂；Var(p̂) = p(1−p)/b，故 std(p̂) = √(p(1−p)/b) = O(1/√b)；又 θ̂ = π(1 − p̂)，故 std(θ̂) = π·std(p̂) = O(1/√b)。要使标准差减半，须把 b 增大 4 倍（因 std ∝ 1/√b）。即估计误差随 O(1/√b) 下降、每次减半代价为 4 倍位数。
+
+[Judge V2]
+
+查阅 `./summary_logic.md` —— 基于真实推导结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给出 `K~Binomial(b,p)`、`p=1−θ/π`、`p̂=K/b`；`Var(p̂)=p(1−p)/b`⇒`std(p̂)=√(p(1−p)/b)=O(1/√b)`。（细化原 [Judge] 第 1 点）
+2. 须由 `θ̂=π(1−p̂)` 推出 `std(θ̂)=π·std(p̂)=O(1/√b)`。（细化原 [Judge] 第 1 点——角度估计方差）
+3. 须由 `std∝1/√b` 推出标准差减半须 `b'=4b`。（细化原 [Judge] 第 1 点——4 倍代价）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->
