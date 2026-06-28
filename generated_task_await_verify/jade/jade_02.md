@@ -28,3 +28,19 @@
 1. **数值复现合理**：JADE w/ archive 在 f1 上的最终 mean error 落在 `[1e-56, 1e-50]` 区间内（论文 Table IV 报告 `1.3e-54`）；在 f9 上的最终 mean error 落在 `[1e-6, 1e-3]` 区间内（论文报告 `1.4e-4` at gen 1000，0 at gen 5000）。如果落在 10× 之外仍可接受但要在 summary 中解释偏差来源。
 2. **JADE 显著优于 DE/rand/1/bin**：在全部 4 个函数上，JADE w/ archive 的最终 mean error 比 DE/rand/1/bin 至少低 5 个数量级（参考论文 Table IV：f1 上 JADE=1.3e-54 vs DE=9.8e-14，差距 40 个数量级）。
 3. **SR 数据合理**：JADE w/ archive 在 f1, f3, f9 的 SR 都应 ≥ 96%（论文报告 100%）；f5 受 Rosenbrock 在 D=30 难收敛影响，SR 落在 `[80, 100]%` 都算合理。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_basic_repro.md`。**如实记录**：本任务（JADE w/archive × f1/f3/f5/f9，多 gen 复现 + DE/rand/1 baseline）orchestrator **超时**（`jade_02: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. f1 mean error ∈ [1e-56,1e-50]（论文 1.3e-54）；f9 ∈ [1e-6,1e-3]（论文 1.4e-4） | 论文 Table IV | 放宽：f1 近机器精度收敛、f9 收敛到小误差方向一致即给分 |
+| 2. JADE 比 DE/rand/1 在 4 函数上低 ≥5 数量级 | 论文 Table IV | 放宽：JADE 远优于 DE（方向一致）即给分 |
+| 3. SR：f1/f3/f9 ≥96%；f5 ∈[80,100]% | 论文报告 ~100% | 放宽：f1/f3/f9 高 SR、f5 略低方向一致即给分 |
+
+> 总则：超时未完成；"JADE 收敛远优于 DE、f5(Rosenbrock) 略难"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

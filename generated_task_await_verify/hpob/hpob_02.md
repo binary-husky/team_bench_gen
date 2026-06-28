@@ -34,3 +34,19 @@ Look at `./summary_rs_vs_gp.md`, check whether conclusion cover the following po
 1. 在 3 个 search space 中的至少 2 个上，至少 1 种 GP acquisition 在 normalized regret @100 上比 Random Search 改善 ≥ 20%（相对差距）
 2. 给出了 4 种 acquisition 在 3 个 search space 上的排名，并明确指出哪种 acquisition 是整体最优（不允许结论为"几乎一样"或"无差异"）
 3. 给出了 "高维 xgboost vs 低维 glmnet" 上 GP 相对 RS 的 gap 对比，明确说出哪个 gap 更大以及具体数值（例如 glmnet gap = X，xgboost gap = Y，Y > X）
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_rs_vs_gp.md`。**如实记录**：本任务（3 search space × 6 dataset × 5 seed × 5 method × 100 trial = 4500 点，含 BoTorch GP）orchestrator **超时**（`hpob_02: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. ≥2/3 search space 上 ≥1 GP acq 比 RS 改善 normalized regret ≥20% | GP 优于 RS | 放宽：GP 多数 space 优于 RS 方向一致即给分 |
+| 2. 4 acq 排名 + 明确最优（不许"无差异"） | EI 通常最优 | 放宽：给出明确排名即给分 |
+| 3. 高维 xgboost vs 低维 glmnet 的 GP-vs-RS gap 对比 + 数值 | 高维 GP 优势更大 | 放宽：明确"哪个 gap 更大"+ 合理量级即给分 |
+
+> 总则：超时未完成；"GP 优于 RS、高维优势更大"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

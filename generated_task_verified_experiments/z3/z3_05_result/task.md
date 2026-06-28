@@ -13,3 +13,14 @@ Look at `./summary_optimize.md`, check whether conclusion cover the following po
 1. Optimize 求得的目标值优于（不劣于）任意可行解（确为最优）。
 2. 优化求解耗时多于仅求可满足性。
 3. 最优解满足所有约束。
+
+
+[Judge V2]
+
+查阅 `./summary_optimize.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；调度问题、Solver vs Optimize）：
+
+1. 须给 Optimize 目标值优于可行解（确为最优）（golden：Optimize makespan=25 vs SAT 可行解 73（2.92× 优）；可接受：Optimize < SAT 可行解）。（细化原 [Judge] 第 1 点）
+2. 须给优化耗时多于可满足性（golden：Optimize 约 3× SAT；可接受：Optimize > SAT）。（细化原 [Judge] 第 2 点）
+3. 须给最优解满足所有约束（golden：makespan=25 满足 base_constraints；可接受：点明满足约束）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

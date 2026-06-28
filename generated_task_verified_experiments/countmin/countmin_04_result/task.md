@@ -27,3 +27,15 @@ Look at `./summary_cm_04_heavy_hitter.md`, check whether conclusion covers the f
 1. 给出了每个 `(w,d)` 配置下的 **precision@100** 与 **recall@100**（跨 ≥5 种子均值），以表格呈现。
 2. **precision 与 recall 随 sketch 增大而上升并趋近 1**：最小配置 `(512,3)` 的 precision 显著低于最大配置（小 sketch 下长尾 item 被高估挤入 top-`k` 造成假阳性）；最大配置下 precision 与 recall 都接近 1。
 3. 明确给出达到 **precision ≥ 0.95 且 recall ≥ 0.95** 所需的（近似）最小 sketch 配置，并指出是 `w`（控单点高估）还是 `d`（控尾部失败）对消除 heavy-hitter 假阳性更关键（经验上 `w`/精度对 top-`k` 假阳性影响更大）。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_cm_04_heavy_hitter.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给逐 (w,d) 表（golden：precision 0.422/0.972/0.994/1.000/0.996；可接受：同趋势）。（细化原 [Judge] 第 1 点）
+2. 须给 precision/recall 趋 1（golden：(512,3)=0.422→(4096,8)=1.000；可接受：最大配置 ≥0.99）。（细化原 [Judge] 第 2 点）
+3. 须给 P,R≥0.95 最小配置（golden：(w=1024,d=5) ~5120 计数器；可接受：找出 ≤5120 计数器且 P,R≥0.95 的配置）。（细化原 [Judge] 第 3 点——w 为更关键旋钮）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

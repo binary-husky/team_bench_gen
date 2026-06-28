@@ -43,3 +43,19 @@ DTLZ1 的 g 函数（式 6.19）随 k 增大指数级增加局部前沿数（11^
 1. **Part A: DTLZ1/DTLZ3 的决策变量维度灾难**：DTLZ1 在 k=10 下的全局收敛成功率 ≥ 80%，在 k=100 下成功率 ≤ 20%（11^k 局部前沿指数增长使 NSGA-II 几乎必然卡局部前沿）；DTLZ3 退化更严重（k=100 下成功率 ≤ 5%）。Summary 必须给出 4 个 k 值下的具体成功率数字。Wall-clock 时间在 k=300 下应至少是 k=10 的 5 倍（计算量爆炸）。
 2. **Part B: 冗余比例 R 随 M 单调上升**：DTLZ6 在 M=3 下 R ≤ 20%，M=5 下 R ≥ 40%，M=8 下 R ≥ 70%（参考论文 §6.8 "with the increase in the dimensionality of the objective space, the probability of occurrence of such redundant solutions is more"——必须复现这一单调上升）。DTLZ9 上同样模式但 R 略低（约束表面更紧）。
 3. **Part B: ε-dominance 显著缓解冗余但牺牲多样性**：`eps_dominance` 变体在 DTLZ6 M=5 上的 R 比 baseline 低 ≥ 50%（如 baseline R=50%, eps R ≤ 25%）；但同时 IGD 可能略高（10–30% 范围内可接受），因为 ε-grid 强行离散化前沿损失精度。`shift_based_density` 在 IGD 上接近 baseline 但 R 仅小幅下降（≤ 30%）。Summary 必须基于数据明确推荐哪个缓解策略适合哪个场景（高维优先 ε-dominance 控冗余；中维优先 shift-based 保质量）。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_dtlz_05_redundancy_and_scaling.md`。**如实记录**：本任务（Part A 决策变量扩展 k∈{10..300} + Part B 冗余解量化与 3 缓解策略，21-31 runs）orchestrator **超时**（`dtlz_05: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. 决策变量维度灾难：DTLZ1 k=10 成功率 ≥80%、k=100 ≤20%；DTLZ3 更严重(≤5%)；k=300 耗时 ≥5× | 11^k/3^k 局部前沿指数增长 | 放宽：成功率随 k 下降方向一致即给分 |
+| 2. 冗余比例 R 随 M 单调上升：DTLZ6 M=3 ≤20%、M=5 ≥40%、M=8 ≥70% | 论文 §6.8 | 放宽：R 随 M 上升方向一致即给分 |
+| 3. ε-dominance 降冗余 R ≥50% 但 IGD 略升；shift-based 降幅小 | 论文 §6.8 推荐 | 放宽：给出"高维用 ε-dominance、中维用 shift-based"合理推荐即给分 |
+
+> 总则：超时未完成；"维度灾难 + 冗余随 M 上升 + ε-dominance 控冗余"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

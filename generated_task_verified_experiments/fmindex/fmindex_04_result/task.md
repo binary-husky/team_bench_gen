@@ -13,3 +13,14 @@ Look at `./summary_index_size.md`, check whether conclusion cover the following 
 1. 对可压缩/重复文本，FM-index 体积小于原文（被压缩）。
 2. 对随机文本，索引体积 ≈ 原文体积（不可压缩）。
 3. 体现「机会式」、体积随文本熵有界的特性。
+
+
+[Judge V2]
+
+查阅 `./summary_index_size.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；N=65536、4 类文本、seed=12345）：
+
+1. 须给可压缩/重复文本索引体积 < 原文（golden：重复 DNA 索引/原文 ~0.5%、随机 DNA ≈1 或略 >1、英文居中；可接受：重复文本比值 <0.1、随机 ≈1）。（细化原 [Judge] 第 1 点）
+2. 须给随机文本索引体积 ≈ 原文（不可压缩，H_k≈logσ）（golden：随机 DNA 比值 ≈1 或略 >1（编码开销）；可接受：∈[0.9,1.2]）。（细化原 [Judge] 第 2 点）
+3. 须体现机会式、体积随熵有界（golden：`|BW_RLX|≤5·|T|·H_k+g_k·log|T|`、BWT 游程数 r 为中介；可接受：点明熵有界 + r 中介）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

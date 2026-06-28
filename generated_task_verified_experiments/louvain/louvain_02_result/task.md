@@ -13,3 +13,14 @@ Look at `./summary_convergence.md`, check whether conclusion cover the following
 1. 模块度 Q 随 pass 轮次上升并在少数轮后趋于平台（已收敛）。
 2. 社区数随 pass 轮次下降（聚合阶段把小社区合并）。
 3. 通常在很少的轮次（例如 ≤5）内即收敛，之后再无提升。
+
+
+[Judge V2]
+
+查阅 `./summary_convergence.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；LFR 图、random_state=0、dendrogram 4 轮）：
+
+1. 须给 Q 随 pass 上升并在少数轮后平台（golden：4 轮、Q 0.360→0.560、第 3 轮 ΔQ≈3e-4 饱和；可接受：单调升后平台）。（细化原 [Judge] 第 1 点）
+2. 须给社区数随 pass 下降（golden：323→83→24→20；可接受：单调降）。（细化原 [Judge] 第 2 点）
+3. 须给 ≤5 轮收敛（golden：4 轮收敛；可接受：≤5 轮）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

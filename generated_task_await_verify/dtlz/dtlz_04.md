@@ -42,3 +42,19 @@
 1. **NSGA-II 在 M ≥ 8 上灾难性退化**：NSGA-II 的 IGD 在 M=8 比 M=3 高至少 5 倍；在 M=15 比 M=3 高至少 20 倍。同时非支配比例在 M=15 接近 100%（≥ 95%），直接验证论文 §6.6 的"selection pressure disappears"——选择压力在高维下消失，导致 NSGA-II 的非支配排序退化为随机选择。Summary 必须报告每个 M 的非支配比例。
 2. **NSGA-III 在 many-objective 上保持优势**：在 M ∈ {8, 10, 15} 上，NSGA-III 的 IGD 比 NSGA-II 低至少 50%（半一下）；在 M ∈ {3, 5} 上 NSGA-III 与 NSGA-II 差距 ≤ 20%（低维下两者接近）。这验证 NSGA-III 论文（Deb-Jain 2014 IEEE TEVC）的核心 claim。
 3. **MOEA/D 与 NSGA-III 在中间 M 上相当**：在 M=5 上 MOEA/D 与 NSGA-III 的 IGD 差距 ≤ 30%（参考点引导 vs 分解两类方法在中维下表现接近）；但在 M ≥ 10 上 MOEA/D 退化更明显（IGD 比 NSGA-III 高 ≥ 50%），因为权重向量在球面第一象限的分布密度下降。Summary 必须明确指出三个算法各自最适合的 M 区间。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_dtlz_04_many_objective.md`。**如实记录**：本任务（NSGA-II/NSGA-III/MOEA/D × M∈{3,5,8,10,15} × 21 runs = 315 runs）orchestrator **超时**（`dtlz_04: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. NSGA-II 在 M≥8 灾难性退化：IGD M=8 ≥5× M=3、M=15 ≥20×；M=15 非支配比例 ≥95% | 论文 §6.6 选择压力消失 | 放宽：NSGA-II 高维退化 + 非支配比例趋 1 方向一致即给分 |
+| 2. NSGA-III 在 many-objective 优势：M≥8 IGD 比 NSGA-II 低 ≥50% | Deb-Jain 2014 核心 claim | 放宽：NSGA-III 高维优于 NSGA-II 方向一致即给分 |
+| 3. MOEA/D 中维与 NSGA-III 相当、M≥10 退化更明显 | 权重向量分布不足 | 放宽：三算法各自适合 M 区间判断合理即给分 |
+
+> 总则：超时未完成；"NSGA-II 高维失效、NSGA-III/MOEA/D 更鲁棒"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

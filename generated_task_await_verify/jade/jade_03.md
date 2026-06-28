@@ -32,3 +32,19 @@
 1. **rand_jade 在窄谷 / ill-conditioned 函数上塌方**：rand_jade 在 f3 的 SR ≤ 60%（论文 Table VI 报告 38%），在 f5 的 SR = 0%（论文报告 0%）。这一现象是论文 §V.B 解释的"DE/rand/1 在 ill-conditioned Hessian 下不能维持多样性"的直接体现。
 2. **nona_jade 在维度敏感函数上塌方**：nona_jade 在 f4-equivalent（这里测 f9 / f10 等多模态函数）的 SR 比 jade_no_archive 低 ≥ 20pp（论文 Table VI 报告 nona_jade 在 f4 的 SR=0%、f9 SR=0%、f8 SR=16%，而 jade_no_archive 都是 100%）。说明去掉参数自适应会显著损伤多模态函数上的可靠性。
 3. **JADE_full 的"协同放大"效应**：在至少 4/6 个测试函数上，`jade_archive` 的 SR 比 `max(jade_no_archive, rand_jade, nona_jade)` 高 ≥ 5pp（即"组合优于任一组件"）。若该效应在某些函数上不成立（例如 f1 上几个变体都接近 100% SR），summary 中要识别并解释这些 plateau 情况。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_component_ablation.md`。**如实记录**：本任务（JADE 组件消融：rand_jade / nona_jade / jade_no_archive / full × 6 函数）orchestrator **超时**（`jade_03: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. rand_jade 在 ill-conditioned 塌方：f3 SR ≤60%(论文 38%)、f5 SR=0% | 论文 Table VI / §V.B | 放宽：rand_jade 在窄谷函数 SR 大幅下降方向一致即给分 |
+| 2. nona_jade 多模态 SR 比 jade_no_archive 低 ≥20pp | 去自适应损可靠性 | 放宽：nona_jade 多模态更差方向一致即给分 |
+| 3. full 协同放大：≥4/6 函数 SR 比 max(组件) 高 ≥5pp | 组合优于组件 | 放宽：full 多数函数不差于任一组件即给分 |
+
+> 总则：超时未完成；"去 rand/去自适应 在特定函数塌方、full 协同最强"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

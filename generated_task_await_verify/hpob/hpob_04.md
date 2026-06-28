@@ -43,3 +43,19 @@ Look at `./summary_transfer.md`, check whether conclusion cover the following po
 1. FSBO 在 normalized regret @100 上是 5 个迁移方法中排名第 1 或第 2（差距 ≤ 5%），并给出了 FSBO 相对 Deep Kernel GP（无迁移）的具体增益数值
 2. 全部 5 个迁移方法在 normalized regret @100 上都比 Deep Kernel GP（无迁移）严格更好（即"迁移 > 非迁移"）
 3. 给出了 search space 5971 与 5906 上 RGPE vs 其他方法的对比，并明确说 RGPE 在这两个 space 上是否强于其他迁移方法（验证 §7.2 的观察）
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_transfer.md`。**如实记录**：本任务（16 space × ~6 dataset × 5 seed × 6 method × 100 trial + 元学习训练）orchestrator **超时**（`hpob_04: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. FSBO normalized regret @100 排名前 1-2(≤5%) + 相对 Deep Kernel GP 增益数值 | FSBO 强 | 放宽：FSBO 名列前茅 + 给出增益方向即给分 |
+| 2. 全部 5 迁移方法 > Deep Kernel GP（无迁移） | 迁移>非迁移 | 放宽：迁移方法整体优于非迁移方向一致即给分 |
+| 3. space 5971/5906 上 RGPE vs 其他方法对比 | RGPE 在这两 space 强 | 放宽：RGPE 在 5971/5906 不差方向一致即给分 |
+
+> 总则：超时未完成；"迁移>非迁移、FSBO/RGPE 强势"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

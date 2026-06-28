@@ -30,3 +30,14 @@ Look at `./summary_raft_02_election_spread.md`, check whether conclusion covers 
 1. 给出了每个 spread `{0,1H,5H,10H,20H}` 下 **median time-to-elect** 与 **split-vote 发生率**（基于 ≥30 种子），以表格或图呈现。
 2. **spread=0 时 split-vote 率接近 1**（节点同时发起选举、瓜分选票无人过半）；随 spread 增大，split-vote 率**快速下降至接近 0**。
 3. 随 spread 增大，median **time-to-elect 稳定**在一个不大的值附近（量级约 `T_max`），即随机化超时以很小的额外时延换来几乎无 split-vote——这正是 Raft 用随机化超时避免瓜分的核心收益。
+
+
+[Judge V2]
+
+查阅 `./summary_raft_02_election_spread.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；tick 仿真、T_min=15、H=5、spread∈{0,5,25,50,100}、60 种子）：
+
+1. 须给每 spread 的 median time-to-elect + split-vote 率、≥30 种子（golden：60 种子、spread∈{0,5,25,50,100}；可接受：≥30 种子、表格/图）。（细化原 [Judge] 第 1 点）
+2. 须给 spread=0 时 split-vote 率近 1、随 spread 增大快速降近 0（golden：spread=0 死锁 6000 tick（≈400 term 全瓜分）、大 spread split-vote→0；可接受：spread=0 高、大 spread 近 0）。（细化原 [Judge] 第 2 点）
+3. 须给随 spread 增大 median time-to-elect 稳定在 ~T_max 量级（golden：大 spread 时延稳定 ~T_max、spread=0 永不选出；可接受：大 spread 时延量级 ~T_max）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

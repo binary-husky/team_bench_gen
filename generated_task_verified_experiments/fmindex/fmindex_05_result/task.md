@@ -13,3 +13,14 @@ Look at `./summary_speed_vs_naive.md`, check whether conclusion cover the follow
 1. FM-index 计数远快于朴素子串搜索（建好索引后）。
 2. 多查询时优势放大（建索引成本被摊薄）。
 3. 定位比计数慢（需还原位置），但仍具竞争力。
+
+
+[Judge V2]
+
+查阅 `./summary_speed_vs_naive.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；150KB DNA 文本、40 模式、seed=12345）：
+
+1. 须给 FM 计数远快于朴素（golden：count ~3–6µs vs naive ~8700–12000µs、比值 ~3e-4；可接受：count/naive ≤1e-3）。（细化原 [Judge] 第 1 点）
+2. 须给多查询优势放大（建索引成本摊薄）（golden：建索引 64.3ms、每查询 ~3–6µs；可接受：说明建索引一次性 + 多查询摊薄）。（细化原 [Judge] 第 2 点）
+3. 须给定位比计数慢但仍具竞争力（golden：locate ~5–25µs > count ~3–6µs、仍远快于朴素（比值 ~5e-4）；可接受：locate>count 且 locate/naive ≤1e-2）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

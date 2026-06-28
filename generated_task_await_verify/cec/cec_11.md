@@ -43,3 +43,19 @@
 1. **历史记忆的边际贡献最大**：`shade_no_mem`（退化为 JADE-style 单 μ）在 multimodal 函数 F9, F15, F19 上的 mean error 比 `shade_full` 高至少 1 个数量级；在 composition 函数 F21, F25, F27 上 SR 比 `shade_full` 低 ≥ 20pp。这验证论文 §V.A 的核心论断——历史记忆是 SHADE 相对 JADE 的关键差异化。
 2. **归档在多模态上有显著作用**：`shade_no_archive` 在至少 4/8 函数上 mean error 比 `shade_full` 高 ≥ 50%（参考论文 §IV.B 关于 archive 维持多样性的论断，该机制主要在多模态上发挥作用）。
 3. **随机 p 是次要创新但非零贡献**：`shade_static_p` 在所有函数上与 `shade_full` 差距 ≥ 0 但通常 ≤ 1 个数量级，SR 差距 ≤ 15pp——证明随机 p 是一个"温和改进"，不像前两个组件那样决定性。如果某函数上 `shade_static_p` 反而比 `shade_full` 好（罕见），summary 中要识别并解释（可能是 p=0.05 对该函数更合适）。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_cec_11_component_ablation.md`。**如实记录**：本任务（SHADE 2×2×2=8 变体 × 8 函数 × 25 runs 消融）orchestrator **超时**（`cec_11: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. 历史记忆边际贡献最大：no_mem 在 multimodal F9/15/19 误差高 ≥1 数量级；composition SR 低 ≥20pp | 历史记忆是 SHADE 关键 | 放宽：no_mem 在多模态上更差即给分 |
+| 2. 归档在多模态有显著作用：no_archive ≥4/8 函数误差高 ≥50% | archive 维持多样性 | 放宽：no_archive 在多模态更差即给分 |
+| 3. 随机 p 为温和改进：static_p 差距 ≥0 但 ≤1 数量级，SR 差 ≤15pp | 随机 p 非决定性 | 放宽：static_p 接近 full（小幅差）即给分 |
+
+> 总则：超时未完成；"历史记忆 > 归档 > 随机 p"的贡献序方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

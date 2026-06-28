@@ -32,3 +32,14 @@ Look at `./summary_raft_05_term_safety.md`, check whether conclusion covers the 
 1. 给出了每次重复（≥10 种子）的"L1 是否降级为 follower""已提交条目被破坏数""陈旧未提交条目被截断数"，以表格呈现。
 2. **L1 恢复连接后必然降级为 follower**（旧 term T < T'，遇到更高 term 即降级），旧 term 的 AppendEntries 不再被接受为权威——即"被罢免的 leader 无法继续用旧 term 主导"。
 3. **新 term 已提交条目 0 条被破坏**（Leader Completeness 在运行期成立）；且 L1 在隔离期 append 的**陈旧未提交条目被正确截断**以对齐新 leader L2 的日志（log reconciliation）。两者共同验证 term 机制下的日志安全。
+
+
+[Judge V2]
+
+查阅 `./summary_raft_05_term_safety.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；进程内仿真、隔离旧 leader L1、新 leader L2 term T′>T、≥10 种子）：
+
+1. 须给每次重复(≥10 种子) L1 是否降级/已提交条目被破坏数/陈旧未提交条目截断数表（golden：12/12 种子 L1 降级、破坏 0、截断==k、lastLogIndex=100/commitIndex=100；可接受：≥10 种子、表格）。（细化原 [Judge] 第 1 点）
+2. 须给 L1 恢复后必然降级 follower（旧 term T<T′ 遇更高 term 即 step_down）（golden：12/12 降级、currentTerm=T′；可接受：必然降级）。（细化原 [Judge] 第 2 点）
+3. 须给新 term 已提交条目 0 破坏(Leader Completeness) + 陈旧未提交条目正确截断对齐 L2（golden：破坏 0、截断==k 且均为未提交(>原 commitIndex=50)；可接受：0 破坏 + 截断未提交条目）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

@@ -13,3 +13,14 @@ Look at `./summary_composition.md`, check whether conclusion cover the following
 1. 为保持总 ε_total 不变，单次 ε_q 随 k 增大而按 1/k 缩小。
 2. 单次查询噪声/误差随 k 线性增长（~k·Δf/ε_total）。
 3. 体现隐私预算随查询数线性消耗（基本组合）。
+
+
+[Judge V2]
+
+查阅 `./summary_composition.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；k 次组合查询、ε_total 固定、ε_q=ε_total/k）：
+
+1. 须给单次 ε_q 随 k 按 1/k 缩小（golden：ε_q=ε_total/k；可接受：点明 1/k）。（细化原 [Judge] 第 1 点）
+2. 须给单次误差随 k 线性增长（golden：k=1→~1.0、k=50→~50.3（放大 50×）、实测/理论~1；可接受：线性增长、≈k·Δf/ε_total）。（细化原 [Judge] 第 2 点）
+3. 须体现隐私预算随查询数线性消耗（基本组合）（可接受：点明基本组合定理）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

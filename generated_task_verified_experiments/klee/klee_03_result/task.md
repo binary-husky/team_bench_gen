@@ -30,3 +30,14 @@ Look at `./summary_klee_03_tests_vs_paths.md`, check whether conclusion covers t
 1. 给出了每个 toy 函数（含 `k_independent_ifs`，k∈{2..5}）的**生成测试数 / 可行路径数 / 分支覆盖率**，以表格呈现。
 2. **生成测试数 ≈ 可行路径数**（每条可行路径恰对应一个生成的输入）；对 `k_independent_ifs`，可行路径数随 `k` 按 **2^k** 增长——验证路径爆炸。
 3. 当所有可行路径被枚举时，**分支覆盖率饱和到（近乎）100%**（覆盖率随测试数增加而平台化，不因"测试更多"继续提升——因为已覆盖全部可行路径）。
+
+
+[Judge V2]
+
+查阅 `./summary_klee_03_tests_vs_paths.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；z3 符号执行、toy 函数含 k_independent_ifs k∈{2..5}）：
+
+1. 须给各 toy 函数生成测试数/可行路径数/分支覆盖率表（golden：get_sign 3、classify 4、k_ifs k=2/3/4/5→4/8/16/32；可接受：表格呈现）。（细化原 [Judge] 第 1 点）
+2. 须给生成测试数≈可行路径数 + k_independent_ifs 随 k 按 2^k 增长（golden：2^k 精确（4/8/16/32）；可接受：≈2^k）。（细化原 [Judge] 第 2 点）
+3. 须给所有可行路径枚举时覆盖率饱和~100%（golden：覆盖率饱和平台；可接受：≥95% 且平台）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

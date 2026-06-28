@@ -37,3 +37,19 @@ Look at `./summary_continuous_vs_discrete.md`, check whether conclusion cover th
 1. 给出了完整的 4 方法 × 3 trial (25/50/100) 的 discrete vs continuous normalized regret 对比表，并对每个 cell 给出了相对差距 `(continuous − discrete) / discrete`
 2. 给出了 trial ∈ {25, 50, 100} 三个时间点上的 Spearman 排名相关系数 ρ，并明确判断 ρ ≥ 0.8（高保真）还是 ρ < 0.8（代理扭曲了排名）；同时明确说出是否存在 "discrete 下方法 A 优于 B 但 continuous 下 B 优于 A" 的逆转案例
 3. 在选定的 3 个数据集上量化了 XGBoost 代理的 MAE 或 RMSE，并讨论了这个偏差量级是否足以解释观察到的 discrete/continuous 排名差异（high-IQ：Judge 需要判断 RMSE 量级与 (y*_max − y*_min) 的比值是否合理）
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_continuous_vs_discrete.md`。**如实记录**：本任务（16 space × ~6 dataset × 5 seed × 4 method × 2 mode × 100 trial + XGBoost 代理）orchestrator **超时**（`hpob_05: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. 4 方法 × 3 trial 的 discrete vs continuous regret 表 + 相对差距 | 论文 §7.4 | 放宽：给出完整表 + 相对差距方向合理即给分 |
+| 2. 25/50/100 三点 Spearman ρ + ρ≥0.8 判断 + 逆转案例 | ranking fidelity | 放宽：给出 ρ + 明确有无逆转即给分 |
+| 3. 3 数据集上 XGBoost 代理 MAE/RMSE + 是否解释排名差异 | 代理偏差 | 放宽：量化代理误差 + 合理讨论即给分 |
+
+> 总则：超时未完成；给出 ranking fidelity 判断 + 代理误差量级、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

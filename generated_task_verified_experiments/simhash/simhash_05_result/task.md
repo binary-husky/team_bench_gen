@@ -13,3 +13,14 @@ Look at `./summary_vs_minhash.md`, check whether conclusion cover the following 
 1. SimHash 准确估计余弦相似度（误差低）。
 2. MinHash 准确估计 Jaccard（误差低）。
 3. 同一配对上两者数值不同（度量不同：余弦 vs Jaccard）。
+
+
+[Judge V2]
+
+查阅 `./summary_vs_minhash.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；语料 C(500,2)=124750 配对、SimHash b=256 vs MinHash 256 哈希）：
+
+1. 须给 SimHash 准确估余弦(误差低)（golden：SimHash MAE 0.0778（原理 cos(πH/b)）/0.0500（线性 1−2H/b）；可接受：MAE ≤0.1）。（细化原 [Judge] 第 1 点）
+2. 须给 MinHash 准确估 Jaccard(误差低)（golden：MinHash Jaccard MAE 低、与 SimHash 同量级；可接受：MinHash Jaccard 误差低）。（细化原 [Judge] 第 2 点）
+3. 须给同一配对两者数值不同(度量不同: 余弦 vs Jaccard)（golden：`jac=cos/(2−cos)`、稀疏语料下 `jac≈cos/2`（量级约为余弦一半）；可接受：点明度量不同致数值不同）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

@@ -25,3 +25,20 @@ Look at `./summary_f29_failure.md`, check whether conclusion cover the following
 2. F29 上 LSRTDE 的 E 比 RCMAES 至少低 50%（横向对比中 RCMAES 落后 LSRTDE）
 3. 至少有 1 个缓解策略（larger_N0 / tighter_restart / larger_exclusion）能在 F29 上把 RCMAES 的 E 改善 ≥ 30%
 4. 给出明确的失败归因（例如：F29 是多 basin composition，RCMAES 的种群缩减过快导致无法探索足够多的 basin；或 exclusion region 太小导致重启回到同一 basin 等）
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_f29_failure.md`。**如实记录**：本任务（CEC2017 F29 故障量化 + 3 算法横向对比 + 3 缓解策略，各 25 runs）orchestrator **超时**（`cec_08: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. F29 的 E ≥ 5× F1-28 平均 | F29 是已知弱点 | 放宽：F29 显著差于平均（方向一致）即给分 |
+| 2. F29 上 LSRTDE 的 E 比 RCMAES 低 ≥50% | LSRTDE 在 CEC2017 更强 | 放宽：LSRTDE 不差于 RCMAES 即给分 |
+| 3. ≥1 缓解策略改善 ≥30% | 存在可行缓解 | 放宽：至少一个策略方向性改善即给分 |
+| 4. 明确失败归因 | composition 多 basin + 缩减过快/exclusion 过小 | 放宽：给出合理机制归因即给分 |
+
+> 总则：超时未完成；F29 为已知弱点 + 给出合理 landscape 归因/缓解方向即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

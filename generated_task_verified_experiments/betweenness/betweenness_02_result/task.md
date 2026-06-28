@@ -27,3 +27,16 @@ Look at `./summary_betweenness_02_correctness.md`, check whether conclusion cove
 1. 给出了 **≥10 张测试图**（含 Zachary 空手道 + 多张随机图，n∈{15..50}）下，NetworkX Brandes 与朴素逐对最短路计数结果的**每节点最大绝对差**，以表格呈现（基于 ≥3 种子）。
 2. **所有图上最大绝对差都在浮点容差内（≈ 0，如 ≤ 1e-9）**——Brandes 与朴素法逐节点一致，验证 Brandes 依赖累加正确。
 3. 归一化/无向去重处理一致（两方法在同一约定下比对），排除"约定不同导致的假不一致"，确保差异确实反映算法正确性。
+
+
+---
+
+[Judge V2]
+
+查阅 `./summary_betweenness_02_correctness.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须覆盖 ≥10 图、≥3 种子（golden：实测 12 图、5 种子；可接受：≥10 图且 ≥3 种子）。（细化原 [Judge] 第 1 点）
+2. 须验证 Brandes ≡ 朴素逐对计数、逐节点 max|Δ| 在浮点容差内（golden：原始 ≤2.3e-13、归一化 ≤2e-16、三稀疏图恰 0；可接受：max|Δ| ≤ 1e-9）。（细化原 [Judge] 第 2 点）
+3. 须对齐约定（无向折半、归一化除 C(n−1,2)、端点排除）使残差为舍入；σ_st=26 证实真实枚举（golden：σ_st=26；可接受：σ_st ≥ 10）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

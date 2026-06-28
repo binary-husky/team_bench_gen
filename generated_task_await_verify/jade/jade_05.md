@@ -45,3 +45,19 @@
     - 这一定性模式必须出现在 summary 中，与论文 §V.C 的描述对应。
 2. **Part B：p-sweep 边界验证**：p 在 [5%, 20%] 内 SR 接近最大值（差 ≤ 5pp），p = 80% 时 SR 比 p = 5% 低 ≥ 15pp（验证 "p 太大会过于 greedy，损害多样性"——论文 §IV.D 提到的 "the latter is too greedy to maintain the diversity of the population"）。p = 1% 在 f5 上也应有 SR 下降（论文 §IV.D 提到 "p · NP = 1 ... may lead to less satisfactory results"）。
 3. **Part B：c-sweep 边界验证**：1/c = 1（即 c = 1）时 SR 比 1/c = 10 低 ≥ 10pp（验证 "small value of 1/c causes false convergence due to the lack of sufficient information to smoothly update CR and F"）；1/c = 100 时也应出现 SR 下降（c 太小导致 lifetime 太长，无法跟上问题 landscape 的变化）。两端的"U 形"曲线必须出现。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_dynamics_sensitivity.md`。**如实记录**：本任务（μ_F/μ_CR 动力学曲线 + p-sweep + c-sweep，多函数多 gen）orchestrator **超时**（`jade_05: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. 动力学曲线定性匹配 Fig 4（f1 平直、f3/f5 早变后稳、f9 振荡） | 论文 §V.C | 放宽：曲线定性形状方向一致即给分 |
+| 2. p-sweep：p∈[5%,20%] SR 近 max、p=80% SR −≥15pp | p 太大过 greedy | 放宽：两端 p 下降方向一致即给分 |
+| 3. c-sweep：1/c=1 比 1/c=10 低 ≥10pp、U 形 | 论文 §IV.D | 放宽：两端 1/c 下降、U 形方向一致即给分 |
+
+> 总则：超时未完成；"p/1/c 两端下降、中等最优"U 形方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

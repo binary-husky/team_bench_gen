@@ -30,3 +30,19 @@ Look at `./summary_zdt_04.md`, check whether conclusion covers the following poi
 1. 报告了 n_var ∈ {5, 10, 30, 50, 100} 下 ZDT1 的 IGD 和 HV（均值±标准差，各 31 次独立运行），并明确指出 IGD 随 n_var 增大是恶化、不变还是非单调。
 2. 报告了每个 n_var 下 D_dec = mean(‖(x₂,…,xₙ)‖₂) 随代数的演化曲线，并明确回答"D_dec 是否在所有 n_var 下都收敛到接近 0"，若不是则指出从哪个维度开始失败。
 3. 报告了单次运行 wall-clock 时间随 n_var 的变化趋势（线性 / 超线性 / 其它），并对其成因给出简短解释（如评估代价、排序代价、变异算子代价等）。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_zdt_04.md`。**如实记录**：本任务（NSGA-II × ZDT1，n_var∈{5,10,30,50,100}，各 31 runs，IGD/HV + D_dec 演化 + wall-clock）orchestrator **超时**（`zdt_04: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. n_var∈{5..100} 的 IGD/HV + IGD 随 n_var 趋势 | 高维略恶化 | 放宽：报告趋势（恶化/不变/非单调）即给分 |
+| 2. D_dec 随代数演化 + 是否各 n_var 都收敛到 ~0 | 决策变量收敛 | 放宽：报告 D_dec 收敛情况即给分 |
+| 3. wall-clock 随 n_var 趋势 + 成因 | 评估/排序代价 | 放宽：报告趋势 + 合理解释即给分 |
+
+> 总则：超时未完成；给出 n_var 扩展下 IGD/D_dec/耗时 三者趋势 + 合理解释即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

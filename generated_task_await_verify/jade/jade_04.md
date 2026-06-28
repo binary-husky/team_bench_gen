@@ -43,3 +43,19 @@ CR 侧保持论文默认（Normal + arithmetic mean），其他参数（`c=0.1`,
 1. **Cauchy > Normal 主要在多模态函数上显著**：`cauchy_lehmer` 在 f9 / f10 / f11 上的 SR 平均比 `normal_lehmer` 高 ≥ 5pp；而在 f1 上两者 SR 差距 ≤ 2pp（Sphere 上分布选择几乎无影响）。这与论文 §IV.C 的"Cauchy 帮助 greedy 策略避免早熟"的论断一致。
 2. **Lehmer > 算术均值的边际效应在 f5 上最显著**：`cauchy_lehmer` 在 f5 上的 SR 比 `cauchy_arith` 高 ≥ 10pp（或 final mean error 低 ≥ 1 个数量级）。这验证了论文 §IV.C 关于"算术均值导致 μ_F 偏小、最终早熟"的论断。
 3. **μ_F 稳态值的差异**：在 f9 / f10 等多模态函数上，`cauchy_lehmer` 最后一代的 μ_F 平均值应 > 0.4，而 `cauchy_arith` 的 μ_F 应 < 0.3。这直接展示 Lehmer 均值把 μ_F "推大" 的效果。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_distribution_design.md`。**如实记录**：本任务（Cauchy/Normal × Lehmer/算术均 × 多函数消融）orchestrator **超时**（`jade_04: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. Cauchy>Normal 主要在多模态（f9/10/11 SR +≥5pp；f1 ≤2pp） | 论文 §IV.C | 放宽：Cauchy 在多模态更优、unimodal 无差异方向一致即给分 |
+| 2. Lehmer>算术均 在 f5 最显著（SR +≥10pp 或误差低 ≥1 数量级） | 算术均致 μ_F 偏小早熟 | 放宽：方向一致即给分 |
+| 3. μ_F 稳态：cauchy_lehmer >0.4、cauchy_arith <0.3 | Lehmer 推大 μ_F | 放宽：cauchy_lehmer 稳态 μ_F 更高方向一致即给分 |
+
+> 总则：超时未完成；"Cauchy+Lehmer 推大 μ_F、抗早熟"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

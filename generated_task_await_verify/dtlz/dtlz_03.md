@@ -45,3 +45,19 @@
 1. **DTLZ3 在收敛上最难（多模态 g）**：DTLZ3 的 IGD 均值至少是 DTLZ2 的 5 倍（参考论文图 6.16 vs 6.14 的定性差异——同样球面前沿，DTLZ3 因 g 多模态导致 NSGA-II 大部分 run 卡局部前沿）；至少 50% 的 run 最终 g > 50。Summary 必须量化这一比例。
 2. **DTLZ4 在多样性上展示 biased density**：31 次 run 中至少有一次 run 出现 "all solutions in f_3-f_1 plane" 或 "all in f_1-f_2 plane" 的退化结果（论文 §6.7.4 明确描述的 outcome），且该 run 的 Spread Δ 比 "entire surface" run 差 ≥ 30%。同时报告三种 outcome 各占多少次。
 3. **DTLZ7 在多样性上展示 4 段不连通覆盖**：31 次 run 中"4 段全有解"的成功率 ≥ 60%（论文图 6.24 显示 NSGA-II 在 DTLZ7 M=3 上能稳定维持 4 个子种群）；如果成功率 < 60%，summary 必须识别并解释（例如某些段被遗弃）。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_dtlz_03_front_geometry.md`。**如实记录**：本任务（NSGA-II × 7 种 DTLZ 前沿几何，各 31 runs）orchestrator **超时**（`dtlz_03: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. DTLZ3 收敛最难：IGD ≥5× DTLZ2；≥50% run g>50 | 多模态 g 卡局部前沿 | 放宽：DTLZ3 收敛最难方向一致即给分 |
+| 2. DTLZ4 多样性 biased：出现退化 outcome + Spread 更差 | biased 密度 | 放宽：报告 DTLZ4 退化 outcome 方向一致即给分 |
+| 3. DTLZ7 四段不连通：4 段全有解成功率 ≥60% | 论文图 6.24 | 放宽：DTLZ7 能维持多段（方向一致）即给分 |
+
+> 总则：超时未完成；明确回答"哪种几何最伤收敛（DTLZ3）、哪种最伤多样性"且方向一致即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

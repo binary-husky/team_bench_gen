@@ -29,3 +29,19 @@ Look at `./summary_zdt_05.md`, check whether conclusion covers the following poi
 1. 针对 ZDT4，明确报告了 31 次独立运行中"到达全局 Pareto 前沿（g(x) < 1.1）"的成功率（百分比或次数），并对比 ZDT1 baseline 的成功率，量化多模态带来的难度提升。
 2. 同时报告了 DTLZ1（3 目标超平面）和 DTLZ2（3 目标单位球面）的 IGD 和 HV（均值±标准差，各 31 次独立运行）。
 3. 给出了从 2 目标（ZDT1/ZDT2）到 3 目标（DTLZ1/DTLZ2）的性能下降的量化对比（IGD 或 HV 的相对恶化倍数），并对恶化成因给出简短解释（如非支配排序压力、拥挤距离在 3 目标下的退化等）。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_zdt_05.md`。**如实记录**：本任务（NSGA-II × ZDT4 多模态成功率 + DTLZ1/DTLZ2 三目标，各 31 runs）orchestrator **超时**（`zdt_05: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. ZDT4 到达全局前沿(g<1.1)成功率 vs ZDT1，量化多模态难度 | ZDT4 多模态难 | 放宽：ZDT4 成功率远低于 ZDT1 方向一致即给分 |
+| 2. DTLZ1 & DTLZ2（3 目标）IGD & HV（31 runs） | — | 放宽：给出数值表即给分 |
+| 3. 2 目标→3 目标性能下降量化 + 成因 | 3 目标选择压力退化 | 放宽：报告下降倍数 + 合理解释即给分 |
+
+> 总则：超时未完成；"ZDT4 多模态难、2→3 目标性能下降"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

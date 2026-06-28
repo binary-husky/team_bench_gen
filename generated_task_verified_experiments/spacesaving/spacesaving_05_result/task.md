@@ -13,3 +13,14 @@ Look at `./summary_skew_vs_uniform.md`, check whether conclusion cover the follo
 1. Zipfian（偏斜）流上 precision/recall 很高（少数重击点能塞进 k 个槽）。
 2. 均匀流上 precision/recall 明显变差（无重击点、大量元素竞争、top-k 模糊）。
 3. 结论指出 Space-Saving 在偏斜流（真实世界常见）上表现远优于均匀流。
+
+
+[Judge V2]
+
+查阅 `./summary_skew_vs_uniform.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；k=100、Zipfian vs Uniform、N=1e5）：
+
+1. 须给 Zipfian precision/recall 高（golden：0.73、头部完全正确（rank-1 真值 608072 远超驱逐误差 241）、边界附近损失致 0.73；可接受：偏斜下头部 100% 正确、precision ≥0.6）。（细化原 [Judge] 第 1 点——"很高"细化为 0.73 + 头部完美）
+2. 须给均匀流 precision/recall 明显变差（golden：0.00（0/100 重叠）、估计严重高估（max 10000 vs 真实 26）；可接受：均匀 ≪偏斜）。（细化原 [Judge] 第 2 点）
+3. 须给偏斜流远优于均匀流（golden：0.73 vs 0.00；可接受：偏斜 >均匀）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

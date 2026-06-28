@@ -30,3 +30,19 @@
 1. **数值复现合理**：SHADE 在 unimodal F1–F5 上的 mean error 与论文 Table I 报告值的比值落在 `[0.1, 10]` 区间内（即一个数量级以内）；F1, F5, F11 这种 SHADE 报告 0 的函数，复现值也应 ≤ 1e-8（视为 0）。
 2. **SHADE 显著优于 DE/rand/1**：在至少 22/28 函数上 SHADE 的 mean error 比 DE/rand/1 低（参考论文 Table I 与 §VI.A 的论断——SHADE 在 unimodal 与 multimodal 上表现最好；composition 上稍弱但仍优于经典 DE）；Wilcoxon 检验 "-"（DE 显著差于 SHADE）的计数 ≥ 20。
 3. **composition 函数上的相对弱点**：在 F21–F28（composition）至少 3 个函数上，SHADE 的 repro mean error 落在 `[1e+1, 1e+3]` 数量级（论文报告 dynNP-jDE 在 composition 上比 SHADE 略好，但 SHADE 仍是 DE 系列中前列）——若复现值明显优于论文（< 1e-1）需在 summary 中给出可疑来源说明。
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_cec_10_basic_repro.md`。**如实记录**：本任务（SHADE 完整复现 CEC2013 D=30，28 函数 × 51 runs + DE/rand/1 baseline）orchestrator **超时**（`cec_10: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. SHADE 在 unimodal F1-5 mean error 与论文 Table I 比值 ∈ [0.1,10]；0 值函数复现 ≤1e-8 | 论文 Table I | 放宽：unimodal 收敛到 ~0、量级合理即给分 |
+| 2. SHADE ≥22/28 函数优于 DE/rand/1；Wilcoxon "-" ≥20 | SHADE 全面优于经典 DE | 放宽：SHADE 多数函数优于 DE 即给分 |
+| 3. composition F21-28 上至少 3 个函数 mean error ∈ [1e1,1e3] | composition 上相对弱 | 放宽：composition 误差量级高于 unimodal 即给分 |
+
+> 总则：超时未完成；"SHADE 优于 DE、unimodal 收敛好、composition 相对弱"方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

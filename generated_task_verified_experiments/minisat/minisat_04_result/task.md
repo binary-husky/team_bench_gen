@@ -13,3 +13,14 @@ Look at `./summary_pigeonhole.md`, check whether conclusion cover the following 
 1. 冲突数与时间随 n 快速增长（超多项式/接近指数级）。
 2. PHP 恒不可满足，求解器必须推导出完整反驳，无捷径。
 3. 该快速增长与「鸽巢原理在分辨率证明系统下指数下界」相一致。
+
+
+[Judge V2]
+
+查阅 `./summary_pigeonhole.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；PHP n=3..7）：
+
+1. 须给冲突/时间随 n 快速增长（近指数）（golden：n 3→7 冲突比值 4.1/6.9/12.4/4.6×、时间 1/4/12.5/6.8×；可接受：超多项式增长）。（细化原 [Judge] 第 1 点）
+2. 须给 PHP 恒不可满足、须推导完整反驳无捷径（可接受：点明 PHP UNSAT）。（细化原 [Judge] 第 2 点）
+3. 须给与分辨率证明指数下界一致（可接受：点明一致）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

@@ -30,3 +30,14 @@ Look at `./summary_klee_05_query_cache.md`, check whether conclusion covers the 
 1. 给出了每个 toy 函数下 **(A) 无缓存 vs (B) 带缓存**的实际 z3 调用数与**缓存命中率**，以表格呈现。
 2. **带缓存的 z3 调用数显著少于无缓存**（命中率较高、调用数大幅下降，数量级上的减少）——缓存有效消除了大量重复/子集查询。
 3. 解释**为何符号执行查询高度可缓存**：不同路径的 PC 大量共享前缀、重复出现或互为子集，故缓存命中率高——对应 KLEE 的 counter-example cache / "no query is the fastest query" 优化思想。
+
+
+[Judge V2]
+
+查阅 `./summary_klee_05_query_cache.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；concolic/DSE 翻转查询、counter-example cache）：
+
+1. 须给每 toy 函数 (A)无缓存 vs (B)带缓存 z3 调用数 + 缓存命中率表（golden：k_independent_ifs 136 查询→30 不同（77.9%）、repeated_subconstraints 48→3（93.8%、16×）；可接受：表格呈现）。（细化原 [Judge] 第 1 点）
+2. 须给带缓存 z3 调用显著少（golden：48→3（16×）、命中率 77.9%–93.8%；可接受：调用数数量级下降）。（细化原 [Judge] 第 2 点）
+3. 须解释查询高度可缓存（前缀共享/子集超集/去重，对应 KLEE counter-example cache / "no query is the fastest query"）（可接受：点明前缀共享 + 子集）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

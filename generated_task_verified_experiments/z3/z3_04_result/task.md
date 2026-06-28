@@ -13,3 +13,14 @@ Look at `./summary_bitvector_verify.md`, check whether conclusion cover the foll
 1. z3 正确判定每个位向量性质的可满足性。
 2. 当存在 wraparound/反例时，z3 返回具体的反例模型。
 3. 当性质可证明成立时，z3 以其否定的 UNSAT 予以确认。
+
+
+[Judge V2]
+
+查阅 `./summary_bitvector_verify.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；z3 BitVec、w=8/16）：
+
+1. 须给 z3 正确判定每位向量性质可满足性（golden：a 溢出 SAT、b `(x+y)−y==x` UNSAT、c1 反例 SAT、c2 无溢出⇒消去 UNSAT；可接受：判定正确）。（细化原 [Judge] 第 1 点）
+2. 须给 wraparound/反例时返回具体反例模型（golden：a `x=1,y=255→和 256(mod 256=0)`、c1 `x=202,y=9→26/9=2≠202`；可接受：给出反例模型）。（细化原 [Judge] 第 2 点）
+3. 须给性质可证时以其否定 UNSAT 确认（golden：b、c2 否定 UNSAT；可接受：UNSAT 确认证明）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

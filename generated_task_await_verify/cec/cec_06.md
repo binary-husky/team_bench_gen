@@ -29,3 +29,20 @@ Look at `./summary_active_cma.md`, check whether conclusion cover the following 
 2. active 在 ill-conditioned 函数（F10-F12，composition 类型）上比 standard 改进 ≥ 5%
 3. rank_one_only 是四种 update 中最差的（overall E 至少是 active 的 1.3 倍）
 4. C 矩阵条件数：active 比 standard 下降更快（同 epoch 下条件数更小，说明 active 加速了 covariance 学习）
+
+---
+
+## [Judge V2]（bcb94bc6 修订版 — 本实验超时，无法执行）
+
+> 查阅 `./summary_active_cma.md`。**如实记录**：本任务（4 种 covariance update × CEC2022 D=20 × 12 函数 × 25 runs）orchestrator **超时**（`cec_06: TIMEOUT`）。无实测 golden。按"无法执行"放宽。
+
+| 原 [Judge] 点 | 论文 golden / 已知结论 | 可接受范围（放宽） |
+|---|---|---|
+| 1. active ≥7/12 函数优于 standard | active 项加速收敛 | 放宽：active 多数函数不差于 standard 即给分 |
+| 2. active 在 ill-conditioned F10-12 改进 ≥5% | active 利于病态 | 放宽：方向一致即给分 |
+| 3. rank_one_only 最差（≥1.3× active） | 单 rank-one 信息不足 | 放宽：rank_one_only 不优于其他即给分 |
+| 4. active 条件数下降更快 | active 加速协方差学习 | 放宽：方向一致即给分 |
+
+> 总则：超时未完成；active ≥ standard > rank_one/rank_mu 的方向一致、推理自洽即通过。
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

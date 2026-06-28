@@ -29,3 +29,15 @@ Look at `./summary_crdt_02_sec_convergence.md`, check whether conclusion covers 
 1. 给出了 N∈{3,4,5} 下每种 CRDT（G-Counter/PN-Counter/G-Set/OR-Set/LWW-Register）的**收敛正确率**（应为 100%）与**平均收敛轮数**（基于 ≥5 种子），以表格呈现。
 2. **所有 CRDT 在所有种子下均 100% 收敛**：全部副本最终状态两两相同（SEC 成立），且无需任何共识/协调——仅靠 join-merge 即可。
 3. **收敛轮数随副本数 N 增加而上升**（全互联拓扑下需更多轮把状态传播到更多副本），给出 N=3/4/5 的具体轮数比较。
+
+---
+
+[Judge V2]
+
+查阅 `./summary_crdt_02_sec_convergence.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准）：
+
+1. 须给表：每 N∈{3,4,5}、每 CRDT 收敛正确率 100%、平均轮数 2.00（golden：100%+2.00；可接受：正确率 100%、轮数 ∈[2,3]）。（细化原 [Judge] 第 1 点）
+2. 须给所有 CRDT 经 join-merge 达 100% SEC 无共识（golden：100%；可接受：≥99.9%）。（细化原 [Judge] 第 2 点）
+3. **重写原 [Judge] 第 3 点**：原判"轮数随 N 增"在全连接下不成立——golden：轮数恒 2.00 不随 N；可接受：承认全连接 O(1) 不随 N 增、或指出仅受限 gossip 随 N 增即给分。（重写原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->
