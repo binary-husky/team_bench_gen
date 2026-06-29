@@ -9,3 +9,4 @@ generated_task_verified_experiments/**/results/minion_src/
 
 # Stray scratch copies of the experiment trees (254M+, with embedded clones) — keep local, do not commit.
 /temp/
+*.pyc
