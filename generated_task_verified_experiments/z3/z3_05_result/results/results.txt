@@ -1,6 +1,0 @@
-sat_time_median_warm=0.005211
-opt_time_median_warm=0.015966
-sat_feasible_makespan=73
-opt_optimal_makespan=25
-sat_times=[0.005501, 0.006624, 0.004725, 0.005556, 0.004866, 0.004777, 0.015848]
-opt_times=[0.008309, 0.015672, 0.014675, 0.011512, 0.01626, 0.020415, 0.024754]

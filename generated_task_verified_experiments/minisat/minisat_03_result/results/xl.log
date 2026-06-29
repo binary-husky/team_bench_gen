@@ -1,5 +1,0 @@
-[n130_m546_s0] DPLL: dec=135079 t=24.18s sat=True TO=False | MiniSAT: conf=346 dec=431 t=0.001s sat=True TO=False
-[n130_m546_s1] DPLL: dec=137474 t=30.00s sat=None TO=True | MiniSAT: conf=2239 dec=2723 t=0.015s sat=False TO=False
-[n160_m672_s0] DPLL: dec=96053 t=30.00s sat=None TO=True | MiniSAT: conf=2452 dec=2979 t=0.010s sat=True TO=False
-[n160_m672_s1] DPLL: dec=132426 t=30.00s sat=None TO=True | MiniSAT: conf=887 dec=1147 t=0.003s sat=True TO=False
-saved

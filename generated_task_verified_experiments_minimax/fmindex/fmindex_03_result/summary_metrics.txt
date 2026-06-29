@@ -1,9 +1,0 @@
-seed=20260628
-text_len=204800
-alphabet_size=255
-L_len=204801
-bwt_ms=172.4109
-aux_ms=13.9010
-recon_ms=18.0656
-equal=True
-first_mismatch=-1

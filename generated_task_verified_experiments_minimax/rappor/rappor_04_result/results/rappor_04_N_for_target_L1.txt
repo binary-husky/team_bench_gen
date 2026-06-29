@@ -1,4 +1,0 @@
-Target L1 error <= 0.1
-  1/sqrt(N) fit (c = 27.467):  N >= 75,441
-  empirical log-log fit  (slope = -0.411): N >= 112,006
-Observed at N = 100,000:  L1 = 0.0947

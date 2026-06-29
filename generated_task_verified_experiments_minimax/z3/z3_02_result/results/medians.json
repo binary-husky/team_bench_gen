@@ -1,7 +1,0 @@
-{
-  "problem": "NQueens-10 (median over 5 runs)",
-  "native_encode_ms": 3.9685650262981653,
-  "native_solve_ms": 5.968587007373571,
-  "bool_encode_ms": 50.29340100008994,
-  "bool_solve_ms": 1.293440000154078
-}
