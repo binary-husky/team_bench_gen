@@ -1,0 +1,25 @@
+{
+  "N": 1000000,
+  "K": 100,
+  "alphabet": 100000,
+  "seed": 12345,
+  "zipf": {
+    "alpha": 1.5,
+    "time_s": 0.4688145969994366,
+    "sum_counters": 1000000,
+    "min_counter_final": 1939,
+    "exact_top_k_threshold_count": 388,
+    "true_top_k_missed": 49,
+    "precision_at_k": 0.51,
+    "recall_at_k": 0.51
+  },
+  "uniform": {
+    "time_s": 0.47980056307278574,
+    "sum_counters": 1000000,
+    "min_counter_final": 10000,
+    "exact_top_k_threshold_count": 21,
+    "true_top_k_missed": 100,
+    "precision_at_k": 0.0,
+    "recall_at_k": 0.0
+  }
+}

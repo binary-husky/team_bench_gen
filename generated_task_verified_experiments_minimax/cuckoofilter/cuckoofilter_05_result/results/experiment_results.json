@@ -1,0 +1,42 @@
+{
+  "cuckoo": {
+    "f": 12,
+    "b": 4,
+    "M": 65536,
+    "memory_bits": 3145728,
+    "load_factor": 0.762939453125,
+    "insert_failures": 0,
+    "fpr_measured": 0.001485,
+    "fpr_count": 297,
+    "fpr_n": 200000,
+    "insert_throughput_ops": 72999.69234177121,
+    "query_neg_throughput_ops": 57062.28519569329,
+    "query_pos_throughput_ops": 79698.71942657026,
+    "insert_time_s": 2.7397375740110874,
+    "query_neg_time_s": 3.5049420000286773,
+    "query_pos_time_s": 2.509450608980842,
+    "true_positive_count": 200000,
+    "false_negative_count": 0,
+    "supports_deletion": true,
+    "deletion_successful": 1000,
+    "fpr_theoretical": 0.001953125
+  },
+  "bloom": {
+    "m_bits": 3145728,
+    "k": 11,
+    "memory_bits": 3145728,
+    "fpr_theoretical": 0.000522603618305395,
+    "fpr_measured": 0.000565,
+    "fpr_count": 113,
+    "fpr_n": 200000,
+    "insert_throughput_ops": 4366598.950147752,
+    "query_neg_throughput_ops": 6625263.845139672,
+    "query_pos_throughput_ops": 8585621.81951951,
+    "insert_time_s": 0.04580223700031638,
+    "query_neg_time_s": 0.0301874770084396,
+    "query_pos_time_s": 0.023294760030694306,
+    "true_positive_count": 200000,
+    "false_negative_count": 0,
+    "supports_deletion": false
+  }
+}

@@ -1,0 +1,287 @@
+{
+  "config": {
+    "width": 8,
+    "timeout_ms": 30000,
+    "repeat": 3,
+    "z3_version": "4.16.0",
+    "seed": 12648430
+  },
+  "runs": [
+    [
+      {
+        "id": "a",
+        "name": "add overflow exists",
+        "formula": "\u2203x,y: y \u2260 0 \u2227 ULT(x + y, x)",
+        "interpretation": "Find x,y s.t. unsigned x+y wraps (counterexample search).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 193,
+          "y": 67
+        },
+        "elapsed_sec": 0.005416799918748438,
+        "verifies": true
+      },
+      {
+        "id": "b",
+        "name": "add inverse identity",
+        "formula": "\u2200x,y: (x + y) \u2212 y == x   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove the modular-arithmetic identity (x+y)\u2212y = x for all x,y.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 6.125203799456358e-05
+      },
+      {
+        "id": "c",
+        "name": "mul overflow exists",
+        "formula": "\u2203x,y: y \u2260 0 \u2227 ULT(x * y, x)",
+        "interpretation": "Find x,y s.t. unsigned x*y wraps (multiplication wraparound).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 127,
+          "y": 170
+        },
+        "elapsed_sec": 0.005050997948274016
+      },
+      {
+        "id": "d",
+        "name": "mul commutativity",
+        "formula": "\u2200x,y: x * y == y * x   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that BV multiplication is commutative.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.4751021303236485e-05
+      },
+      {
+        "id": "e",
+        "name": "BV zero divisor",
+        "formula": "\u2203x,y: x \u2260 0 \u2227 y \u2260 0 \u2227 x * y == 0",
+        "interpretation": "Find non-zero BV x,y with x*y = 0 (BV is not an integral domain).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 64,
+          "y": 100
+        },
+        "elapsed_sec": 0.004136241041123867
+      },
+      {
+        "id": "f",
+        "name": "self-xor zero",
+        "formula": "\u2200x: (x ^ x) == 0   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that every BV XORed with itself is zero.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.215100150555372e-05
+      },
+      {
+        "id": "g",
+        "name": "OR monotonicity",
+        "formula": "\u2200x,y: UGE(x | y, x)   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that bitwise OR is monotone in each argument (unsigned).",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 0.00030697998590767384
+      }
+    ],
+    [
+      {
+        "id": "a",
+        "name": "add overflow exists",
+        "formula": "\u2203x,y: y \u2260 0 \u2227 ULT(x + y, x)",
+        "interpretation": "Find x,y s.t. unsigned x+y wraps (counterexample search).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 193,
+          "y": 67
+        },
+        "elapsed_sec": 0.0009551000548526645,
+        "verifies": true
+      },
+      {
+        "id": "b",
+        "name": "add inverse identity",
+        "formula": "\u2200x,y: (x + y) \u2212 y == x   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove the modular-arithmetic identity (x+y)\u2212y = x for all x,y.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.3210963010787964e-05
+      },
+      {
+        "id": "c",
+        "name": "mul overflow exists",
+        "formula": "\u2203x,y: y \u2260 0 \u2227 ULT(x * y, x)",
+        "interpretation": "Find x,y s.t. unsigned x*y wraps (multiplication wraparound).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 127,
+          "y": 170
+        },
+        "elapsed_sec": 0.0010856140870600939
+      },
+      {
+        "id": "d",
+        "name": "mul commutativity",
+        "formula": "\u2200x,y: x * y == y * x   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that BV multiplication is commutative.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.1381030566990376e-05
+      },
+      {
+        "id": "e",
+        "name": "BV zero divisor",
+        "formula": "\u2203x,y: x \u2260 0 \u2227 y \u2260 0 \u2227 x * y == 0",
+        "interpretation": "Find non-zero BV x,y with x*y = 0 (BV is not an integral domain).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 158,
+          "y": 128
+        },
+        "elapsed_sec": 0.004256032989360392
+      },
+      {
+        "id": "f",
+        "name": "self-xor zero",
+        "formula": "\u2200x: (x ^ x) == 0   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that every BV XORed with itself is zero.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.1840987503528595e-05
+      },
+      {
+        "id": "g",
+        "name": "OR monotonicity",
+        "formula": "\u2200x,y: UGE(x | y, x)   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that bitwise OR is monotone in each argument (unsigned).",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 0.000305499997921288
+      }
+    ],
+    [
+      {
+        "id": "a",
+        "name": "add overflow exists",
+        "formula": "\u2203x,y: y \u2260 0 \u2227 ULT(x + y, x)",
+        "interpretation": "Find x,y s.t. unsigned x+y wraps (counterexample search).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 193,
+          "y": 67
+        },
+        "elapsed_sec": 0.0024179660249501467,
+        "verifies": true
+      },
+      {
+        "id": "b",
+        "name": "add inverse identity",
+        "formula": "\u2200x,y: (x + y) \u2212 y == x   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove the modular-arithmetic identity (x+y)\u2212y = x for all x,y.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.406102769076824e-05
+      },
+      {
+        "id": "c",
+        "name": "mul overflow exists",
+        "formula": "\u2203x,y: y \u2260 0 \u2227 ULT(x * y, x)",
+        "interpretation": "Find x,y s.t. unsigned x*y wraps (multiplication wraparound).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 127,
+          "y": 170
+        },
+        "elapsed_sec": 0.004112319089472294
+      },
+      {
+        "id": "d",
+        "name": "mul commutativity",
+        "formula": "\u2200x,y: x * y == y * x   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that BV multiplication is commutative.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.0921073630452156e-05
+      },
+      {
+        "id": "e",
+        "name": "BV zero divisor",
+        "formula": "\u2203x,y: x \u2260 0 \u2227 y \u2260 0 \u2227 x * y == 0",
+        "interpretation": "Find non-zero BV x,y with x*y = 0 (BV is not an integral domain).",
+        "kind": "find_counterexample",
+        "width": 8,
+        "result": "sat",
+        "expected": "sat",
+        "counterexample": {
+          "x": 2,
+          "y": 128
+        },
+        "elapsed_sec": 0.004255583975464106
+      },
+      {
+        "id": "f",
+        "name": "self-xor zero",
+        "formula": "\u2200x: (x ^ x) == 0   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that every BV XORed with itself is zero.",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 3.0801049433648586e-05
+      },
+      {
+        "id": "g",
+        "name": "OR monotonicity",
+        "formula": "\u2200x,y: UGE(x | y, x)   (verified by \u00acformula \u2192 UNSAT)",
+        "interpretation": "Prove that bitwise OR is monotone in each argument (unsigned).",
+        "kind": "prove",
+        "width": 8,
+        "result": "unsat",
+        "expected": "unsat (proved)",
+        "elapsed_sec": 0.00030084908939898014
+      }
+    ]
+  ]
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "M": 16384,
+    "b": 2,
+    "fingerprint_bits": 16,
+    "max_kicks": 500,
+    "seed": 42,
+    "num_success": 28709,
+    "total_slots": 32768,
+    "load_factor": 0.876129150390625,
+    "total_kicks": 53363,
+    "avg_kicks": 1.8587550942213242,
+    "elapsed_s": 0.12872886657714844
+  },
+  {
+    "M": 16384,
+    "b": 4,
+    "fingerprint_bits": 16,
+    "max_kicks": 500,
+    "seed": 42,
+    "num_success": 63280,
+    "total_slots": 65536,
+    "load_factor": 0.965576171875,
+    "total_kicks": 106024,
+    "avg_kicks": 1.6754740834386852,
+    "elapsed_s": 0.2753608226776123
+  },
+  {
+    "M": 16384,
+    "b": 8,
+    "fingerprint_bits": 16,
+    "max_kicks": 500,
+    "seed": 42,
+    "num_success": 129600,
+    "total_slots": 131072,
+    "load_factor": 0.98876953125,
+    "total_kicks": 124375,
+    "avg_kicks": 0.9596836419753086,
+    "elapsed_s": 0.46465349197387695
+  }
+]

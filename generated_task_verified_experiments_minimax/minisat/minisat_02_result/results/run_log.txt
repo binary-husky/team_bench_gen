@@ -1,0 +1,114 @@
+alpha= 3.000 m= 150 seed= 0 SAT=T conflicts=      15 propagations=       276 time=   0.049 ms
+alpha= 3.000 m= 150 seed= 1 SAT=T conflicts=       2 propagations=        67 time=   0.014 ms
+alpha= 3.000 m= 150 seed= 2 SAT=T conflicts=       4 propagations=        67 time=   0.014 ms
+alpha= 3.000 m= 150 seed= 3 SAT=T conflicts=       3 propagations=        89 time=   0.014 ms
+alpha= 3.000 m= 150 seed= 4 SAT=T conflicts=       1 propagations=        71 time=   0.017 ms
+alpha= 3.000 m= 150 seed= 5 SAT=T conflicts=       1 propagations=        72 time=   0.011 ms
+alpha= 3.000 m= 150 seed= 6 SAT=T conflicts=       0 propagations=        51 time=   0.008 ms
+alpha= 3.000 m= 150 seed= 7 SAT=T conflicts=       0 propagations=        51 time=   0.011 ms
+alpha= 3.000 m= 150 seed= 8 SAT=T conflicts=       1 propagations=        70 time=   0.010 ms
+alpha= 3.000 m= 150 seed= 9 SAT=T conflicts=       3 propagations=        78 time=   0.012 ms
+alpha= 3.000 m= 150 seed=10 SAT=T conflicts=      28 propagations=       492 time=   0.065 ms
+alpha= 3.000 m= 150 seed=11 SAT=T conflicts=      18 propagations=       292 time=   0.040 ms
+alpha= 3.000 m= 150 seed=12 SAT=T conflicts=       0 propagations=        51 time=   0.008 ms
+alpha= 3.000 m= 150 seed=13 SAT=T conflicts=       2 propagations=        69 time=   0.010 ms
+alpha= 3.000 m= 150 seed=14 SAT=T conflicts=       2 propagations=        74 time=   0.011 ms
+  >> alpha=3.000: SAT 15/15 avg_conf=5.3 avg_time=0.020ms med_conf=2 med_time=0.012ms max_conf=28 max_time=0.065ms
+alpha= 3.500 m= 175 seed= 0 SAT=T conflicts=      18 propagations=       331 time=   0.041 ms
+alpha= 3.500 m= 175 seed= 1 SAT=T conflicts=       2 propagations=        84 time=   0.013 ms
+alpha= 3.500 m= 175 seed= 2 SAT=T conflicts=       1 propagations=        57 time=   0.010 ms
+alpha= 3.500 m= 175 seed= 3 SAT=T conflicts=      11 propagations=       182 time=   0.027 ms
+alpha= 3.500 m= 175 seed= 4 SAT=T conflicts=       4 propagations=        94 time=   0.014 ms
+alpha= 3.500 m= 175 seed= 5 SAT=T conflicts=       1 propagations=        79 time=   0.011 ms
+alpha= 3.500 m= 175 seed= 6 SAT=T conflicts=      23 propagations=       393 time=   0.052 ms
+alpha= 3.500 m= 175 seed= 7 SAT=T conflicts=       0 propagations=        51 time=   0.008 ms
+alpha= 3.500 m= 175 seed= 8 SAT=T conflicts=       8 propagations=       180 time=   0.022 ms
+alpha= 3.500 m= 175 seed= 9 SAT=T conflicts=      13 propagations=       202 time=   0.028 ms
+alpha= 3.500 m= 175 seed=10 SAT=T conflicts=      33 propagations=       454 time=   0.060 ms
+alpha= 3.500 m= 175 seed=11 SAT=T conflicts=       7 propagations=       119 time=   0.019 ms
+alpha= 3.500 m= 175 seed=12 SAT=T conflicts=       0 propagations=        51 time=   0.007 ms
+alpha= 3.500 m= 175 seed=13 SAT=T conflicts=       0 propagations=        51 time=   0.007 ms
+alpha= 3.500 m= 175 seed=14 SAT=T conflicts=       4 propagations=       112 time=   0.016 ms
+  >> alpha=3.500: SAT 15/15 avg_conf=8.3 avg_time=0.022ms med_conf=4 med_time=0.016ms max_conf=33 max_time=0.060ms
+alpha= 4.000 m= 200 seed= 0 SAT=T conflicts=      19 propagations=       334 time=   0.046 ms
+alpha= 4.000 m= 200 seed= 1 SAT=T conflicts=      38 propagations=       604 time=   0.083 ms
+alpha= 4.000 m= 200 seed= 2 SAT=T conflicts=      23 propagations=       412 time=   0.054 ms
+alpha= 4.000 m= 200 seed= 3 SAT=T conflicts=      17 propagations=       295 time=   0.040 ms
+alpha= 4.000 m= 200 seed= 4 SAT=T conflicts=      25 propagations=       382 time=   0.050 ms
+alpha= 4.000 m= 200 seed= 5 SAT=T conflicts=      16 propagations=       272 time=   0.039 ms
+alpha= 4.000 m= 200 seed= 6 SAT=F conflicts=      58 propagations=       798 time=   0.109 ms
+alpha= 4.000 m= 200 seed= 7 SAT=T conflicts=      31 propagations=       432 time=   0.059 ms
+alpha= 4.000 m= 200 seed= 8 SAT=T conflicts=      73 propagations=       982 time=   0.132 ms
+alpha= 4.000 m= 200 seed= 9 SAT=T conflicts=      31 propagations=       512 time=   0.064 ms
+alpha= 4.000 m= 200 seed=10 SAT=T conflicts=      22 propagations=       270 time=   0.040 ms
+alpha= 4.000 m= 200 seed=11 SAT=F conflicts=      51 propagations=       680 time=   0.097 ms
+alpha= 4.000 m= 200 seed=12 SAT=T conflicts=      18 propagations=       280 time=   0.038 ms
+alpha= 4.000 m= 200 seed=13 SAT=T conflicts=      12 propagations=       227 time=   0.033 ms
+alpha= 4.000 m= 200 seed=14 SAT=T conflicts=       4 propagations=        99 time=   0.015 ms
+  >> alpha=4.000: SAT 13/15 avg_conf=29.2 avg_time=0.060ms med_conf=23 med_time=0.050ms max_conf=73 max_time=0.132ms
+alpha= 4.267 m= 213 seed= 0 SAT=T conflicts=      54 propagations=       748 time=   0.098 ms
+alpha= 4.267 m= 213 seed= 1 SAT=F conflicts=      71 propagations=       998 time=   0.126 ms
+alpha= 4.267 m= 213 seed= 2 SAT=T conflicts=      33 propagations=       554 time=   0.070 ms
+alpha= 4.267 m= 213 seed= 3 SAT=T conflicts=      44 propagations=       698 time=   0.090 ms
+alpha= 4.267 m= 213 seed= 4 SAT=T conflicts=      23 propagations=       377 time=   0.050 ms
+alpha= 4.267 m= 213 seed= 5 SAT=T conflicts=       8 propagations=       146 time=   0.023 ms
+alpha= 4.267 m= 213 seed= 6 SAT=F conflicts=      55 propagations=       716 time=   0.106 ms
+alpha= 4.267 m= 213 seed= 7 SAT=T conflicts=      37 propagations=       486 time=   0.065 ms
+alpha= 4.267 m= 213 seed= 8 SAT=T conflicts=      46 propagations=       606 time=   0.082 ms
+alpha= 4.267 m= 213 seed= 9 SAT=T conflicts=      23 propagations=       429 time=   0.053 ms
+alpha= 4.267 m= 213 seed=10 SAT=F conflicts=      40 propagations=       473 time=   0.064 ms
+alpha= 4.267 m= 213 seed=11 SAT=F conflicts=      52 propagations=       652 time=   0.086 ms
+alpha= 4.267 m= 213 seed=12 SAT=T conflicts=      23 propagations=       457 time=   0.054 ms
+alpha= 4.267 m= 213 seed=13 SAT=F conflicts=      88 propagations=      1237 time=   0.167 ms
+alpha= 4.267 m= 213 seed=14 SAT=T conflicts=      79 propagations=      1289 time=   0.165 ms
+  >> alpha=4.267: SAT 10/15 avg_conf=45.1 avg_time=0.087ms med_conf=44 med_time=0.082ms max_conf=88 max_time=0.167ms
+alpha= 4.500 m= 225 seed= 0 SAT=F conflicts=      76 propagations=      1073 time=   0.142 ms
+alpha= 4.500 m= 225 seed= 1 SAT=F conflicts=      67 propagations=       987 time=   0.138 ms
+alpha= 4.500 m= 225 seed= 2 SAT=F conflicts=     101 propagations=      1400 time=   0.192 ms
+alpha= 4.500 m= 225 seed= 3 SAT=T conflicts=      40 propagations=       590 time=   0.078 ms
+alpha= 4.500 m= 225 seed= 4 SAT=T conflicts=      30 propagations=       431 time=   0.056 ms
+alpha= 4.500 m= 225 seed= 5 SAT=T conflicts=      28 propagations=       381 time=   0.054 ms
+alpha= 4.500 m= 225 seed= 6 SAT=F conflicts=      43 propagations=       614 time=   0.076 ms
+alpha= 4.500 m= 225 seed= 7 SAT=T conflicts=      47 propagations=       633 time=   0.084 ms
+alpha= 4.500 m= 225 seed= 8 SAT=F conflicts=      69 propagations=       812 time=   0.121 ms
+alpha= 4.500 m= 225 seed= 9 SAT=F conflicts=      67 propagations=       884 time=   0.122 ms
+alpha= 4.500 m= 225 seed=10 SAT=F conflicts=      45 propagations=       537 time=   0.074 ms
+alpha= 4.500 m= 225 seed=11 SAT=F conflicts=      44 propagations=       592 time=   0.071 ms
+alpha= 4.500 m= 225 seed=12 SAT=T conflicts=      21 propagations=       440 time=   0.057 ms
+alpha= 4.500 m= 225 seed=13 SAT=F conflicts=      71 propagations=       995 time=   0.142 ms
+alpha= 4.500 m= 225 seed=14 SAT=T conflicts=      64 propagations=       947 time=   0.132 ms
+  >> alpha=4.500: SAT 6/15 avg_conf=54.2 avg_time=0.103ms med_conf=47 med_time=0.084ms max_conf=101 max_time=0.192ms
+alpha= 5.000 m= 250 seed= 0 SAT=F conflicts=      50 propagations=       634 time=   0.097 ms
+alpha= 5.000 m= 250 seed= 1 SAT=F conflicts=      59 propagations=       701 time=   0.092 ms
+alpha= 5.000 m= 250 seed= 2 SAT=F conflicts=      70 propagations=       899 time=   0.133 ms
+alpha= 5.000 m= 250 seed= 3 SAT=T conflicts=      30 propagations=       418 time=   0.063 ms
+alpha= 5.000 m= 250 seed= 4 SAT=F conflicts=      92 propagations=      1151 time=   0.155 ms
+alpha= 5.000 m= 250 seed= 5 SAT=F conflicts=      43 propagations=       531 time=   0.073 ms
+alpha= 5.000 m= 250 seed= 6 SAT=F conflicts=      50 propagations=       654 time=   0.088 ms
+alpha= 5.000 m= 250 seed= 7 SAT=F conflicts=      39 propagations=       478 time=   0.064 ms
+alpha= 5.000 m= 250 seed= 8 SAT=F conflicts=      53 propagations=       650 time=   0.090 ms
+alpha= 5.000 m= 250 seed= 9 SAT=F conflicts=      59 propagations=       669 time=   0.095 ms
+alpha= 5.000 m= 250 seed=10 SAT=F conflicts=      33 propagations=       420 time=   0.060 ms
+alpha= 5.000 m= 250 seed=11 SAT=F conflicts=      44 propagations=       505 time=   0.071 ms
+alpha= 5.000 m= 250 seed=12 SAT=F conflicts=      67 propagations=       846 time=   0.127 ms
+alpha= 5.000 m= 250 seed=13 SAT=F conflicts=      50 propagations=       593 time=   0.082 ms
+alpha= 5.000 m= 250 seed=14 SAT=F conflicts=      62 propagations=       998 time=   0.133 ms
+  >> alpha=5.000: SAT 1/15 avg_conf=53.4 avg_time=0.095ms med_conf=50 med_time=0.090ms max_conf=92 max_time=0.155ms
+alpha= 6.000 m= 300 seed= 0 SAT=F conflicts=      37 propagations=       410 time=   0.058 ms
+alpha= 6.000 m= 300 seed= 1 SAT=F conflicts=      45 propagations=       536 time=   0.079 ms
+alpha= 6.000 m= 300 seed= 2 SAT=F conflicts=      42 propagations=       504 time=   0.076 ms
+alpha= 6.000 m= 300 seed= 3 SAT=F conflicts=      29 propagations=       373 time=   0.054 ms
+alpha= 6.000 m= 300 seed= 4 SAT=F conflicts=      45 propagations=       474 time=   0.070 ms
+alpha= 6.000 m= 300 seed= 5 SAT=F conflicts=      32 propagations=       416 time=   0.060 ms
+alpha= 6.000 m= 300 seed= 6 SAT=F conflicts=      24 propagations=       250 time=   0.038 ms
+alpha= 6.000 m= 300 seed= 7 SAT=F conflicts=      26 propagations=       302 time=   0.046 ms
+alpha= 6.000 m= 300 seed= 8 SAT=F conflicts=      26 propagations=       297 time=   0.051 ms
+alpha= 6.000 m= 300 seed= 9 SAT=F conflicts=      32 propagations=       370 time=   0.055 ms
+alpha= 6.000 m= 300 seed=10 SAT=F conflicts=      27 propagations=       267 time=   0.042 ms
+alpha= 6.000 m= 300 seed=11 SAT=F conflicts=      28 propagations=       307 time=   0.046 ms
+alpha= 6.000 m= 300 seed=12 SAT=F conflicts=      39 propagations=       432 time=   0.066 ms
+alpha= 6.000 m= 300 seed=13 SAT=F conflicts=      39 propagations=       453 time=   0.068 ms
+alpha= 6.000 m= 300 seed=14 SAT=F conflicts=      33 propagations=       425 time=   0.058 ms
+  >> alpha=6.000: SAT 0/15 avg_conf=33.6 avg_time=0.058ms med_conf=32 med_time=0.058ms max_conf=45 max_time=0.079ms
+
+Wrote /data/workspace/admin/happy_lake/.verify_judge_minimax/minisat/minisat_02/results.json

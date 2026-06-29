@@ -1,0 +1,35 @@
+{
+  "dataset": "sklearn.datasets.load_digits",
+  "n_samples": 1797,
+  "n_features": 64,
+  "n_classes": 10,
+  "pca": {
+    "silhouette": 0.1050527510536191,
+    "trustworthiness_k12": 0.8296067848479961,
+    "fit_time_s": 0.0016918182373046875,
+    "explained_variance_ratio": [
+      0.14890593584063852,
+      0.13618771239635444
+    ],
+    "cumulative_explained_variance": 0.28509364823699296
+  },
+  "tsne": {
+    "silhouette": 0.5557294487953186,
+    "trustworthiness_k12": 0.9917321255184989,
+    "fit_time_s": 1.8432750701904297,
+    "kl_divergence": 0.7535647749900818,
+    "n_iter": 999,
+    "hyperparams": {
+      "n_components": 2,
+      "init": "pca",
+      "perplexity": 30,
+      "learning_rate": "auto",
+      "max_iter": 1000,
+      "random_state": 0
+    }
+  },
+  "delta_tsne_minus_pca": {
+    "silhouette": 0.4506766977416995,
+    "trustworthiness_k12": 0.16212534067050277
+  }
+}

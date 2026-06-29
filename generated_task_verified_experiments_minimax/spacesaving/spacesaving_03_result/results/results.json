@@ -1,0 +1,310 @@
+{
+  "50": {
+    "k": 50,
+    "occupied_slots": 50,
+    "memory_bytes_per_slot": 24,
+    "memory_bytes_total": 1200,
+    "precision_at_k": 0.58,
+    "recall_at_k": 0.58,
+    "max_overest": 5537,
+    "N": 1000000,
+    "sum_of_counts": 1000000,
+    "min_count": 5537,
+    "max_count": 383321,
+    "first_few_top": [
+      {
+        "item": 0,
+        "est_count": 383321,
+        "err": 0,
+        "true_freq": 383321
+      },
+      {
+        "item": 1,
+        "est_count": 135266,
+        "err": 0,
+        "true_freq": 135266
+      },
+      {
+        "item": 2,
+        "est_count": 73940,
+        "err": 0,
+        "true_freq": 73940
+      },
+      {
+        "item": 3,
+        "est_count": 48047,
+        "err": 0,
+        "true_freq": 48047
+      },
+      {
+        "item": 4,
+        "est_count": 33893,
+        "err": 0,
+        "true_freq": 33893
+      },
+      {
+        "item": 5,
+        "est_count": 26094,
+        "err": 0,
+        "true_freq": 26094
+      },
+      {
+        "item": 6,
+        "est_count": 20725,
+        "err": 0,
+        "true_freq": 20725
+      },
+      {
+        "item": 7,
+        "est_count": 16919,
+        "err": 0,
+        "true_freq": 16919
+      },
+      {
+        "item": 8,
+        "est_count": 14090,
+        "err": 0,
+        "true_freq": 14090
+      },
+      {
+        "item": 9,
+        "est_count": 12035,
+        "err": 5,
+        "true_freq": 12033
+      }
+    ]
+  },
+  "100": {
+    "k": 100,
+    "occupied_slots": 100,
+    "memory_bytes_per_slot": 24,
+    "memory_bytes_total": 2400,
+    "precision_at_k": 0.56,
+    "recall_at_k": 0.56,
+    "max_overest": 1969,
+    "N": 1000000,
+    "sum_of_counts": 1000000,
+    "min_count": 1969,
+    "max_count": 383321,
+    "first_few_top": [
+      {
+        "item": 0,
+        "est_count": 383321,
+        "err": 0,
+        "true_freq": 383321
+      },
+      {
+        "item": 1,
+        "est_count": 135266,
+        "err": 0,
+        "true_freq": 135266
+      },
+      {
+        "item": 2,
+        "est_count": 73940,
+        "err": 0,
+        "true_freq": 73940
+      },
+      {
+        "item": 3,
+        "est_count": 48047,
+        "err": 0,
+        "true_freq": 48047
+      },
+      {
+        "item": 4,
+        "est_count": 33893,
+        "err": 0,
+        "true_freq": 33893
+      },
+      {
+        "item": 5,
+        "est_count": 26094,
+        "err": 0,
+        "true_freq": 26094
+      },
+      {
+        "item": 6,
+        "est_count": 20725,
+        "err": 0,
+        "true_freq": 20725
+      },
+      {
+        "item": 7,
+        "est_count": 16919,
+        "err": 0,
+        "true_freq": 16919
+      },
+      {
+        "item": 8,
+        "est_count": 14090,
+        "err": 0,
+        "true_freq": 14090
+      },
+      {
+        "item": 9,
+        "est_count": 12033,
+        "err": 0,
+        "true_freq": 12033
+      }
+    ]
+  },
+  "200": {
+    "k": 200,
+    "occupied_slots": 200,
+    "memory_bytes_per_slot": 24,
+    "memory_bytes_total": 4800,
+    "precision_at_k": 0.575,
+    "recall_at_k": 0.575,
+    "max_overest": 699,
+    "N": 1000000,
+    "sum_of_counts": 1000000,
+    "min_count": 699,
+    "max_count": 383321,
+    "first_few_top": [
+      {
+        "item": 0,
+        "est_count": 383321,
+        "err": 0,
+        "true_freq": 383321
+      },
+      {
+        "item": 1,
+        "est_count": 135266,
+        "err": 0,
+        "true_freq": 135266
+      },
+      {
+        "item": 2,
+        "est_count": 73940,
+        "err": 0,
+        "true_freq": 73940
+      },
+      {
+        "item": 3,
+        "est_count": 48047,
+        "err": 0,
+        "true_freq": 48047
+      },
+      {
+        "item": 4,
+        "est_count": 33893,
+        "err": 0,
+        "true_freq": 33893
+      },
+      {
+        "item": 5,
+        "est_count": 26094,
+        "err": 0,
+        "true_freq": 26094
+      },
+      {
+        "item": 6,
+        "est_count": 20725,
+        "err": 0,
+        "true_freq": 20725
+      },
+      {
+        "item": 7,
+        "est_count": 16919,
+        "err": 0,
+        "true_freq": 16919
+      },
+      {
+        "item": 8,
+        "est_count": 14090,
+        "err": 0,
+        "true_freq": 14090
+      },
+      {
+        "item": 9,
+        "est_count": 12033,
+        "err": 0,
+        "true_freq": 12033
+      }
+    ]
+  },
+  "500": {
+    "k": 500,
+    "occupied_slots": 500,
+    "memory_bytes_per_slot": 24,
+    "memory_bytes_total": 12000,
+    "precision_at_k": 0.612,
+    "recall_at_k": 0.612,
+    "max_overest": 175,
+    "N": 1000000,
+    "sum_of_counts": 1000000,
+    "min_count": 175,
+    "max_count": 383321,
+    "first_few_top": [
+      {
+        "item": 0,
+        "est_count": 383321,
+        "err": 0,
+        "true_freq": 383321
+      },
+      {
+        "item": 1,
+        "est_count": 135266,
+        "err": 0,
+        "true_freq": 135266
+      },
+      {
+        "item": 2,
+        "est_count": 73940,
+        "err": 0,
+        "true_freq": 73940
+      },
+      {
+        "item": 3,
+        "est_count": 48047,
+        "err": 0,
+        "true_freq": 48047
+      },
+      {
+        "item": 4,
+        "est_count": 33893,
+        "err": 0,
+        "true_freq": 33893
+      },
+      {
+        "item": 5,
+        "est_count": 26094,
+        "err": 0,
+        "true_freq": 26094
+      },
+      {
+        "item": 6,
+        "est_count": 20725,
+        "err": 0,
+        "true_freq": 20725
+      },
+      {
+        "item": 7,
+        "est_count": 16919,
+        "err": 0,
+        "true_freq": 16919
+      },
+      {
+        "item": 8,
+        "est_count": 14090,
+        "err": 0,
+        "true_freq": 14090
+      },
+      {
+        "item": 9,
+        "est_count": 12033,
+        "err": 0,
+        "true_freq": 12033
+      }
+    ]
+  },
+  "_meta": {
+    "N": 1000000,
+    "alpha": 1.5,
+    "alphabet_size": 10000,
+    "seed": 42,
+    "n_unique_in_stream": 8546,
+    "peak_rss_bytes": 60342272
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "fixed": {
+    "N": 10000,
+    "true_count": 4723,
+    "delta_f": 1,
+    "trials_per_epsilon": 50000,
+    "random_seed": 42,
+    "query": "count of 1s in {0,1}^n (\u0394f = 1)"
+  },
+  "rows": [
+    {
+      "epsilon": 0.01,
+      "noise_scale_b": 100.0,
+      "mae_empirical": 100.12235890618365,
+      "mae_theory": 100.0,
+      "mae_ratio": 1.0012235890618364,
+      "rmse_empirical": 141.96675346581165,
+      "rmse_theory": 141.4213562373095,
+      "rmse_ratio": 1.003856540787142,
+      "abs_bias": 0.13767088260421814
+    },
+    {
+      "epsilon": 0.1,
+      "noise_scale_b": 10.0,
+      "mae_empirical": 9.994419916680853,
+      "mae_theory": 10.0,
+      "mae_ratio": 0.9994419916680852,
+      "rmse_empirical": 14.151636291974045,
+      "rmse_theory": 14.142135623730951,
+      "rmse_ratio": 1.0006717986940494,
+      "abs_bias": 0.007385001104023558
+    },
+    {
+      "epsilon": 0.5,
+      "noise_scale_b": 2.0,
+      "mae_empirical": 1.9959326656430272,
+      "mae_theory": 2.0,
+      "mae_ratio": 0.9979663328215136,
+      "rmse_empirical": 2.8198848115547794,
+      "rmse_theory": 2.8284271247461903,
+      "rmse_ratio": 0.9969798362076671,
+      "abs_bias": -0.007725040731018344
+    },
+    {
+      "epsilon": 1.0,
+      "noise_scale_b": 1.0,
+      "mae_empirical": 1.0041614828024066,
+      "mae_theory": 1.0,
+      "mae_ratio": 1.0041614828024066,
+      "rmse_empirical": 1.422856350013187,
+      "rmse_theory": 1.4142135623730951,
+      "rmse_ratio": 1.0061113737486642,
+      "abs_bias": 0.002492134594461404
+    },
+    {
+      "epsilon": 2.0,
+      "noise_scale_b": 0.5,
+      "mae_empirical": 0.5005085301153543,
+      "mae_theory": 0.5,
+      "mae_ratio": 1.0010170602307087,
+      "rmse_empirical": 0.7054525281949195,
+      "rmse_theory": 0.7071067811865476,
+      "rmse_ratio": 0.9976605329836434,
+      "abs_bias": 0.0026688741268572087
+    },
+    {
+      "epsilon": 5.0,
+      "noise_scale_b": 0.2,
+      "mae_empirical": 0.1982451460243074,
+      "mae_theory": 0.2,
+      "mae_ratio": 0.9912257301215369,
+      "rmse_empirical": 0.2798405576140947,
+      "rmse_theory": 0.28284271247461906,
+      "rmse_ratio": 0.9893857796997554,
+      "abs_bias": -0.0006014739587095028
+    }
+  ]
+}

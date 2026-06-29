@@ -1,0 +1,353 @@
+{
+  "primary": {
+    "N": 1000000,
+    "k": 100,
+    "n_monitored": 100,
+    "min_count": 8418,
+    "max_count": 82517,
+    "bound_N_over_k": 10000,
+    "max_error": 8418,
+    "mean_error": 6780.11,
+    "G1_no_underestimate": {
+      "holds": true,
+      "n_violations": 0,
+      "violations_sample": []
+    },
+    "G2_error_le_min": {
+      "holds": true,
+      "n_violations": 0,
+      "violations_sample": []
+    },
+    "G3_min_le_N_over_k": {
+      "holds": true,
+      "min_count": 8418,
+      "bound": 10000
+    }
+  },
+  "scaling": [
+    {
+      "N": 10000,
+      "k": 100,
+      "n_monitored": 100,
+      "min_count": 84,
+      "max_count": 793,
+      "bound_N_over_k": 100,
+      "max_error": 84,
+      "mean_error": 69.4,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 84,
+        "bound": 100
+      },
+      "sweep_dim": "N",
+      "N_over_k": 100
+    },
+    {
+      "N": 100000,
+      "k": 100,
+      "n_monitored": 100,
+      "min_count": 840,
+      "max_count": 8237,
+      "bound_N_over_k": 1000,
+      "max_error": 840,
+      "mean_error": 678.9,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 840,
+        "bound": 1000
+      },
+      "sweep_dim": "N",
+      "N_over_k": 1000
+    },
+    {
+      "N": 500000,
+      "k": 100,
+      "n_monitored": 100,
+      "min_count": 4210,
+      "max_count": 41111,
+      "bound_N_over_k": 5000,
+      "max_error": 4209,
+      "mean_error": 3443.36,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 4210,
+        "bound": 5000
+      },
+      "sweep_dim": "N",
+      "N_over_k": 5000
+    },
+    {
+      "N": 1000000,
+      "k": 100,
+      "n_monitored": 100,
+      "min_count": 8415,
+      "max_count": 82643,
+      "bound_N_over_k": 10000,
+      "max_error": 8415,
+      "mean_error": 6989.82,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 8415,
+        "bound": 10000
+      },
+      "sweep_dim": "N",
+      "N_over_k": 10000
+    },
+    {
+      "N": 2000000,
+      "k": 100,
+      "n_monitored": 100,
+      "min_count": 16829,
+      "max_count": 165627,
+      "bound_N_over_k": 20000,
+      "max_error": 16827,
+      "mean_error": 13324.77,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 16829,
+        "bound": 20000
+      },
+      "sweep_dim": "N",
+      "N_over_k": 20000
+    },
+    {
+      "N": 5000000,
+      "k": 100,
+      "n_monitored": 100,
+      "min_count": 42098,
+      "max_count": 413389,
+      "bound_N_over_k": 50000,
+      "max_error": 42094,
+      "mean_error": 35023.04,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 42098,
+        "bound": 50000
+      },
+      "sweep_dim": "N",
+      "N_over_k": 50000
+    },
+    {
+      "N": 1000000,
+      "k": 25,
+      "n_monitored": 25,
+      "min_count": 38069,
+      "max_count": 82926,
+      "bound_N_over_k": 40000,
+      "max_error": 38068,
+      "mean_error": 32515.44,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 38069,
+        "bound": 40000
+      },
+      "sweep_dim": "k",
+      "N_over_k": 40000
+    },
+    {
+      "N": 1000000,
+      "k": 50,
+      "n_monitored": 50,
+      "min_count": 18000,
+      "max_count": 82598,
+      "bound_N_over_k": 20000,
+      "max_error": 17999,
+      "mean_error": 15258.66,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 18000,
+        "bound": 20000
+      },
+      "sweep_dim": "k",
+      "N_over_k": 20000
+    },
+    {
+      "N": 1000000,
+      "k": 100,
+      "n_monitored": 100,
+      "min_count": 8417,
+      "max_count": 82607,
+      "bound_N_over_k": 10000,
+      "max_error": 8417,
+      "mean_error": 6979.76,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 8417,
+        "bound": 10000
+      },
+      "sweep_dim": "k",
+      "N_over_k": 10000
+    },
+    {
+      "N": 1000000,
+      "k": 200,
+      "n_monitored": 200,
+      "min_count": 3902,
+      "max_count": 82338,
+      "bound_N_over_k": 5000,
+      "max_error": 3902,
+      "mean_error": 3144.745,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 3902,
+        "bound": 5000
+      },
+      "sweep_dim": "k",
+      "N_over_k": 5000
+    },
+    {
+      "N": 1000000,
+      "k": 400,
+      "n_monitored": 400,
+      "min_count": 1791,
+      "max_count": 82661,
+      "bound_N_over_k": 2500,
+      "max_error": 1791,
+      "mean_error": 1391.44,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 1791,
+        "bound": 2500
+      },
+      "sweep_dim": "k",
+      "N_over_k": 2500
+    },
+    {
+      "N": 1000000,
+      "k": 800,
+      "n_monitored": 800,
+      "min_count": 814,
+      "max_count": 82602,
+      "bound_N_over_k": 1250,
+      "max_error": 814,
+      "mean_error": 601.695,
+      "G1_no_underestimate": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G2_error_le_min": {
+        "holds": true,
+        "n_violations": 0,
+        "violations_sample": []
+      },
+      "G3_min_le_N_over_k": {
+        "holds": true,
+        "min_count": 814,
+        "bound": 1250
+      },
+      "sweep_dim": "k",
+      "N_over_k": 1250
+    }
+  ]
+}

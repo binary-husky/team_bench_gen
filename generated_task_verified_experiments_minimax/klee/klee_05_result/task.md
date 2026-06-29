@@ -1,0 +1,43 @@
+[Agents]
+
+读给定材料，做实验，写结论。
+
+用上题同款**轻量 z3 符号执行 / concolic 框架**（Python + `z3-solver`，**不**装 KLEE 本体；仅 CPU、仅 pip、< 30 分钟）。给定材料中 KLEE 的一个关键工程优化是**查询缓存（counter-example cache）**——大量查询重复或互为子集/超集，缓存可大幅减少实际打到求解器的查询数。
+
+研究目标：**验证一个简单的约束 / 反例缓存能显著减少符号执行中实际打到 z3 的求解次数。**
+
+固定实验设置（不要更改）：
+- 在你的符号执行框架中，把每个"判断路径约束 PC 是否可满足"的调用包成一个可计数的求解接口。
+- 两种模式：
+  - **(A) 无缓存**：每次分支判断都调用 z3 求解，统计总调用次数。
+  - **(B) 带简单缓存**：以 PC（约束集合）为键缓存 SAT 结果与模型（反例）；命中则不调用 z3。统计实际 z3 调用次数。
+- 在若干 toy 函数上（如 `get_sign`、`classify_triangle`、`k_independent_ifs(k=4)`、含重复子约束的函数）分别跑 (A)、(B)，比较**总查询数**与**实际 z3 调用数**。
+- 用 **≥ 3 个不同种子**重复。
+
+需要记录/报告的指标：
+- 每个函数下，(A) 实际 z3 调用数 vs (B) 实际 z3 调用数，以及缓存的**命中率**。
+
+把以下内容写到 `./summary_klee_05_query_cache.md`：
+1. 一张表：每个函数、(A) 与 (B) 的 z3 调用数、缓存命中率。
+2. 结论要点：**带缓存的 z3 调用数显著少于无缓存**（命中率高、调用数大幅下降，量级上数倍～数量级的减少）——验证 KLEE "no query is the fastest query" + 缓存的核心价值；并说明为何符号执行查询高度可缓存（路径约束大量重复 / 互为子集）。
+
+---
+
+[Judge]
+
+Look at `./summary_klee_05_query_cache.md`, check whether conclusion covers the following points (≤ 3 points)
+
+1. 给出了每个 toy 函数下 **(A) 无缓存 vs (B) 带缓存**的实际 z3 调用数与**缓存命中率**，以表格呈现。
+2. **带缓存的 z3 调用数显著少于无缓存**（命中率较高、调用数大幅下降，数量级上的减少）——缓存有效消除了大量重复/子集查询。
+3. 解释**为何符号执行查询高度可缓存**：不同路径的 PC 大量共享前缀、重复出现或互为子集，故缓存命中率高——对应 KLEE 的 counter-example cache / "no query is the fastest query" 优化思想。
+
+
+[Judge V2]
+
+查阅 `./summary_klee_05_query_cache.md` —— 基于真实实验结果对上方 [Judge] 的修订（以实测为准；concolic/DSE 翻转查询、counter-example cache）：
+
+1. 须给每 toy 函数 (A)无缓存 vs (B)带缓存 z3 调用数 + 缓存命中率表（golden：k_independent_ifs 136 查询→30 不同（77.9%）、repeated_subconstraints 48→3（93.8%、16×）；可接受：表格呈现）。（细化原 [Judge] 第 1 点）
+2. 须给带缓存 z3 调用显著少（golden：48→3（16×）、命中率 77.9%–93.8%；可接受：调用数数量级下降）。（细化原 [Judge] 第 2 点）
+3. 须解释查询高度可缓存（前缀共享/子集超集/去重，对应 KLEE counter-example cache / "no query is the fastest query"）（可接受：点明前缀共享 + 子集）。（细化原 [Judge] 第 3 点）
+
+<!-- judge-v2 authored-by: bcb94bc6 -->

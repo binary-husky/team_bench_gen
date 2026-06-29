@@ -1,0 +1,465 @@
+{
+  "config": {
+    "seeds": [
+      42,
+      123,
+      9999
+    ],
+    "num_random_inputs": 1000,
+    "x_range": [
+      -1000000,
+      2000000
+    ],
+    "all_branches": [
+      "B0",
+      "B1",
+      "B2",
+      "B3",
+      "B4"
+    ],
+    "magic_branch": "B0",
+    "magic_value": 12345
+  },
+  "symex": [
+    {
+      "method": "SymEx",
+      "seed": 42,
+      "num_inputs": 13,
+      "coverage_pct": 100.0,
+      "hit_magic": true,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B0",
+          true
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [],
+      "elapsed_ms": 256.38,
+      "extra": {
+        "paths_enumerated": 13
+      }
+    },
+    {
+      "method": "SymEx",
+      "seed": 123,
+      "num_inputs": 13,
+      "coverage_pct": 100.0,
+      "hit_magic": true,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B0",
+          true
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [],
+      "elapsed_ms": 233.11,
+      "extra": {
+        "paths_enumerated": 13
+      }
+    },
+    {
+      "method": "SymEx",
+      "seed": 9999,
+      "num_inputs": 13,
+      "coverage_pct": 100.0,
+      "hit_magic": true,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B0",
+          true
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [],
+      "elapsed_ms": 232.1,
+      "extra": {
+        "paths_enumerated": 13
+      }
+    },
+    {
+      "method": "SymEx",
+      "seed": -1,
+      "num_inputs": 39,
+      "coverage_pct": 100.0,
+      "hit_magic": true,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B0",
+          true
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [],
+      "elapsed_ms": 721.59,
+      "extra": {
+        "seeds": [
+          42,
+          123,
+          9999
+        ]
+      }
+    }
+  ],
+  "random": [
+    {
+      "method": "Random",
+      "seed": 42,
+      "num_inputs": 1000,
+      "coverage_pct": 90.0,
+      "hit_magic": false,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [
+        [
+          "B0",
+          true
+        ]
+      ],
+      "elapsed_ms": 0.76,
+      "extra": null
+    },
+    {
+      "method": "Random",
+      "seed": 123,
+      "num_inputs": 1000,
+      "coverage_pct": 90.0,
+      "hit_magic": false,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [
+        [
+          "B0",
+          true
+        ]
+      ],
+      "elapsed_ms": 0.68,
+      "extra": null
+    },
+    {
+      "method": "Random",
+      "seed": 9999,
+      "num_inputs": 1000,
+      "coverage_pct": 90.0,
+      "hit_magic": false,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [
+        [
+          "B0",
+          true
+        ]
+      ],
+      "elapsed_ms": 0.68,
+      "extra": null
+    },
+    {
+      "method": "Random",
+      "seed": -1,
+      "num_inputs": 3000,
+      "coverage_pct": 90.0,
+      "hit_magic": false,
+      "edges_hit": [
+        [
+          "B0",
+          false
+        ],
+        [
+          "B1",
+          false
+        ],
+        [
+          "B1",
+          true
+        ],
+        [
+          "B2",
+          false
+        ],
+        [
+          "B2",
+          true
+        ],
+        [
+          "B3",
+          false
+        ],
+        [
+          "B3",
+          true
+        ],
+        [
+          "B4",
+          false
+        ],
+        [
+          "B4",
+          true
+        ]
+      ],
+      "edges_missed": [
+        [
+          "B0",
+          true
+        ]
+      ],
+      "elapsed_ms": 2.12,
+      "extra": {
+        "seeds": [
+          42,
+          123,
+          9999
+        ]
+      }
+    }
+  ]
+}

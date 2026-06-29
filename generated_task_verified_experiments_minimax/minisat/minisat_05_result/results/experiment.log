@@ -1,0 +1,25 @@
+n=10 seed= 1  χ=5  rows=5
+n=10 seed= 2  χ=4  rows=4
+n=10 seed= 3  χ=4  rows=4
+n=10 seed= 4  χ=5  rows=5
+n=10 seed= 5  χ=3  rows=3
+n=10 seed= 6  χ=4  rows=4
+n=10 seed= 7  χ=5  rows=5
+n=10 seed= 8  χ=4  rows=4
+n=15 seed= 1  χ=5  rows=5
+n=15 seed= 2  χ=4  rows=4
+n=15 seed= 3  χ=4  rows=4
+n=15 seed= 4  χ=5  rows=5
+n=15 seed= 5  χ=5  rows=5
+n=15 seed= 6  χ=5  rows=5
+n=15 seed= 7  χ=6  rows=6
+n=15 seed= 8  χ=5  rows=5
+n=20 seed= 1  χ=6  rows=6
+n=20 seed= 2  χ=6  rows=6
+n=20 seed= 3  χ=5  rows=5
+n=20 seed= 4  χ=6  rows=6
+n=20 seed= 5  χ=5  rows=5
+n=20 seed= 6  χ=6  rows=6
+n=20 seed= 7  χ=6  rows=6
+n=20 seed= 8  χ=6  rows=6
+Wrote raw_results.csv and chi_summary.csv

@@ -1,0 +1,96 @@
+{
+  "experiment_A_or_set_addwins": [
+    {
+      "seed": 1,
+      "n_pairs": 1200,
+      "add_wins_correct": 1200,
+      "add_wins_rate": 1.0,
+      "naive_remove_wins_wrong": 1200,
+      "naive_remove_wins_rate": 1.0
+    },
+    {
+      "seed": 2,
+      "n_pairs": 1200,
+      "add_wins_correct": 1200,
+      "add_wins_rate": 1.0,
+      "naive_remove_wins_wrong": 1200,
+      "naive_remove_wins_rate": 1.0
+    },
+    {
+      "seed": 3,
+      "n_pairs": 1200,
+      "add_wins_correct": 1200,
+      "add_wins_rate": 1.0,
+      "naive_remove_wins_wrong": 1200,
+      "naive_remove_wins_rate": 1.0
+    },
+    {
+      "seed": 4,
+      "n_pairs": 1200,
+      "add_wins_correct": 1200,
+      "add_wins_rate": 1.0,
+      "naive_remove_wins_wrong": 1200,
+      "naive_remove_wins_rate": 1.0
+    },
+    {
+      "seed": 5,
+      "n_pairs": 1200,
+      "add_wins_correct": 1200,
+      "add_wins_rate": 1.0,
+      "naive_remove_wins_wrong": 1200,
+      "naive_remove_wins_rate": 1.0
+    }
+  ],
+  "experiment_B_pn_counter": [
+    {
+      "seed": 1,
+      "n_ops": 5000,
+      "n_inc": 2540,
+      "n_dec": 2460,
+      "merged_value": 80,
+      "serial_value": 80,
+      "error": 0,
+      "abs_error": 0
+    },
+    {
+      "seed": 2,
+      "n_ops": 5000,
+      "n_inc": 2541,
+      "n_dec": 2459,
+      "merged_value": 82,
+      "serial_value": 82,
+      "error": 0,
+      "abs_error": 0
+    },
+    {
+      "seed": 3,
+      "n_ops": 5000,
+      "n_inc": 2573,
+      "n_dec": 2427,
+      "merged_value": 146,
+      "serial_value": 146,
+      "error": 0,
+      "abs_error": 0
+    },
+    {
+      "seed": 4,
+      "n_ops": 5000,
+      "n_inc": 2502,
+      "n_dec": 2498,
+      "merged_value": 4,
+      "serial_value": 4,
+      "error": 0,
+      "abs_error": 0
+    },
+    {
+      "seed": 5,
+      "n_ops": 5000,
+      "n_inc": 2500,
+      "n_dec": 2500,
+      "merged_value": 0,
+      "serial_value": 0,
+      "error": 0,
+      "abs_error": 0
+    }
+  ]
+}

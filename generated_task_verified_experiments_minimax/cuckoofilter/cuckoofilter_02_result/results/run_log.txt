@@ -1,0 +1,100 @@
+b=4, M=524288, N=200000, max_kicks=500
+target load (if all inserts succeed) = 0.095367
+# seeds = 20, # f values = 4
+
+  f= 4  seed= 1  inserted=200000  load=0.0954  FPR=5.248500e-02  FP=10497
+  f= 4  seed= 2  inserted=200000  load=0.0954  FPR=5.195500e-02  FP=10391
+  f= 4  seed= 3  inserted=200000  load=0.0954  FPR=5.207500e-02  FP=10415
+  f= 4  seed= 4  inserted=200000  load=0.0954  FPR=5.227000e-02  FP=10454
+  f= 4  seed= 5  inserted=200000  load=0.0954  FPR=5.166500e-02  FP=10333
+  f= 4  seed= 6  inserted=200000  load=0.0954  FPR=5.190500e-02  FP=10381
+  f= 4  seed= 7  inserted=200000  load=0.0954  FPR=5.141000e-02  FP=10282
+  f= 4  seed= 8  inserted=200000  load=0.0954  FPR=5.291500e-02  FP=10583
+  f= 4  seed= 9  inserted=200000  load=0.0954  FPR=5.201000e-02  FP=10402
+  f= 4  seed=10  inserted=200000  load=0.0954  FPR=5.251500e-02  FP=10503
+  f= 4  seed=11  inserted=200000  load=0.0954  FPR=5.146000e-02  FP=10292
+  f= 4  seed=12  inserted=200000  load=0.0954  FPR=5.187000e-02  FP=10374
+  f= 4  seed=13  inserted=200000  load=0.0954  FPR=5.154500e-02  FP=10309
+  f= 4  seed=14  inserted=200000  load=0.0954  FPR=5.206500e-02  FP=10413
+  f= 4  seed=15  inserted=200000  load=0.0954  FPR=5.258000e-02  FP=10516
+  f= 4  seed=16  inserted=200000  load=0.0954  FPR=5.206000e-02  FP=10412
+  f= 4  seed=17  inserted=200000  load=0.0954  FPR=5.234500e-02  FP=10469
+  f= 4  seed=18  inserted=200000  load=0.0954  FPR=5.203500e-02  FP=10407
+  f= 4  seed=19  inserted=200000  load=0.0954  FPR=5.189000e-02  FP=10378
+  f= 4  seed=20  inserted=200000  load=0.0954  FPR=5.234000e-02  FP=10468
+
+  f= 8  seed= 1  inserted=200000  load=0.0954  FPR=2.985000e-03  FP=597
+  f= 8  seed= 2  inserted=200000  load=0.0954  FPR=3.000000e-03  FP=600
+  f= 8  seed= 3  inserted=200000  load=0.0954  FPR=2.915000e-03  FP=583
+  f= 8  seed= 4  inserted=200000  load=0.0954  FPR=3.090000e-03  FP=618
+  f= 8  seed= 5  inserted=200000  load=0.0954  FPR=2.975000e-03  FP=595
+  f= 8  seed= 6  inserted=200000  load=0.0954  FPR=2.970000e-03  FP=594
+  f= 8  seed= 7  inserted=200000  load=0.0954  FPR=2.925000e-03  FP=585
+  f= 8  seed= 8  inserted=200000  load=0.0954  FPR=2.935000e-03  FP=587
+  f= 8  seed= 9  inserted=200000  load=0.0954  FPR=3.235000e-03  FP=647
+  f= 8  seed=10  inserted=200000  load=0.0954  FPR=3.060000e-03  FP=612
+  f= 8  seed=11  inserted=200000  load=0.0954  FPR=3.010000e-03  FP=602
+  f= 8  seed=12  inserted=200000  load=0.0954  FPR=3.075000e-03  FP=615
+  f= 8  seed=13  inserted=200000  load=0.0954  FPR=2.860000e-03  FP=572
+  f= 8  seed=14  inserted=200000  load=0.0954  FPR=2.970000e-03  FP=594
+  f= 8  seed=15  inserted=200000  load=0.0954  FPR=2.805000e-03  FP=561
+  f= 8  seed=16  inserted=200000  load=0.0954  FPR=2.790000e-03  FP=558
+  f= 8  seed=17  inserted=200000  load=0.0954  FPR=2.875000e-03  FP=575
+  f= 8  seed=18  inserted=200000  load=0.0954  FPR=2.970000e-03  FP=594
+  f= 8  seed=19  inserted=200000  load=0.0954  FPR=3.095000e-03  FP=619
+  f= 8  seed=20  inserted=200000  load=0.0954  FPR=3.005000e-03  FP=601
+
+  f=12  seed= 1  inserted=200000  load=0.0954  FPR=2.450000e-04  FP=49
+  f=12  seed= 2  inserted=200000  load=0.0954  FPR=2.000000e-04  FP=40
+  f=12  seed= 3  inserted=200000  load=0.0954  FPR=1.950000e-04  FP=39
+  f=12  seed= 4  inserted=200000  load=0.0954  FPR=2.050000e-04  FP=41
+  f=12  seed= 5  inserted=200000  load=0.0954  FPR=2.250000e-04  FP=45
+  f=12  seed= 6  inserted=200000  load=0.0954  FPR=1.800000e-04  FP=36
+  f=12  seed= 7  inserted=200000  load=0.0954  FPR=1.550000e-04  FP=31
+  f=12  seed= 8  inserted=200000  load=0.0954  FPR=2.300000e-04  FP=46
+  f=12  seed= 9  inserted=200000  load=0.0954  FPR=1.850000e-04  FP=37
+  f=12  seed=10  inserted=200000  load=0.0954  FPR=2.200000e-04  FP=44
+  f=12  seed=11  inserted=200000  load=0.0954  FPR=1.900000e-04  FP=38
+  f=12  seed=12  inserted=200000  load=0.0954  FPR=1.700000e-04  FP=34
+  f=12  seed=13  inserted=200000  load=0.0954  FPR=1.650000e-04  FP=33
+  f=12  seed=14  inserted=200000  load=0.0954  FPR=2.150000e-04  FP=43
+  f=12  seed=15  inserted=200000  load=0.0954  FPR=1.550000e-04  FP=31
+  f=12  seed=16  inserted=200000  load=0.0954  FPR=2.450000e-04  FP=49
+  f=12  seed=17  inserted=200000  load=0.0954  FPR=1.800000e-04  FP=36
+  f=12  seed=18  inserted=200000  load=0.0954  FPR=1.950000e-04  FP=39
+  f=12  seed=19  inserted=200000  load=0.0954  FPR=1.850000e-04  FP=37
+  f=12  seed=20  inserted=200000  load=0.0954  FPR=2.000000e-04  FP=40
+
+  f=16  seed= 1  inserted=200000  load=0.0954  FPR=1.500000e-05  FP=3
+  f=16  seed= 2  inserted=200000  load=0.0954  FPR=1.000000e-05  FP=2
+  f=16  seed= 3  inserted=200000  load=0.0954  FPR=1.500000e-05  FP=3
+  f=16  seed= 4  inserted=200000  load=0.0954  FPR=1.500000e-05  FP=3
+  f=16  seed= 5  inserted=200000  load=0.0954  FPR=2.000000e-05  FP=4
+  f=16  seed= 6  inserted=200000  load=0.0954  FPR=1.500000e-05  FP=3
+  f=16  seed= 7  inserted=200000  load=0.0954  FPR=1.500000e-05  FP=3
+  f=16  seed= 8  inserted=200000  load=0.0954  FPR=0.000000e+00  FP=0
+  f=16  seed= 9  inserted=200000  load=0.0954  FPR=2.000000e-05  FP=4
+  f=16  seed=10  inserted=200000  load=0.0954  FPR=2.500000e-05  FP=5
+  f=16  seed=11  inserted=200000  load=0.0954  FPR=2.000000e-05  FP=4
+  f=16  seed=12  inserted=200000  load=0.0954  FPR=5.000000e-06  FP=1
+  f=16  seed=13  inserted=200000  load=0.0954  FPR=1.000000e-05  FP=2
+  f=16  seed=14  inserted=200000  load=0.0954  FPR=1.000000e-05  FP=2
+  f=16  seed=15  inserted=200000  load=0.0954  FPR=3.000000e-05  FP=6
+  f=16  seed=16  inserted=200000  load=0.0954  FPR=5.000000e-06  FP=1
+  f=16  seed=17  inserted=200000  load=0.0954  FPR=0.000000e+00  FP=0
+  f=16  seed=18  inserted=200000  load=0.0954  FPR=1.000000e-05  FP=2
+  f=16  seed=19  inserted=200000  load=0.0954  FPR=0.000000e+00  FP=0
+  f=16  seed=20  inserted=200000  load=0.0954  FPR=0.000000e+00  FP=0
+
+
+total wall time: 194.7 s
+raw results written to /data/workspace/admin/happy_lake/.verify_judge_minimax/cuckoofilter/cuckoofilter_02/results_raw.csv
+
+--- summary ---
+   f       mean FPR     theory (α)   mean load    mean FP         σ(FPR)
+   4   5.206975e-02   4.804640e-02      0.0954   10413.95   3.905511e-04
+   8   2.977250e-03   2.981614e-03      0.0954     595.45   1.049621e-04
+  12   1.970000e-04   1.862699e-04      0.0954      39.40   2.677391e-05
+  16   1.200000e-05   1.164155e-05      0.0954       2.40   8.645047e-06
+
+aggregated summary written to /data/workspace/admin/happy_lake/.verify_judge_minimax/cuckoofilter/cuckoofilter_02/results_summary.csv

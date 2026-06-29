@@ -1,0 +1,48 @@
+{
+  "data": {
+    "n_samples": 5000,
+    "n_features": 20,
+    "n_anomalies": 250,
+    "anomaly_fraction": 0.05,
+    "random_state": 0
+  },
+  "iforest": {
+    "method": "IsolationForest (iForest)",
+    "params": {
+      "n_estimators": 100,
+      "max_samples (psi)": 256,
+      "random_state": 0
+    },
+    "train_time_s": 0.058049988793209197,
+    "predict_time_s": 0.018451961781829597,
+    "total_time_s": 0.0765019505750388,
+    "auc": 0.666405052631579,
+    "n_samples": 5000,
+    "n_anomalies": 250,
+    "anomaly_fraction": 0.05,
+    "score_convention": "negated decision_function (higher = more anomalous)",
+    "timing_repeats": 5
+  },
+  "lof": {
+    "method": "LocalOutlierFactor (LOF)",
+    "params": {
+      "n_neighbors": 20,
+      "novelty": false,
+      "metric": "minkowski",
+      "random_state (data)": 0
+    },
+    "train_time_s": 0.03926247679628432,
+    "predict_time_s": 0.030034933774732053,
+    "total_time_s": 0.06929741057101638,
+    "auc": 0.7770357894736842,
+    "n_samples": 5000,
+    "n_anomalies": 250,
+    "anomaly_fraction": 0.05,
+    "score_convention": "-negative_outlier_factor_ (higher = more anomalous)",
+    "timing_repeats": 5
+  },
+  "delta_auc_iforest_minus_lof": -0.11063073684210523,
+  "ratio_total_time_lof_over_iforest": 0.9058254077200859,
+  "ratio_train_time_lof_over_iforest": 0.6763563200011733,
+  "ratio_predict_time_lof_over_iforest": 1.6277366130418005
+}

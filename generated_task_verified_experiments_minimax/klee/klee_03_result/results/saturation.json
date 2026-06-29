@@ -1,0 +1,1178 @@
+[
+  {
+    "function": "get_sign",
+    "seed": 42,
+    "paths_explored": 1,
+    "total_paths": 3,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 42,
+    "paths_explored": 2,
+    "total_paths": 3,
+    "branch_coverage_pct": 75.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 42,
+    "paths_explored": 3,
+    "total_paths": 3,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 123,
+    "paths_explored": 1,
+    "total_paths": 3,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 123,
+    "paths_explored": 2,
+    "total_paths": 3,
+    "branch_coverage_pct": 75.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 123,
+    "paths_explored": 3,
+    "total_paths": 3,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 7,
+    "paths_explored": 1,
+    "total_paths": 3,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 7,
+    "paths_explored": 2,
+    "total_paths": 3,
+    "branch_coverage_pct": 75.0
+  },
+  {
+    "function": "get_sign",
+    "seed": 7,
+    "paths_explored": 3,
+    "total_paths": 3,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 42,
+    "paths_explored": 1,
+    "total_paths": 5,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 42,
+    "paths_explored": 2,
+    "total_paths": 5,
+    "branch_coverage_pct": 62.5
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 42,
+    "paths_explored": 3,
+    "total_paths": 5,
+    "branch_coverage_pct": 75.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 42,
+    "paths_explored": 4,
+    "total_paths": 5,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 42,
+    "paths_explored": 5,
+    "total_paths": 5,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 123,
+    "paths_explored": 1,
+    "total_paths": 5,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 123,
+    "paths_explored": 2,
+    "total_paths": 5,
+    "branch_coverage_pct": 62.5
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 123,
+    "paths_explored": 3,
+    "total_paths": 5,
+    "branch_coverage_pct": 75.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 123,
+    "paths_explored": 4,
+    "total_paths": 5,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 123,
+    "paths_explored": 5,
+    "total_paths": 5,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 7,
+    "paths_explored": 1,
+    "total_paths": 5,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 7,
+    "paths_explored": 2,
+    "total_paths": 5,
+    "branch_coverage_pct": 62.5
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 7,
+    "paths_explored": 3,
+    "total_paths": 5,
+    "branch_coverage_pct": 75.0
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 7,
+    "paths_explored": 4,
+    "total_paths": 5,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "classify_triangle",
+    "seed": 7,
+    "paths_explored": 5,
+    "total_paths": 5,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 1,
+    "total_paths": 16,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 2,
+    "total_paths": 16,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 3,
+    "total_paths": 16,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 4,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 5,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 6,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 7,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 8,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 9,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 10,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 11,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 12,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 13,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 14,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 15,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 42,
+    "paths_explored": 16,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 1,
+    "total_paths": 16,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 2,
+    "total_paths": 16,
+    "branch_coverage_pct": 75.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 3,
+    "total_paths": 16,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 4,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 5,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 6,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 7,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 8,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 9,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 10,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 11,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 12,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 13,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 14,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 15,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 123,
+    "paths_explored": 16,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 1,
+    "total_paths": 16,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 2,
+    "total_paths": 16,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 3,
+    "total_paths": 16,
+    "branch_coverage_pct": 87.5
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 4,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 5,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 6,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 7,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 8,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 9,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 10,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 11,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 12,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 13,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 14,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 15,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k4",
+    "seed": 7,
+    "paths_explored": 16,
+    "total_paths": 16,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 1,
+    "total_paths": 32,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 2,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 3,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 4,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 5,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 6,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 7,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 8,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 9,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 10,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 11,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 12,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 13,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 14,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 15,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 16,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 17,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 18,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 19,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 20,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 21,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 22,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 23,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 24,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 25,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 26,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 27,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 28,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 29,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 30,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 31,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 42,
+    "paths_explored": 32,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 1,
+    "total_paths": 32,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 2,
+    "total_paths": 32,
+    "branch_coverage_pct": 70.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 3,
+    "total_paths": 32,
+    "branch_coverage_pct": 80.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 4,
+    "total_paths": 32,
+    "branch_coverage_pct": 90.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 5,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 6,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 7,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 8,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 9,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 10,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 11,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 12,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 13,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 14,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 15,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 16,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 17,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 18,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 19,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 20,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 21,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 22,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 23,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 24,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 25,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 26,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 27,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 28,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 29,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 30,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 31,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 123,
+    "paths_explored": 32,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 1,
+    "total_paths": 32,
+    "branch_coverage_pct": 50.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 2,
+    "total_paths": 32,
+    "branch_coverage_pct": 80.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 3,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 4,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 5,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 6,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 7,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 8,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 9,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 10,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 11,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 12,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 13,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 14,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 15,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 16,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 17,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 18,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 19,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 20,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 21,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 22,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 23,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 24,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 25,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 26,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 27,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 28,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 29,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 30,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 31,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  },
+  {
+    "function": "k_independent_ifs_k5",
+    "seed": 7,
+    "paths_explored": 32,
+    "total_paths": 32,
+    "branch_coverage_pct": 100.0
+  }
+]

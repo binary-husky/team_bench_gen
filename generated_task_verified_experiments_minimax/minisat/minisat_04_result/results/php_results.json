@@ -1,0 +1,62 @@
+[
+  {
+    "n": 3,
+    "nvars": 12,
+    "nclauses": 22,
+    "time_s": 4.5952037908136845e-05,
+    "conflicts": 7,
+    "decisions": 8,
+    "propagations": 55,
+    "restarts": 1,
+    "status": "UNSAT",
+    "timed_out": false
+  },
+  {
+    "n": 4,
+    "nvars": 20,
+    "nclauses": 45,
+    "time_s": 5.8292062021791935e-05,
+    "conflicts": 29,
+    "decisions": 33,
+    "propagations": 287,
+    "restarts": 1,
+    "status": "UNSAT",
+    "timed_out": false
+  },
+  {
+    "n": 5,
+    "nvars": 30,
+    "nclauses": 81,
+    "time_s": 0.00038294203113764524,
+    "conflicts": 201,
+    "decisions": 254,
+    "propagations": 2321,
+    "restarts": 2,
+    "status": "UNSAT",
+    "timed_out": false
+  },
+  {
+    "n": 6,
+    "nvars": 42,
+    "nclauses": 133,
+    "time_s": 0.005102609982714057,
+    "conflicts": 2498,
+    "decisions": 3074,
+    "propagations": 34077,
+    "restarts": 15,
+    "status": "UNSAT",
+    "timed_out": false
+  },
+  {
+    "n": 7,
+    "nvars": 56,
+    "nclauses": 204,
+    "time_s": 0.0285801999270916,
+    "conflicts": 11530,
+    "decisions": 14613,
+    "propagations": 169821,
+    "restarts": 49,
+    "status": "UNSAT",
+    "timed_out": false
+  }
+]

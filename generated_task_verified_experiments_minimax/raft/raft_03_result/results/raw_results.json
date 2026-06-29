@@ -1,0 +1,302 @@
+{
+  "num_commands": 1000,
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "submit_per_tick": 50,
+  "summary": {
+    "3": {
+      "aggregate": {
+        "n_seeds": 8,
+        "all_committed_seeds": 8,
+        "monotonic_seeds": 8,
+        "latency_mean_of_means": 1.998,
+        "latency_mean_of_medians": 2,
+        "latency_median_of_means": 1.998,
+        "latency_median_of_medians": 2.0,
+        "latency_mean_of_maxes": 2,
+        "latency_max_of_maxes": 2,
+        "latency_min_of_mins": 0,
+        "majority_violations": 0,
+        "per_seed_means": [
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998
+        ],
+        "per_seed_medians": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "per_seed_maxes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "per_seed": [
+        {
+          "seed": 1,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 93,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 2,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 139,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 3,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 100,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 4,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 91,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 5,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 101,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 6,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 121,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 7,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 94,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 8,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 99,
+          "commit_history_len": 22
+        }
+      ]
+    },
+    "5": {
+      "aggregate": {
+        "n_seeds": 8,
+        "all_committed_seeds": 8,
+        "monotonic_seeds": 8,
+        "latency_mean_of_means": 1.998,
+        "latency_mean_of_medians": 2,
+        "latency_median_of_means": 1.998,
+        "latency_median_of_medians": 2.0,
+        "latency_mean_of_maxes": 2,
+        "latency_max_of_maxes": 2,
+        "latency_min_of_mins": 0,
+        "majority_violations": 0,
+        "per_seed_means": [
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998,
+          1.998
+        ],
+        "per_seed_medians": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "per_seed_maxes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "per_seed": [
+        {
+          "seed": 1,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 93,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 2,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 88,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 3,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 93,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 4,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 91,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 5,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 101,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 6,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 90,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 7,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 94,
+          "commit_history_len": 22
+        },
+        {
+          "seed": 8,
+          "all_committed": true,
+          "monotonic_commitIndex": true,
+          "latency_mean": 1.998,
+          "latency_median": 2,
+          "latency_max": 2,
+          "latency_min": 0,
+          "committed_count": 1000,
+          "final_tick": 93,
+          "commit_history_len": 22
+        }
+      ]
+    }
+  }
+}
