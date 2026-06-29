@@ -9,6 +9,8 @@
 
 Baseline: 100 %
 
+GLM 5.2 在 133 个初始任务中成功102个，将这102个有可靠复现经验的样本提取出来作为测试集
+
 
 ## Minimax Final counts (102 tasks)
 
