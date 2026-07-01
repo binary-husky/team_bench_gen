@@ -13,12 +13,12 @@
 #
 # Output (results + _run_report.json) -> $OUTPUT_DIR  (the eval script reads it).
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 MODEL_CONFIG="${MODEL_CONFIG:-/root/.claude/settings-qwen3.7-max.json}"
 TASKS_FILE="${TASKS_FILE:-/data/workspace/admin/happy_lake/team_bench_gen/tasks_filtered.txt}"
 EXPERIMENT_CWD="${EXPERIMENT_CWD:-/data/workspace/admin/happy_lake/.solve_qwen}"
-OUTPUT_DIR="${OUTPUT_DIR:-/data/workspace/admin/happy_lake/team_bench_gen/generated_task_verified_experiments_qwen}"
+OUTPUT_DIR="${OUTPUT_DIR:-/data/workspace/admin/happy_lake/.solve_qwen_result}"
 CONCURRENCY="${CONCURRENCY:-3}"
 
 python3 /data/workspace/admin/happy_lake/team_bench_gen/solve_tasks.py \

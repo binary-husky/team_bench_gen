@@ -14,11 +14,11 @@
 # Writes _judge_report.md / _judge_detail.json / _judge_cache.json / judge_llm/
 # into $RESULT_DIR. Prints pass-rate + mean score at the end.
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
-RESULT_DIR="${RESULT_DIR:-/data/workspace/admin/happy_lake/team_bench_gen/generated_task_verified_experiments_qwen}"
-TASKS_FILE="${TASKS_FILE:-/data/workspace/admin/happy_lake/tasks_filtered.txt}"
-CONCURRENCY="${CONCURRENCY:-4}"
+RESULT_DIR="${RESULT_DIR:-/data/workspace/admin/happy_lake/.solve_qwen35B_result}"
+TASKS_FILE="${TASKS_FILE:-/data/workspace/admin/happy_lake/team_bench_gen/tasks_filtered.txt}"
+CONCURRENCY="${CONCURRENCY:-2}"
 
 python3 judge_and_score.py \
   --result-dir  "$RESULT_DIR" \

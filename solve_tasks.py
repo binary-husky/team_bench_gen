@@ -61,6 +61,16 @@ POLL_INTERVAL      = 10     # seconds between completion checks
 TASK_TIMEOUT       = 2400   # per-task wall-clock cap (40 min; specs budget <30)
 DONE_SENTINEL      = "__DONE__"
 
+
+class AgentBootError(Exception):
+    """claude exited during the AGENT_BOOT_SECONDS window, before its prompt was
+    pasted. Carries the captured boot pane so the real startup error survives
+    even though the dead window is then killed."""
+    def __init__(self, tid, pane):
+        super().__init__(f"{tid}: agent died at boot")
+        self.tid = tid
+        self.pane = pane
+
 # Heavy optimization-benchmark reproductions — likely infeasible under the
 # CPU/<30-min bar. Attempt ONCE with a SHORT budget, skip on timeout (no retry).
 PRE_EXISTING = {"cec", "dtlz", "hpob", "jade", "zdt"}
@@ -80,6 +90,10 @@ SKIPLIST         = set()
 _seq_lock = threading.Lock()
 _seq = 0
 
+# Session creation lock — TOCTOU race: concurrent `ensure_session()` calls
+# must not both see `tmux_has_session() == False` and attempt to create.
+_session_lock = threading.Lock()
+
 
 def next_seq():
     global _seq
@@ -92,6 +106,10 @@ def next_seq():
 # Low-level tmux / shell helpers
 # --------------------------------------------------------------------------- #
 def run(cmd, check=False, capture=True, timeout=None):
+    command_str = ' '.join(cmd)
+    if 'capture-pane' not in command_str:
+        print(f'[command]', ' '.join(cmd))
+    
     return subprocess.run(
         cmd, check=check,
         stdout=subprocess.PIPE if capture else None,
@@ -111,10 +129,37 @@ def tmux_has_session(name):
 
 def ensure_session():
     if not tmux_has_session(TMUX_SESSION):
-        tmux("new-session", "-d", "-s", TMUX_SESSION,
-             "-c", str(WORKSPACE), check=True)
-        log(f"[session] created tmux session '{TMUX_SESSION}' (cwd={WORKSPACE})")
+        with _session_lock:
+            # Double-check: another thread may have created it while we waited.
+            if not tmux_has_session(TMUX_SESSION):
+                tmux("new-session", "-d", "-s", TMUX_SESSION,
+                     "-c", str(WORKSPACE), check=True)
+                log(f"[session] created tmux session '{TMUX_SESSION}' (cwd={WORKSPACE})")
+    # Keep dead panes around so a fast-crashing agent leaves forensic evidence
+    # (capture-pane still works on a dead window). Idempotent across reuses.
+    tmux("set-option", "-t", TMUX_SESSION, "remain-on-exit", "on")
     return TMUX_SESSION
+
+
+def cleanup_stale_windows():
+    """Kill every task window in the session except the base shell (index 0).
+    Clears orphaned claude panes from prior interrupted runs so they neither
+    burn API budget nor collide with this run's (recycled) window names."""
+    r = tmux("list-windows", "-t", TMUX_SESSION,
+             "-F", "#{window_index}\t#{window_id}\t#{window_name}")
+    if r.returncode != 0:
+        return []
+    killed = []
+    for line in r.stdout.splitlines():
+        f = line.split("\t")
+        if len(f) < 3:
+            continue
+        idx, wid, name = f[0], f[1], f[2]
+        if idx == "0":              # keep the session's base shell window
+            continue
+        if tmux("kill-window", "-t", wid).returncode == 0:
+            killed.append(name)
+    return killed
 
 
 def sanitize_window_name(name):
@@ -137,11 +182,13 @@ def capture_pane(target, lines=220):
 
 
 def pane_alive(target):
-    sess = target.split(":")[0]
-    r = tmux("list-windows", "-t", sess, "-F", "#{window_name}")
-    if r.returncode != 0:
-        return False
-    return target.split(":")[-1] in r.stdout.splitlines()
+    # target is a window id (e.g. @5). With remain-on-exit on, a dead claude
+    # leaves the window behind, so "alive" = the pane process is still running,
+    # not merely that the window exists.
+    r = tmux("list-panes", "-t", target, "-F", "#{pane_dead}")
+    if r.returncode != 0 or not r.stdout.strip():
+        return False                     # window gone entirely
+    return all(ln.strip() != "1" for ln in r.stdout.splitlines())
 
 
 # --------------------------------------------------------------------------- #
@@ -274,7 +321,6 @@ def spawn_agent(t, stage_dir):
     tid = task_id(t)
     seq = next_seq()
     win_name = sanitize_window_name(f"{tid}_{seq}")
-    target = f"{TMUX_SESSION}:{win_name}"
 
     prefix = ("unset VSCODE_IPC_HOOK_CLI VSCODE_GIT_IPC_HANDLE "
               "VSCODE_GIT_ASKPASS_NODE VSCODE_GIT_ASKPASS_MAIN && "
@@ -288,10 +334,24 @@ def spawn_agent(t, stage_dir):
     claude_cmd = prefix + " ".join(parts)
     shell_cmd = f"bash -lc {shlex.quote(claude_cmd)}"
 
-    tmux("new-window", "-d", "-t", TMUX_SESSION, "-n", win_name,
-         "-c", str(stage_dir), shell_cmd, check=True)
+    # -P -F prints the new window's id; targeting by id is immune to the
+    # cross-run name collisions caused by the per-process seq counter reset.
+    r = tmux("new-window", "-P", "-F", "#{window_id}", "-d",
+             "-t", TMUX_SESSION, "-n", win_name,
+             "-c", str(stage_dir), shell_cmd, check=True)
+    target = r.stdout.strip() or f"{TMUX_SESSION}:{win_name}"
 
     time.sleep(AGENT_BOOT_SECONDS)
+
+    # Capture the boot pane BEFORE pasting. With remain-on-exit on this still
+    # works when claude already crashed, preserving the real startup error.
+    boot_pane = capture_pane(target)
+    (stage_dir / "_pane.log").write_text(boot_pane, encoding="utf-8")
+    if not pane_alive(target):
+        # claude died during the boot window — kill the dead pane and surface
+        # what it printed, rather than the misleading paste-buffer symptom.
+        tmux("kill-window", "-t", target)
+        raise AgentBootError(tid, boot_pane)
 
     prompt = build_prompt(stage_dir / "task.md", stage_dir)
     prompt_file = stage_dir / ".prompt.txt"
@@ -332,7 +392,7 @@ def wait_for_completion(target, stage_dir, timeout):
             stale_ticks = 0
             last_len = cur_len
         if stale_ticks == 0:
-            log(f"      ...working (pane {cur_len}b)")
+            log(f"      ...working (pane cur_len {cur_len}b)")
     return "timeout", capture_pane(target)
 
 
@@ -408,12 +468,13 @@ def process_task(t):
     timeout = PRE_TIMEOUT if t["subject"] in PRE_EXISTING else args.timeout
     tag = "[pre-existing]" if t["subject"] in PRE_EXISTING else ""
     log(f"▶ START {tid} {tag} (timeout={timeout}s)")
+    target = None
+    stage_dir = None
     try:
         stage_dir = stage_task(t)
         target = spawn_agent(t, stage_dir)
         status, pane = wait_for_completion(target, stage_dir, timeout)
         (stage_dir / "_final_pane.log").write_text(pane, encoding="utf-8")
-        tmux("kill-window", "-t", target)
         result = {"task": tid, "status": status, "stage": str(stage_dir)}
         if status == "done":
             result_dir, copied = finalize(t, stage_dir)
@@ -430,12 +491,26 @@ def process_task(t):
                     f.write(f"{tid}: {status.upper()} — {reason} (pre-existing, too heavy for <30min/CPU)\n")
                 log(f"⊘ logged SKIPPED {tid}")
         return result
+    except AgentBootError as e:
+        # spawn_agent already killed the dead window; surface the real boot error
+        # instead of the misleading "can't find window" paste-buffer symptom.
+        if stage_dir is not None:
+            (stage_dir / "_final_pane.log").write_text(e.pane, encoding="utf-8")
+        tail = " | ".join(ln.strip() for ln in e.pane.splitlines() if ln.strip())[-300:]
+        log(f"✗ DEAD-AT-BOOT {tid}  (boot pane in {stage_dir}/_final_pane.log) tail: {tail}")
+        return {"task": tid, "status": "dead", "stage": str(stage_dir) if stage_dir else None,
+                "error": "agent died at boot", "boot_pane_tail": tail}
     except subprocess.CalledProcessError as e:
         log(f"✗ ERROR {tid}: {e} stderr={(e.stderr or '').strip()[:200]}")
         return {"task": tid, "status": "error", "error": str(e)}
     except Exception as e:  # noqa
         log(f"✗ ERROR {tid}: {type(e).__name__}: {e}")
         return {"task": tid, "status": "error", "error": str(e)}
+    finally:
+        # Never leak a window — kill whatever we opened (best-effort; the window
+        # may already be gone, e.g. on the AgentBootError path).
+        if target is not None:
+            tmux("kill-window", "-t", target)
 
 
 # --------------------------------------------------------------------------- #
@@ -546,6 +621,10 @@ def main():
 
     STAGE_ROOT.mkdir(parents=True, exist_ok=True)
     EXPERIMENTS_DIR.mkdir(parents=True, exist_ok=True)
+    ensure_session()
+    stale = cleanup_stale_windows()
+    if stale:
+        log(f"[session] killed {len(stale)} stale window(s) from prior run(s): {stale}")
     report_path = EXPERIMENTS_DIR / "_run_report.json"
     results = []
 
